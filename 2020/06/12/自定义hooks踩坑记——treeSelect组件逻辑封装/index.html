@@ -1,0 +1,371 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>自定义hooks踩坑记——treeSelect组件逻辑封装 - Paige&#39;s XSpace</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="google" content="notranslate" />
+  <meta name="referrer" content="no-referrer" />
+  
+  <meta name="keywords" content="zhaoo, hexo-theme-zhaoo,"> 
+  
+  <meta name="description" content="tech blog about web develop,浏览最近写的项目代码，发现涉及树形结构下拉组件，从请求..."> 
+  
+  <meta name="author" content="zhangyp"> 
+
+  
+    <link rel="icon" href="/images/icons/favicon-16x16.png" type="image/png" sizes="16x16">
+  
+  
+    <link rel="icon" href="/images/icons/favicon-32x32.png" type="image/png" sizes="32x32">
+  
+  
+    <link rel="apple-touch-icon" href="/images/icons/apple-touch-icon.png" sizes="180x180">
+  
+  
+    <meta rel="mask-icon" href="/images/icons/stun-logo.svg" color="#333333">
+  
+  
+    <meta rel="msapplication-TileImage" content="/images/icons/favicon-144x144.png">
+    <meta rel="msapplication-TileColor" content="#000000">
+  
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+  
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1445822_58xq2j9v1id.css">
+
+  
+
+  
+  
+  
+<link rel="stylesheet" href="https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min.css">
+
+  
+
+  
+  
+  
+<link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.18.1/styles/dracula.min.css">
+
+  
+
+  
+  
+  
+<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/justifiedGallery/3.7.0/css/justifiedGallery.min.css">
+
+  
+
+  <script>
+    var CONFIG = window.CONFIG || {}
+    CONFIG = {
+      fancybox: true,
+      pjax: false,
+      lazyload: {
+        enable: true,
+        loadingImage: '/images/theme/loading.gif',
+      },
+      donate_alipay: 'http://img.u-to-world.com/blog/alipay.png',
+      donate_wechat: 'http://img.u-to-world.com/blog/weixinpay.png',
+      motto: {
+        api: 'http://api.lovelive.tools/api/SweetNothings',
+        default: '不要温和地走进那良夜'
+      },
+      galleries: {
+        enable: 'true'
+      },
+      fab: {
+        enable: 'true',
+        alwaysShow: 'false'
+      }
+    }
+  </script>
+
+  
+
+  
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body class="lock-screen">
+  <div class="loading"></div>
+  <nav class="menu">
+  <div class="menu-close">
+    <i class="iconfont iconplus"></i>
+  </div>
+  <ul class="menu-content">
+    
+    
+    
+    
+    <li class="menu-item"><a href="/ "> 首页</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="http://u-to-world.com:8080/index.html " target="_blank" rel="noopener"> 作品(我的音乐)</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/archives "> 归档</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/tags "> 标签</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/categories "> 分类</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/about "> 关于</a></li>
+    
+  </ul>
+  <div class="menu-copyright"><p>Copyright© 2019-2020 | <a target="_blank" href="http://blog.u-to-world.com">小笼包</a> .AllRightsReserved</p></div>
+</nav>
+  <main id="main">
+  <div class="container" id="container">
+    <article class="article">
+  <section class="head">
+  <img   class="lazyload" data-original="/images/theme/post-img.jpg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  draggable="false">
+  <div class="head-mask">
+    <h1 class="head-title">自定义hooks踩坑记——treeSelect组件逻辑封装</h1>
+    <div class="head-info">
+      <span class="post-info-item"><i class="iconfont iconcalendar"></i>2020-06-12</span
+        class="post-info-item">
+      
+      <span class="post-info-item"><i class="iconfont iconfont-size"></i>665</span>
+    </div>
+  </div>
+</section>
+  <section class="main">
+    <section class="content">
+      <p>浏览最近写的项目代码，发现涉及树形结构下拉组件，从请求获取数据——&gt;数据渲染节点的过程是分布在页面代码里的，这样页面多了，相同的逻辑都要拷贝一遍，开发体验不是很好，也不利维护。</p>
+<p>原来的代码如下<br>1 .请求数据</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs javascript">useEffect(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> &#123;<br>  fetchDictionary(dispatch, [<span class="hljs-string">"getAllOrgan"</span>]);<br>&#125;, []);<br></code></pre></td></tr></table></figure>
+
+<p>2 . 渲染节点</p>
+<p><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2020/png/1512483/1591943486386-df3df154-af10-4b22-a5ad-7560ec4fc83f.png#align=left&display=inline&height=3726&margin=%5Bobject%20Object%5D&name=result.png&originHeight=3726&originWidth=2048&size=1029648&status=done&style=none&width=2048" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="result.png"></p>
+<p>3 . 组件调用<br><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2020/png/1512483/1591943495607-2071d055-8c20-4ca5-bfd7-f4feab24e530.png#align=left&display=inline&height=1024&margin=%5Bobject%20Object%5D&name=treenode-949x1024.png&originHeight=1024&originWidth=949&size=689404&status=done&style=none&width=949" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="treenode-949x1024.png"></p>
+<p>现在，我要写一个自定义 hooks 来封装请求数据和渲染节点的逻辑，显然要支持</p>
+<ul>
+<li>异步数据获取</li>
+<li>联动获取数据</li>
+<li>支持根据数据改变节点特性</li>
+</ul>
+<p>ok 开搞</p>
+<p><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2020/png/1512483/1591943504031-ff89e842-674c-4b7c-a237-01659b4ef7ec.png#align=left&display=inline&height=534&margin=%5Bobject%20Object%5D&name=use-1024x534.png&originHeight=534&originWidth=1024&size=222684&status=done&style=none&width=1024" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="use-1024x534.png"></p>
+<p>注意点有三</p>
+<ul>
+<li>一是 需要联动的下拉 第一次是不需要去请求的 所以用<code>validateDepency</code>方法去鉴别一下</li>
+<li>二是 对联动参数的<code>useMemo</code>缓存 因为传入的<code>depency</code> 是个对象 每次渲染都会 new 一遍（未验证） 所有用<code>Object.values</code>将值转成数组，作为依赖项（这里只考虑了一层级）   防止多次请求</li>
+<li>三是 useEffect 对于需要联动的数据 因为请求的数据在页面渲染之后才获取 所以给<code>ref</code>对象上赋值 滞后了 而且<code>ref</code>的改变不会触发重新渲染</li>
+</ul>
+<p>完成后的调用方式</p>
+<p><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2020/png/1512483/1591943519196-cf6b1ef5-8a9e-44b0-841f-28ae14cd784f.png#align=left&display=inline&height=1024&margin=%5Bobject%20Object%5D&name=useStyle-596x1024.png&originHeight=1024&originWidth=596&size=491393&status=done&style=none&width=596" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="useStyle-596x1024.png"></p>
+<h3 id="然而事情并不是如此简单？！！"><a href="#然而事情并不是如此简单？！！" class="headerlink" title="然而事情并不是如此简单？！！"></a>然而事情并不是如此简单？！！</h3><p>这样写，还是有问题,<code>useLayoutEffect</code>不能从根本上解决数据获取完毕之前，已经绘制结束的问题</p>
+<p>所以，终极解决方案就是 <strong>写成一个 hooks 组件</strong>！！！<br><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2020/png/1512483/1591943529442-96f093fd-928c-4a3b-96f1-2420b194d813.png#align=left&display=inline&height=4226&margin=%5Bobject%20Object%5D&name=useTreeSelect-rewrite-agian.png&originHeight=4226&originWidth=1952&size=978537&status=done&style=none&width=1952" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="useTreeSelect-rewrite-agian.png"><br>这样能够用 setState 来触发重新绘制，也就不会存在那个问题了。</p>
+
+    </section>
+    <section class="extra">
+      
+        <section class="donate">
+  <div class="qrcode">
+    <img   class="lazyload" data-original="http://img.u-to-world.com/blog/alipay.png" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" >
+  </div>
+  <div class="icon">
+    <a href="javascript:;" id="alipay"><i class="iconfont iconalipay"></i></a>
+    <a href="javascript:;" id="wechat"><i class="iconfont iconwechat-fill"></i></a>
+  </div>
+</section>
+      
+      
+      
+<nav class="nav">
+  
+    <a href="/2020/06/12/%E5%86%99%E4%B8%80%E4%B8%AAumi%E6%8F%92%E4%BB%B6%20%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90%E4%BB%A3%E7%A0%81%20%E8%A7%A3%E6%94%BEcv%E7%9A%84%E5%8F%8C%E6%89%8B/"><i class="iconfont iconleft"></i>写一个umi插件 自动生成代码 解放cv的双手</a>
+  
+  
+    <a href="/2020/06/12/%E4%BC%91%E6%81%AF%E4%B8%80%E4%B8%8B%20%E8%B7%9F%E6%88%91%E4%B8%80%E8%B5%B7%E6%9D%A5%E6%8E%A2%E7%A9%B6react%E5%92%8Credux%E7%9A%84%E5%A5%A5%E7%A7%98/">休息一下 跟我一起来探究react和redux的奥秘<i class="iconfont iconright"></i></a>
+  
+</nav>
+
+    </section>
+    
+      <section class="comments">
+        
+          <div class="btn" id="comments-btn">查看评论</div>
+        
+        
+<div id="valine"></div>
+<script defer src="//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js"></script>
+<script>
+  window.onload = function () {
+    var loadValine = function () {
+      new Valine({
+        el: '#valine',
+        app_id: "XgHS51JuLkeipj92BK4KyIEI-gzGzoHsz",
+        app_key: "LHxBDnRt6RQCuByhRfp1pkVN",
+        placeholder: "ヾﾉ≧∀≦)o来啊，快活啊!",
+        avatar: "mp",
+        pageSize: "10",
+        lang: "zh-CN",
+      });
+    }
+    if ( true ) {
+      $("#comments-btn").on("click", function () {
+        $(this).hide();
+        loadValine();
+      });
+    } else {
+      loadValine();
+    }
+  };
+</script>
+
+
+      </section>
+    
+  </section>
+</article>
+  </div>
+</main>
+  <footer class="footer">
+  <div class="footer-social">
+    
+    
+    
+    
+    
+    <a href="tencent://message/?Menu=yes&uin=694534942 " target="_blank" onMouseOver="this.style.color= '#12B7F5'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconQQ "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="javascript:; " target="_blank" onMouseOver="this.style.color= '#09BB07'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconwechat-fill "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="https://www.instagram.com/izhaoo/ " target="_blank" onMouseOver="this.style.color= '#DA2E76'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconinstagram "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="https://github.com/godlikedeveloper " target="_blank" onMouseOver="this.style.color= '#24292E'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  icongithub-fill "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="mailto:694534942@qq.com " target="_blank" onMouseOver="this.style.color='#FFBE5B'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconmail"></i>
+    </a>
+    
+  </div>
+  <div class="footer-copyright"><p>Copyright© 2019-2020 | <a target="_blank" href="http://blog.u-to-world.com">小笼包</a> .AllRightsReserved</p></div>
+</footer>
+  
+      <div class="fab fab-plus">
+    <i class="iconfont iconplus"></i>
+  </div>
+  <div class="fab fab-up">
+    <i class="iconfont iconcaret-up"></i>
+  </div>
+  <div class="fab fab-menu">
+    <i class="iconfont iconmenu"></i>
+  </div>
+  
+</body>
+
+
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+
+
+
+
+
+
+<script src="https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+
+
+
+
+
+
+
+
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js"></script>
+
+
+
+
+
+
+<script src="https://cdn.bootcdn.net/ajax/libs/justifiedGallery/3.7.0/js/jquery.justifiedGallery.min.js"></script>
+
+
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+<script>
+  (function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+      bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</html>

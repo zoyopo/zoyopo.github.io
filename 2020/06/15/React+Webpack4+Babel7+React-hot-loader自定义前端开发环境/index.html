@@ -1,0 +1,407 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>React+Webpack4+Babel7+React-hot-loader自定义前端开发环境 - Paige&#39;s XSpace</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="google" content="notranslate" />
+  <meta name="referrer" content="no-referrer" />
+  
+  <meta name="keywords" content="zhaoo, hexo-theme-zhaoo,"> 
+  
+  <meta name="description" content="tech blog about web develop,安装相应的包123456789101112131415..."> 
+  
+  <meta name="author" content="zhangyp"> 
+
+  
+    <link rel="icon" href="/images/icons/favicon-16x16.png" type="image/png" sizes="16x16">
+  
+  
+    <link rel="icon" href="/images/icons/favicon-32x32.png" type="image/png" sizes="32x32">
+  
+  
+    <link rel="apple-touch-icon" href="/images/icons/apple-touch-icon.png" sizes="180x180">
+  
+  
+    <meta rel="mask-icon" href="/images/icons/stun-logo.svg" color="#333333">
+  
+  
+    <meta rel="msapplication-TileImage" content="/images/icons/favicon-144x144.png">
+    <meta rel="msapplication-TileColor" content="#000000">
+  
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+  
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1445822_58xq2j9v1id.css">
+
+  
+
+  
+  
+  
+<link rel="stylesheet" href="https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min.css">
+
+  
+
+  
+  
+  
+<link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.18.1/styles/dracula.min.css">
+
+  
+
+  
+  
+  
+<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/justifiedGallery/3.7.0/css/justifiedGallery.min.css">
+
+  
+
+  <script>
+    var CONFIG = window.CONFIG || {}
+    CONFIG = {
+      fancybox: true,
+      pjax: false,
+      lazyload: {
+        enable: true,
+        loadingImage: '/images/theme/loading.gif',
+      },
+      donate_alipay: 'http://img.u-to-world.com/blog/alipay.png',
+      donate_wechat: 'http://img.u-to-world.com/blog/weixinpay.png',
+      motto: {
+        api: 'http://api.lovelive.tools/api/SweetNothings',
+        default: '不要温和地走进那良夜'
+      },
+      galleries: {
+        enable: 'true'
+      },
+      fab: {
+        enable: 'true',
+        alwaysShow: 'false'
+      }
+    }
+  </script>
+
+  
+
+  
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body class="lock-screen">
+  <div class="loading"></div>
+  <nav class="menu">
+  <div class="menu-close">
+    <i class="iconfont iconplus"></i>
+  </div>
+  <ul class="menu-content">
+    
+    
+    
+    
+    <li class="menu-item"><a href="/ "> 首页</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="http://u-to-world.com:8080/index.html " target="_blank" rel="noopener"> 作品(我的音乐)</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/archives "> 归档</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/tags "> 标签</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/categories "> 分类</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/about "> 关于</a></li>
+    
+  </ul>
+  <div class="menu-copyright"><p>Copyright© 2019-2020 | <a target="_blank" href="http://blog.u-to-world.com">小笼包</a> .AllRightsReserved</p></div>
+</nav>
+  <main id="main">
+  <div class="container" id="container">
+    <article class="article">
+  <section class="head">
+  <img   class="lazyload" data-original="/images/theme/post-img.jpg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  draggable="false">
+  <div class="head-mask">
+    <h1 class="head-title">React+Webpack4+Babel7+React-hot-loader自定义前端开发环境</h1>
+    <div class="head-info">
+      <span class="post-info-item"><i class="iconfont iconcalendar"></i>2020-06-15</span
+        class="post-info-item">
+      
+      <span class="post-info-item"><i class="iconfont iconfont-size"></i>3851</span>
+    </div>
+  </div>
+</section>
+  <section class="main">
+    <section class="content">
+      <h2 id="安装相应的包"><a href="#安装相应的包" class="headerlink" title="安装相应的包"></a>安装相应的包</h2><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs json">"devDependencies": &#123;<br>   "@babel/core": "^7.10.2",<br>   "@babel/plugin-proposal-class-properties": "^7.10.1",<br>   "@babel/plugin-transform-runtime": "^7.10.1",<br>   "@babel/preset-env": "^7.10.2",<br>   "@babel/preset-react": "^7.10.1",<br>   "babel-loader": "^8.1.0",<br>   "cross-env": "^7.0.2",<br>   "css-loader": "^3.5.3",<br>   "html-webpack-plugin": "^4.3.0",<br>   "react-hot-loader": "^4.12.21",<br>   "rimraf": "^3.0.2",<br>   "style-loader": "^1.2.1",<br>   "webpack": "^4.43.0",<br>   "webpack-cli": "^3.3.11",<br>   "webpack-dev-server": "^3.11.0",<br>   "websocket": "^1.0.31"<br> &#125;,<br> "dependencies": &#123;<br>   "react": "^16.13.1",<br>   "react-dom": "^16.13.1"<br> &#125;<br></code></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>@babel/core</td>
+<td>babel 核心模块，包含转换代码成为 AST 语法树等功能</td>
+</tr>
+<tr>
+<td>@babel/plugin-proposal-class-properties</td>
+<td>转换类属性插件（react 类组件中属性方法转换）</td>
+</tr>
+<tr>
+<td>@babel/plugin-transform-runtime</td>
+<td>加上 es6 语法和 API 的 polyfill 并且避免手动引入 import，做了公用方法的抽离</td>
+</tr>
+<tr>
+<td>@babel/preset-env</td>
+<td>根据目标环境选择不支持的新特性来转译(stage-0 是最全的特性转换，可以使用 target 指定兼容条件)</td>
+</tr>
+<tr>
+<td>@babel/preset-react</td>
+<td>react 相关插件预设</td>
+</tr>
+<tr>
+<td>babel-loader</td>
+<td>webpack loader</td>
+</tr>
+<tr>
+<td>cross-env</td>
+<td>windows 下执行命令加入环境变量</td>
+</tr>
+<tr>
+<td>rimraf</td>
+<td>windows 下的 rm</td>
+</tr>
+</tbody></table>
+<h2 id="webpack-配置"><a href="#webpack-配置" class="headerlink" title="webpack 配置"></a>webpack 配置</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">"path"</span>);<br><span class="hljs-keyword">const</span> htmlWebpackPlugin = <span class="hljs-built_in">require</span>(<span class="hljs-string">"html-webpack-plugin"</span>);<br><br><span class="hljs-keyword">const</span> webpack = <span class="hljs-built_in">require</span>(<span class="hljs-string">"webpack"</span>);<br><span class="hljs-keyword">const</span> isDev = process.env.NODE_ENV === <span class="hljs-string">"development"</span>;<br><span class="hljs-keyword">const</span> config = &#123;<br>  entry: <span class="hljs-string">"./src/index.js"</span>,<br>  output: &#123;<br>    filename: <span class="hljs-string">"main.js"</span>,<br>    path: path.join(__dirname, <span class="hljs-string">"dist"</span>),<br>    publicPath: <span class="hljs-string">"/public/"</span>,<br>  &#125;,<br><br>  <span class="hljs-built_in">module</span>: &#123;<br>    rules: [<br>      &#123;<br>        test: <span class="hljs-regexp">/\.css$/</span>,<br>        use: [<span class="hljs-string">"style-loader"</span>, <span class="hljs-string">"css-loader"</span>],<br>      &#125;,<br>      &#123;<br>        test: <span class="hljs-regexp">/\.js|jsx$/</span>,<br>        use: [&#123; <span class="hljs-attr">loader</span>: <span class="hljs-string">"babel-loader"</span> &#125;],<br>      &#125;,<br>    ],<br>  &#125;,<br>  mode: <span class="hljs-string">"development"</span>, <span class="hljs-comment">// 开发环境打包</span><br><br>  plugins: [<br>    <span class="hljs-comment">// 以模板生成入口页面</span><br>    <span class="hljs-keyword">new</span> htmlWebpackPlugin(&#123;<br>      template: path.join(__dirname, <span class="hljs-string">"client/index.html"</span>),<br>    &#125;),<br>  ],<br>&#125;;<br><span class="hljs-comment">// 开发环境配置</span><br><span class="hljs-keyword">if</span> (isDev) &#123;<br>  config.entry = [<span class="hljs-string">"react-hot-loader/patch"</span>, <span class="hljs-string">"./src/index.js"</span>];<br>  config.devtool = <span class="hljs-string">"#cheap-module-eval-source-map"</span>; <span class="hljs-comment">// source-map 方便排错</span><br>  config.devServer = &#123;<br>    host: <span class="hljs-string">"127.0.0.1"</span>,<br>    port: <span class="hljs-string">"8888"</span>,<br>    <span class="hljs-comment">//告诉服务器从哪个目录中提供内容</span><br>    contentBase: path.join(__dirname, <span class="hljs-string">"dist"</span>),<br>    <span class="hljs-comment">//启用 webpack 的模块热替换特性</span><br>    hot: <span class="hljs-literal">true</span>,<br>    <span class="hljs-comment">//当出现编译器错误或警告时，就在网页上显示一层黑色的背景层和错误信息</span><br>    overlay: &#123;<br>      errors: <span class="hljs-literal">true</span>,<br>    &#125;,<br>    <span class="hljs-comment">//webpack-dev-server打包的内容是放在内存中的，这些打包后的资源对外的的根目录就是publicPath，换句话说，这里我们设置的是打包后资源存放的位置</span><br>    publicPath: <span class="hljs-string">"/public/"</span>,<br>    <span class="hljs-comment">// 404时页面跳转</span><br>    historyApiFallback: &#123;<br>      index: <span class="hljs-string">"/public/index.html"</span>,<br>    &#125;,<br>  &#125;;<br>  config.plugins = [<br>    ...config.plugins,<br>    <span class="hljs-keyword">new</span> webpack.HotModuleReplacementPlugin(),<br>  ];<br>&#125;<br><span class="hljs-built_in">module</span>.exports = config;<br></code></pre></td></tr></table></figure>
+
+<p><code>webpack</code> 在执行 <code>babel-loader</code> 时 会去 check 是否存在 <code>.babelrc</code> ，存在就去读取里面的配置</p>
+<h3 id="babelrc"><a href="#babelrc" class="headerlink" title=".babelrc"></a>.babelrc</h3><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs json">&#123;<br>  <span class="hljs-attr">"presets"</span>: [<span class="hljs-string">"@babel/preset-env"</span>, <span class="hljs-string">"@babel/preset-react"</span>],<br>  <span class="hljs-attr">"plugins"</span>: [<br>    <span class="hljs-string">"react-hot-loader/babel"</span>,<br>    <span class="hljs-string">"@babel/plugin-proposal-class-properties"</span><br>  ]<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="配置-react-hot-loader"><a href="#配置-react-hot-loader" class="headerlink" title="配置 react-hot-loader"></a>配置 react-hot-loader</h2><h3 id="为啥需要这个库呢"><a href="#为啥需要这个库呢" class="headerlink" title="为啥需要这个库呢"></a>为啥需要这个库呢</h3><p>按道理， <code>webpack-dev-server</code> 已经满足热更新了，为啥使用它？<br>不卖关子， <code>webpack-dev-server</code> 是检测到变化(socket) 去重新打包 ，这样会存在两个问题</p>
+<ol>
+<li>当项目代码量非常大的时候，构建缓慢</li>
+<li>每次重新构建 之前 react 里的属性数据会全部丢失</li>
+</ol>
+<p>为了解决这两个问题，故使用 <code>react-hot-loader</code> 实现局部刷新</p>
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><ol>
+<li>启动 webpack 热模块替换（详情见上文 webpack 配置）</li>
+<li>在 babel 中启用<code>react-hot-loader</code>插件（详情见上文 babel 配置）</li>
+<li>webpack 入口 js 中引入</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// 引入HOC组件 给内部组件加上热更新feature</span><br><span class="hljs-keyword">import</span> &#123; AppContainer &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">"react-hot-loader"</span>;<br><span class="hljs-comment">// .............</span><br><span class="hljs-keyword">import</span> Home <span class="hljs-keyword">from</span> <span class="hljs-string">"./components/Home.jsx"</span>;<br><span class="hljs-keyword">const</span> render = <span class="hljs-function">(<span class="hljs-params">App</span>) =&gt;</span> &#123;<br>  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"=======begin render======"</span>);<br>  ReactDom.render(<br>    &lt;AppContainer&gt;<br>      &lt;App /&gt;<br>    &lt;<span class="hljs-regexp">/AppContainer&gt;,</span><br><span class="hljs-regexp">    document.getElementById("root")</span><br><span class="hljs-regexp">  );</span><br><span class="hljs-regexp">&#125;;</span><br><span class="hljs-regexp">render(Home);</span><br><span class="hljs-regexp">/</span><span class="hljs-regexp">/ 代码变更 进行局部渲染</span><br><span class="hljs-regexp">if (module.hot) &#123;</span><br><span class="hljs-regexp">  module.hot.accept("./</span>components/Home.jsx<span class="hljs-string">", () =&gt; &#123;</span><br><span class="hljs-string">    render(require("</span>./components/Home.jsx<span class="hljs-string">").default);</span><br><span class="hljs-string">  &#125;);</span><br><span class="hljs-string">&#125;</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="项目地址"><a href="#项目地址" class="headerlink" title="项目地址"></a>项目地址</h2><p><a href="https://github.com/godlikedeveloper/ReactCustomWebpack" target="_blank" rel="noopener">ReactCustomWebpack</a></p>
+
+    </section>
+    <section class="extra">
+      
+        <section class="donate">
+  <div class="qrcode">
+    <img   class="lazyload" data-original="http://img.u-to-world.com/blog/alipay.png" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" >
+  </div>
+  <div class="icon">
+    <a href="javascript:;" id="alipay"><i class="iconfont iconalipay"></i></a>
+    <a href="javascript:;" id="wechat"><i class="iconfont iconwechat-fill"></i></a>
+  </div>
+</section>
+      
+      
+      
+<nav class="nav">
+  
+    <a href="/2020/06/15/%E6%9B%BE%E7%BB%8F%E7%9A%84vue%E5%85%A5%E9%97%A8%E7%BB%83%E6%89%8B%E9%A1%B9%E7%9B%AE/"><i class="iconfont iconleft"></i>曾经的vue入门练手项目</a>
+  
+  
+    <a href="/2020/06/12/%E5%85%B3%E4%BA%8E%E4%B8%80%E4%B8%AA%E6%8B%96%E6%8B%BD%E7%A7%BB%E5%8A%A8%E7%9A%84%E7%BB%84%E4%BB%B6%E7%9A%84%E5%B0%81%E8%A3%85/">关于一个拖拽移动的组件的封装<i class="iconfont iconright"></i></a>
+  
+</nav>
+
+    </section>
+    
+      <section class="comments">
+        
+          <div class="btn" id="comments-btn">查看评论</div>
+        
+        
+<div id="valine"></div>
+<script defer src="//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js"></script>
+<script>
+  window.onload = function () {
+    var loadValine = function () {
+      new Valine({
+        el: '#valine',
+        app_id: "XgHS51JuLkeipj92BK4KyIEI-gzGzoHsz",
+        app_key: "LHxBDnRt6RQCuByhRfp1pkVN",
+        placeholder: "ヾﾉ≧∀≦)o来啊，快活啊!",
+        avatar: "mp",
+        pageSize: "10",
+        lang: "zh-CN",
+      });
+    }
+    if ( true ) {
+      $("#comments-btn").on("click", function () {
+        $(this).hide();
+        loadValine();
+      });
+    } else {
+      loadValine();
+    }
+  };
+</script>
+
+
+      </section>
+    
+  </section>
+</article>
+  </div>
+</main>
+  <footer class="footer">
+  <div class="footer-social">
+    
+    
+    
+    
+    
+    <a href="tencent://message/?Menu=yes&uin=694534942 " target="_blank" onMouseOver="this.style.color= '#12B7F5'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconQQ "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="javascript:; " target="_blank" onMouseOver="this.style.color= '#09BB07'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconwechat-fill "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="https://www.instagram.com/izhaoo/ " target="_blank" onMouseOver="this.style.color= '#DA2E76'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconinstagram "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="https://github.com/godlikedeveloper " target="_blank" onMouseOver="this.style.color= '#24292E'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  icongithub-fill "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="mailto:694534942@qq.com " target="_blank" onMouseOver="this.style.color='#FFBE5B'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconmail"></i>
+    </a>
+    
+  </div>
+  <div class="footer-copyright"><p>Copyright© 2019-2020 | <a target="_blank" href="http://blog.u-to-world.com">小笼包</a> .AllRightsReserved</p></div>
+</footer>
+  
+      <div class="fab fab-plus">
+    <i class="iconfont iconplus"></i>
+  </div>
+  <div class="fab fab-up">
+    <i class="iconfont iconcaret-up"></i>
+  </div>
+  <div class="fab fab-menu">
+    <i class="iconfont iconmenu"></i>
+  </div>
+  
+</body>
+
+
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+
+
+
+
+
+
+<script src="https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+
+
+
+
+
+
+
+
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js"></script>
+
+
+
+
+
+
+<script src="https://cdn.bootcdn.net/ajax/libs/justifiedGallery/3.7.0/js/jquery.justifiedGallery.min.js"></script>
+
+
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+<script>
+  (function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+      bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</html>

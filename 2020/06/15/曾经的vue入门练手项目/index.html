@@ -1,0 +1,428 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>曾经的vue入门练手项目 - Paige&#39;s XSpace</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="google" content="notranslate" />
+  <meta name="referrer" content="no-referrer" />
+  
+  <meta name="keywords" content="zhaoo, hexo-theme-zhaoo,"> 
+  
+  <meta name="description" content="tech blog about web develop,运行12345git clone git@github..."> 
+  
+  <meta name="author" content="zhangyp"> 
+
+  
+    <link rel="icon" href="/images/icons/favicon-16x16.png" type="image/png" sizes="16x16">
+  
+  
+    <link rel="icon" href="/images/icons/favicon-32x32.png" type="image/png" sizes="32x32">
+  
+  
+    <link rel="apple-touch-icon" href="/images/icons/apple-touch-icon.png" sizes="180x180">
+  
+  
+    <meta rel="mask-icon" href="/images/icons/stun-logo.svg" color="#333333">
+  
+  
+    <meta rel="msapplication-TileImage" content="/images/icons/favicon-144x144.png">
+    <meta rel="msapplication-TileColor" content="#000000">
+  
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+  
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1445822_58xq2j9v1id.css">
+
+  
+
+  
+  
+  
+<link rel="stylesheet" href="https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min.css">
+
+  
+
+  
+  
+  
+<link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.18.1/styles/dracula.min.css">
+
+  
+
+  
+  
+  
+<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/justifiedGallery/3.7.0/css/justifiedGallery.min.css">
+
+  
+
+  <script>
+    var CONFIG = window.CONFIG || {}
+    CONFIG = {
+      fancybox: true,
+      pjax: false,
+      lazyload: {
+        enable: true,
+        loadingImage: '/images/theme/loading.gif',
+      },
+      donate_alipay: 'http://img.u-to-world.com/blog/alipay.png',
+      donate_wechat: 'http://img.u-to-world.com/blog/weixinpay.png',
+      motto: {
+        api: 'http://api.lovelive.tools/api/SweetNothings',
+        default: '不要温和地走进那良夜'
+      },
+      galleries: {
+        enable: 'true'
+      },
+      fab: {
+        enable: 'true',
+        alwaysShow: 'false'
+      }
+    }
+  </script>
+
+  
+
+  
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body class="lock-screen">
+  <div class="loading"></div>
+  <nav class="menu">
+  <div class="menu-close">
+    <i class="iconfont iconplus"></i>
+  </div>
+  <ul class="menu-content">
+    
+    
+    
+    
+    <li class="menu-item"><a href="/ "> 首页</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="http://u-to-world.com:8080/index.html " target="_blank" rel="noopener"> 作品(我的音乐)</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/archives "> 归档</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/tags "> 标签</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/categories "> 分类</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/about "> 关于</a></li>
+    
+  </ul>
+  <div class="menu-copyright"><p>Copyright© 2019-2020 | <a target="_blank" href="http://blog.u-to-world.com">小笼包</a> .AllRightsReserved</p></div>
+</nav>
+  <main id="main">
+  <div class="container" id="container">
+    <article class="article">
+  <section class="head">
+  <img   class="lazyload" data-original="/images/theme/post-img.jpg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  draggable="false">
+  <div class="head-mask">
+    <h1 class="head-title">曾经的vue入门练手项目</h1>
+    <div class="head-info">
+      <span class="post-info-item"><i class="iconfont iconcalendar"></i>2020-06-15</span
+        class="post-info-item">
+      
+      <span class="post-info-item"><i class="iconfont iconfont-size"></i>3874</span>
+    </div>
+  </div>
+</section>
+  <section class="main">
+    <section class="content">
+      <h3 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs plain">git clone git@github.com:godlikedeveloper&#x2F;mobile-music.git<br><br>npm install<br><br>npm run dev<br></code></pre></td></tr></table></figure>
+
+<h3 id="项目介绍"><a href="#项目介绍" class="headerlink" title="项目介绍"></a>项目介绍<img   class="lazyload" data-original="https://gw.alipayobjects.com/os/lib/twemoji/11.2.0/2/svg/1f60a.svg#align=left&display=inline&height=18&margin=%5Bobject%20Object%5D&originHeight=150&originWidth=150&status=done&style=none&width=18" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt=""></h3><blockquote>
+<p>网易云音乐接口+vue 全家桶开发一款移动端音乐 webApp</p>
+</blockquote>
+<blockquote>
+<p>项目还在 develop 中，感兴趣想要参与的小伙伴可以私我</p>
+</blockquote>
+<p>效果图：</p>
+<h4 id="骨架屏"><a href="#骨架屏" class="headerlink" title="骨架屏"></a>骨架屏</h4><p><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2020/png/1512483/1592215144220-229351db-2018-4195-82c9-b4d010cd99f7.png#align=left&display=inline&height=796&margin=%5Bobject%20Object%5D&name=skeleton.png&originHeight=796&originWidth=472&size=6692&status=done&style=none&width=472" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="skeleton.png"></p>
+<h4 id="nav"><a href="#nav" class="headerlink" title="nav"></a>nav</h4><p><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2020/png/1512483/1592215255806-580d9aa3-cf1d-45ec-8ea1-10fdc4862791.png#align=left&display=inline&height=960&margin=%5Bobject%20Object%5D&name=nav.png&originHeight=1920&originWidth=1080&size=778065&status=done&style=none&width=540" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="nav.png"></p>
+<h4 id="歌单"><a href="#歌单" class="headerlink" title="歌单"></a>歌单</h4><p><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2020/png/1512483/1592215209598-c2694388-846e-4e1d-bbf0-e8b814df0fb5.png#align=left&display=inline&height=960&margin=%5Bobject%20Object%5D&name=songsheet.png&originHeight=1920&originWidth=1080&size=483580&status=done&style=none&width=540" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="songsheet.png"></p>
+<h4 id="推荐"><a href="#推荐" class="headerlink" title="推荐"></a>推荐</h4><p><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2020/png/1512483/1592215357405-d2953034-5495-4d6b-8be0-5fa3a7ac08c2.png#align=left&display=inline&height=960&margin=%5Bobject%20Object%5D&name=recommend.png&originHeight=1920&originWidth=1080&size=1462800&status=done&style=none&width=540" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="recommend.png"></p>
+<h4 id="miniPlayer"><a href="#miniPlayer" class="headerlink" title="miniPlayer"></a>miniPlayer</h4><p><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2020/png/1512483/1592215435224-5ef2fef6-526c-4eb7-b5d0-8b6f5e571a3c.png#align=left&display=inline&height=960&margin=%5Bobject%20Object%5D&name=miniplayer.png&originHeight=1920&originWidth=1080&size=514620&status=done&style=none&width=540" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="miniplayer.png"></p>
+<h4 id="normal-Player"><a href="#normal-Player" class="headerlink" title="normal Player"></a>normal Player</h4><p><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2020/png/1512483/1592215492413-a6c3b9ec-8d04-4d11-a76f-697f0c859c8f.png#align=left&display=inline&height=960&margin=%5Bobject%20Object%5D&name=normalplayer.png&originHeight=1920&originWidth=1080&size=1126397&status=done&style=none&width=540" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="normalplayer.png"></p>
+<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><h4 id="骨架屏移除未渲染完全问题"><a href="#骨架屏移除未渲染完全问题" class="headerlink" title="骨架屏移除未渲染完全问题"></a>骨架屏移除未渲染完全问题</h4><p>描述： 2018-09-13   骨架屏被移除之后，客户端渲染还没有完成，故将骨架屏作为占位放入客户端还没渲染完成的内容中</p>
+<p>解决：将骨架屏封装成一个子组件，在需要的父组件里引用，在每一个渲染数据页面的<code>updated</code>钩子里，<code>this.$nextTick</code>里将骨架屏幕的隐藏，原页面内容显示，由于用到的页面现在且将来可能比较普遍，就直接用注册全局 mixin 来实现这个逻辑。</p>
+<h4 id="vue2-5-版本导致-nextTick无法正常在-safari中播放音乐。"><a href="#vue2-5-版本导致-nextTick无法正常在-safari中播放音乐。" class="headerlink" title="vue2.5+版本导致 $nextTick无法正常在 safari中播放音乐。"></a>vue2.5+版本导致 <code>$nextTick</code>无法正常在 <code>safari</code>中播放音乐。</h4><p>描述： 2018-09-15 vue2.5+版本对于<code>$nextTick</code>的实现的有一些改动，引入了<code>setImmediate</code>和<code>MessageChannel</code>采用向下兼容的方式代替<code>setTimeout</code>，详情见<br><a href="https://github.com/DDFE/DDFE-blog/issues/24" target="_blank" rel="noopener">issues</a></p>
+<p>解决:hack 方式，将<code>setImmediate</code>和<code>MessageChannel</code>在<code>vue.js</code>加载前设为 null,降级到<code>setTimeOut</code></p>
+<h4 id="滚动比较生硬，性能不是很好"><a href="#滚动比较生硬，性能不是很好" class="headerlink" title="滚动比较生硬，性能不是很好"></a>滚动比较生硬，性能不是很好</h4><p>描述：2018-09-15 滚动比较生硬，性能不是很好</p>
+<p>解决：使用<code>better-scroll</code>对涉及到滚动的统一优化，在<code>updated</code>钩子里对<code>dom</code>进行包装。</p>
+<h4 id="ios-端播放器暂停了-cd-还在旋转"><a href="#ios-端播放器暂停了-cd-还在旋转" class="headerlink" title="ios 端播放器暂停了 cd 还在旋转"></a>ios 端播放器暂停了 cd 还在旋转</h4><p>描述：2018-09-16 ios 端播放器暂停了 cd 还在旋转，ios 端<code>animation-play-state</code>失效导致无法停止动画</p>
+<p>解决：采用其他方式，<a href="https://segmentfault.com/q/1010000009884033" target="_blank" rel="noopener">segmentFault 上的一个思路</a><br>简单说就是停止的时候给外层一个<code>transform</code>来记录当前旋转位置信息，然后通过外层的旋转来叠加覆盖</p>
+<h4 id="主页面首次加载时，会出现-loading-时主页面划过的情况"><a href="#主页面首次加载时，会出现-loading-时主页面划过的情况" class="headerlink" title="主页面首次加载时，会出现 loading 时主页面划过的情况"></a>主页面首次加载时，会出现 loading 时主页面划过的情况</h4><p>描述： 2018-10-10  App.vue 中”” vue 在创建 created 时期,DOM 从生产的时候带有 slide 的效果属性</p>
+<p>解决：   通过 animate.css 中 enter-active-class 的属性进行设置,created 时 DOM 的 class 为空,mounted 时期添加效果</p>
+<h4 id="主页面滚动之后，需要点击两次才会进入歌单详情"><a href="#主页面滚动之后，需要点击两次才会进入歌单详情" class="headerlink" title="主页面滚动之后，需要点击两次才会进入歌单详情"></a>主页面滚动之后，需要点击两次才会进入歌单详情</h4><p>描述： 2018-10-10   添加 better-scroll 后, 通过回弹动画延迟时间加长,发现回弹时 click 为无效(即使 click: true 也无效)</p>
+<p>解决：  better-scroll 设置中的 bounceTime 减少回弹的时间</p>
+<h4 id="播放暂停时，cd-旋转停止，上下曲时，播放，cd-不转动"><a href="#播放暂停时，cd-旋转停止，上下曲时，播放，cd-不转动" class="headerlink" title="播放暂停时，cd 旋转停止，上下曲时，播放，cd 不转动"></a>播放暂停时，cd 旋转停止，上下曲时，播放，cd 不转动</h4><p>解决：在上下一曲时加上旋转的样式</p>
+<h4 id="滚动比较生硬，性能不是很好-1"><a href="#滚动比较生硬，性能不是很好-1" class="headerlink" title="滚动比较生硬，性能不是很好"></a>滚动比较生硬，性能不是很好</h4><p>描述：2018-09-15 滚动比较生硬，性能不是很好</p>
+<p>解决：使用<code>better-scroll</code>对涉及到滚动的统一优化，在<code>updated</code>钩子里对<code>dom</code>进行包装。</p>
+<h4 id="ios-端播放器暂停了-cd-还在旋转-1"><a href="#ios-端播放器暂停了-cd-还在旋转-1" class="headerlink" title="ios 端播放器暂停了 cd 还在旋转"></a>ios 端播放器暂停了 cd 还在旋转</h4><p>描述：2018-09-16 ios 端播放器暂停了 cd 还在旋转，ios 端<code>animation-play-state</code>失效导致无法停止动画</p>
+<p>解决：采用其他方式，<a href="https://segmentfault.com/q/1010000009884033" target="_blank" rel="noopener">segmentFault 上的一个思路</a><br>简单说就是停止的时候给外层一个<code>transform</code>来记录当前旋转位置信息，然后通过外层的旋转来叠加覆盖</p>
+<h3 id="详细信息"><a href="#详细信息" class="headerlink" title="详细信息"></a>详细信息</h3><blockquote>
+<p><a href="http://u-to-world.com:8080/static/index.html#/" target="_blank" rel="noopener">测试地址</a></p>
+</blockquote>
+<h3 id="开发总结"><a href="#开发总结" class="headerlink" title="开发总结"></a>开发总结</h3><h4 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h4><p>vue-cli 搭建</p>
+<p>新增目录如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs plain">---src<br>------api        &#x2F;&#x2F; 放置api的目录<br>---------base.js &#x2F;&#x2F; 放置axios的一些配置，接口域名地址，以及公共参数配置，与后台约定跨域的配置，全局loading配置等<br>---------urls.js &#x2F;&#x2F; 放置接口url<br>---------api.js  &#x2F;&#x2F; 放置封装的promise请求<br>------base       &#x2F;&#x2F; 放置一些基础组件<br>------common<br>---------js      &#x2F;&#x2F; 公共js<br>---------sass    &#x2F;&#x2F; 公共样式<br></code></pre></td></tr></table></figure>
+
+<h4 id="类库使用"><a href="#类库使用" class="headerlink" title="类库使用"></a>类库使用</h4><ul>
+<li>fastclick 解决移动端 300ms 延迟</li>
+<li>vux 快速构建一些常规页面</li>
+<li>vue-lazyLoad 对图片进行懒加载处理</li>
+<li>better-scroll 轮播图</li>
+<li>NeteaseCloudMusicApi  wy 音乐接口，node 封装转发，部署在自己服务器上</li>
+</ul>
+<h4 id="路由按需加载"><a href="#路由按需加载" class="headerlink" title="路由按需加载"></a>路由按需加载</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs plain">const view &#x3D; (path, name) &#x3D;&gt; () &#x3D;&gt; import(&#96;@&#x2F;components&#x2F;$&#123;path&#125;$&#123;name&#125;&#96;)&#x2F;&#x2F; 路由按需加载<br>&#x2F;&#x2F;这边用的是vue异步组件的方式实现路由的按需加载<br>new Vue(&#123;<br>  &#x2F;&#x2F; ...<br>  components: &#123;<br>    &#39;my-component&#39;: () &#x3D;&gt; import(&#39;.&#x2F;my-async-component&#39;)<br>  &#125;<br>&#125;)<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>路由加载时用了 transition 动画组件添加了一个切换动画</li>
+<li>注意如果你希望在 Vue Router 的路由组件中使用上述语法的话，你必须使用 Vue Router 2.4.0+ 版本。</li>
+</ul>
+<h4 id="播放器组件"><a href="#播放器组件" class="headerlink" title="播放器组件"></a>播放器组件</h4><p>大小播放器分别写了<code>MiniPlayer.vue</code>和<code>NormalPlayer.vue</code>两个组件，因为想要职责单一，就没有放在一起</p>
+<ul>
+<li>隐藏显示 通过 vuex 进行管理</li>
+<li>动画<ol>
+<li>头部下坠和底部的上浮</li>
+</ol>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><code class="hljs bash"> &lt;transition name=<span class="hljs-string">"example"</span>&gt;<br><br>&lt;/transition&gt;<br><br>/*css 样式*/<br>// 给 transition下第一个元素显示或隐藏时添加的样式<br> //这两个类名都是定义开始到结束的持续时间 方式 以及延迟<br>.example-enter-active&#123;<br>  transition:all 0.4s linear  对所有属性执行0.4s的动画 匀速<br>&#125;<br>.example-leave-active&#123;<br>  transition:all 0.4s linear  对所有属性执行0.4s的动画 匀速<br>&#125;<br>// 进入过度的开始状态 触发时机 元素被插入前 插入后下一帧移除<br>.example-enter&#123;<br><br><br>&#125;<br>// 离开过度的结束状态 触发时机 example-leave下一帧  动画过度完成被移除<br>.example-leave-to&#123;<br><br><br>&#125;<br><br><br> 可以使用碟中谍6中的halo跳伞来理解<br><br> .example-enter-active就是从飞机上离开到开伞的时间<br><br> .example-enter 下坠前在飞机上的最后一刻<br><br> .example-enter-to  开始下坠，具备加速度的那一刻<br><br> .example-leave-active 开伞到着陆的时间<br><br> .example-leave 开伞命令发出时<br><br> .example-leave-to 伞开下一刻<br></code></pre></td></tr></table></figure>
+
+<ol>
+<li>播放器的 cd 的位移及缩放<br>先计算出小播放器图片离最终大播放器 cd 的 x,y 轴上的距离<br>使用 <code>create-keyframe-animation</code> 进行一个<code>css3</code>动画状态的注册<br>再利用 transition 的动画方法钩子<br>在<code>enter</code>时<code>run</code>动画,<code>afterEnter</code>时清除动画 <code>leave</code>同理</li>
+<li>播放器的旋转<br>定义一个旋转的<code>css</code>动画，在一个<code>class</code>中进行调用，在<code>play</code>的状态下给它<code>addClss</code>,<code>pause</code>时加上<code>animation-play-state: paused</code></li>
+</ol>
+<h4 id="audio-的使用"><a href="#audio-的使用" class="headerlink" title="audio 的使用"></a>audio 的使用</h4><p>使用<code>html5</code>的 <code>audio</code>结合<code>vuex</code>来进行播放器功能的实现，包括进度条，播放，暂停，上一曲，下一曲，播放模式等</p>
+<h4 id="布局"><a href="#布局" class="headerlink" title="布局"></a>布局</h4><ul>
+<li>绝大多数使用了 flex  webpack 中配置低版本安卓，ios 加前缀</li>
+<li>考虑到 fixed 元素的移动端问题，在这种场景下，使用 100%高度+absolute 方案更适合</li>
+<li>使用媒体查询，兼容一下某些样式在 768px 以上的样式变形</li>
+<li>使用 rem 在 vue 实例的<code>mounted</code>的钩子里注册<code>resize</code>和<code>onload</code>监听，进行最外层 rem 基准的计算</li>
+<li>使用骨架屏进行加载资源白屏时填充，待优化至完全的主页面服务端渲染</li>
+</ul>
+<h3 id="感谢"><a href="#感谢" class="headerlink" title="感谢"></a>感谢<img   class="lazyload" data-original="https://gw.alipayobjects.com/os/lib/twemoji/11.2.0/2/svg/1f60a.svg#align=left&display=inline&height=18&margin=%5Bobject%20Object%5D&originHeight=150&originWidth=150&status=done&style=none&width=18" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt=""></h3><ul>
+<li>vue</li>
+<li>vuex</li>
+<li>vue-router</li>
+<li>vux</li>
+<li>vue-lazyLoad</li>
+<li>NeteaseCloudMusicApi</li>
+</ul>
+
+    </section>
+    <section class="extra">
+      
+        <section class="donate">
+  <div class="qrcode">
+    <img   class="lazyload" data-original="http://img.u-to-world.com/blog/alipay.png" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" >
+  </div>
+  <div class="icon">
+    <a href="javascript:;" id="alipay"><i class="iconfont iconalipay"></i></a>
+    <a href="javascript:;" id="wechat"><i class="iconfont iconwechat-fill"></i></a>
+  </div>
+</section>
+      
+      
+      
+<nav class="nav">
+  
+    <a href="/2020/06/16/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%EF%BC%881%EF%BC%89%E2%80%94%E2%80%94%E9%93%BE%E8%A1%A8%E7%9A%84javascript%E5%AE%9E%E7%8E%B0/"><i class="iconfont iconleft"></i>数据结构与算法（1）——链表的javascript实现</a>
+  
+  
+    <a href="/2020/06/15/React+Webpack4+Babel7+React-hot-loader%E8%87%AA%E5%AE%9A%E4%B9%89%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/">React+Webpack4+Babel7+React-hot-loader自定义前端开发环境<i class="iconfont iconright"></i></a>
+  
+</nav>
+
+    </section>
+    
+      <section class="comments">
+        
+          <div class="btn" id="comments-btn">查看评论</div>
+        
+        
+<div id="valine"></div>
+<script defer src="//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js"></script>
+<script>
+  window.onload = function () {
+    var loadValine = function () {
+      new Valine({
+        el: '#valine',
+        app_id: "XgHS51JuLkeipj92BK4KyIEI-gzGzoHsz",
+        app_key: "LHxBDnRt6RQCuByhRfp1pkVN",
+        placeholder: "ヾﾉ≧∀≦)o来啊，快活啊!",
+        avatar: "mp",
+        pageSize: "10",
+        lang: "zh-CN",
+      });
+    }
+    if ( true ) {
+      $("#comments-btn").on("click", function () {
+        $(this).hide();
+        loadValine();
+      });
+    } else {
+      loadValine();
+    }
+  };
+</script>
+
+
+      </section>
+    
+  </section>
+</article>
+  </div>
+</main>
+  <footer class="footer">
+  <div class="footer-social">
+    
+    
+    
+    
+    
+    <a href="tencent://message/?Menu=yes&uin=694534942 " target="_blank" onMouseOver="this.style.color= '#12B7F5'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconQQ "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="javascript:; " target="_blank" onMouseOver="this.style.color= '#09BB07'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconwechat-fill "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="https://www.instagram.com/izhaoo/ " target="_blank" onMouseOver="this.style.color= '#DA2E76'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconinstagram "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="https://github.com/godlikedeveloper " target="_blank" onMouseOver="this.style.color= '#24292E'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  icongithub-fill "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="mailto:694534942@qq.com " target="_blank" onMouseOver="this.style.color='#FFBE5B'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconmail"></i>
+    </a>
+    
+  </div>
+  <div class="footer-copyright"><p>Copyright© 2019-2020 | <a target="_blank" href="http://blog.u-to-world.com">小笼包</a> .AllRightsReserved</p></div>
+</footer>
+  
+      <div class="fab fab-plus">
+    <i class="iconfont iconplus"></i>
+  </div>
+  <div class="fab fab-up">
+    <i class="iconfont iconcaret-up"></i>
+  </div>
+  <div class="fab fab-menu">
+    <i class="iconfont iconmenu"></i>
+  </div>
+  
+</body>
+
+
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+
+
+
+
+
+
+<script src="https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+
+
+
+
+
+
+
+
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js"></script>
+
+
+
+
+
+
+<script src="https://cdn.bootcdn.net/ajax/libs/justifiedGallery/3.7.0/js/jquery.justifiedGallery.min.js"></script>
+
+
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+<script>
+  (function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+      bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</html>

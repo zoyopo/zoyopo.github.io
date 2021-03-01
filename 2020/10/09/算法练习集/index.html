@@ -1,0 +1,446 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>算法练习集 - Paige&#39;s XSpace</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="google" content="notranslate" />
+  <meta name="referrer" content="no-referrer" />
+  
+  <meta name="keywords" content="zhaoo, hexo-theme-zhaoo,"> 
+  
+  <meta name="description" content="tech blog about web develop,数组
+寻找两个正序数组的中位数
+
+难度：困难给定两个大..."> 
+  
+  <meta name="author" content="zhangyp"> 
+
+  
+    <link rel="icon" href="/images/icons/favicon-16x16.png" type="image/png" sizes="16x16">
+  
+  
+    <link rel="icon" href="/images/icons/favicon-32x32.png" type="image/png" sizes="32x32">
+  
+  
+    <link rel="apple-touch-icon" href="/images/icons/apple-touch-icon.png" sizes="180x180">
+  
+  
+    <meta rel="mask-icon" href="/images/icons/stun-logo.svg" color="#333333">
+  
+  
+    <meta rel="msapplication-TileImage" content="/images/icons/favicon-144x144.png">
+    <meta rel="msapplication-TileColor" content="#000000">
+  
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+  
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1445822_58xq2j9v1id.css">
+
+  
+
+  
+  
+  
+<link rel="stylesheet" href="https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min.css">
+
+  
+
+  
+  
+  
+<link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.18.1/styles/dracula.min.css">
+
+  
+
+  
+  
+  
+<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/justifiedGallery/3.7.0/css/justifiedGallery.min.css">
+
+  
+
+  <script>
+    var CONFIG = window.CONFIG || {}
+    CONFIG = {
+      fancybox: true,
+      pjax: false,
+      lazyload: {
+        enable: true,
+        loadingImage: '/images/theme/loading.gif',
+      },
+      donate_alipay: 'http://img.u-to-world.com/blog/alipay.png',
+      donate_wechat: 'http://img.u-to-world.com/blog/weixinpay.png',
+      motto: {
+        api: 'http://api.lovelive.tools/api/SweetNothings',
+        default: '不要温和地走进那良夜'
+      },
+      galleries: {
+        enable: 'true'
+      },
+      fab: {
+        enable: 'true',
+        alwaysShow: 'false'
+      }
+    }
+  </script>
+
+  
+
+  
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body class="lock-screen">
+  <div class="loading"></div>
+  <nav class="menu">
+  <div class="menu-close">
+    <i class="iconfont iconplus"></i>
+  </div>
+  <ul class="menu-content">
+    
+    
+    
+    
+    <li class="menu-item"><a href="/ "> 首页</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="http://u-to-world.com:8080/index.html " target="_blank" rel="noopener"> 作品(我的音乐)</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/archives "> 归档</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/tags "> 标签</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/categories "> 分类</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/about "> 关于</a></li>
+    
+  </ul>
+  <div class="menu-copyright"><p>Copyright© 2019-2020 | <a target="_blank" href="http://blog.u-to-world.com">小笼包</a> .AllRightsReserved</p></div>
+</nav>
+  <main id="main">
+  <div class="container" id="container">
+    <article class="article">
+  <section class="head">
+  <img   class="lazyload" data-original="/images/theme/post-img.jpg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  draggable="false">
+  <div class="head-mask">
+    <h1 class="head-title">算法练习集</h1>
+    <div class="head-info">
+      <span class="post-info-item"><i class="iconfont iconcalendar"></i>2020-10-09</span
+        class="post-info-item">
+      
+      <span class="post-info-item"><i class="iconfont iconfont-size"></i>8221</span>
+    </div>
+  </div>
+</section>
+  <section class="main">
+    <section class="content">
+      <h2 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h2><ol>
+<li><a href="https://leetcode-cn.com/problems/median-of-two-sorted-arrays/" target="_blank" rel="noopener">寻找两个正序数组的中位数</a></li>
+</ol>
+<p>难度：困难<br><strong>给定两个大小为 m 和 n 的正序（从小到大）数组  nums1 和  nums2。请你找出并返回这两个正序数组的中位数。</strong></p>
+<p><strong>进阶：你能设计一个时间复杂度为 O(log (m+n)) 的算法解决此问题吗？</strong></p>
+<hr>
+<p><strong>示例 1：</strong></p>
+<p><strong>输入：nums1 = [1,3], nums2 = [2]</strong><br><strong>输出：2.00000</strong><br><strong>解释：合并数组 = [1,2,3] ，中位数 2</strong><br><strong>示例 2：</strong></p>
+<p><strong>输入：nums1 = [1,2], nums2 = [3,4]</strong><br><strong>输出：2.50000</strong><br><strong>解释：合并数组 = [1,2,3,4] ，中位数 (2 + 3) / 2 = 2.5</strong><br><strong>示例 3：</strong></p>
+<p><strong>输入：nums1 = [0,0], nums2 = [0,0]</strong><br><strong>输出：0.00000</strong><br><strong>示例 4：</strong></p>
+<p><strong>输入：nums1 = [], nums2 = [1]</strong><br><strong>输出：1.00000</strong><br><strong>示例 5：</strong></p>
+<p><strong>输入：nums1 = [2], nums2 = []</strong><br><strong>输出：2.00000</strong></p>
+<p>解法：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param <span class="hljs-type">&#123;number[]&#125;</span> <span class="hljs-variable">nums1</span></span></span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param <span class="hljs-type">&#123;number[]&#125;</span> <span class="hljs-variable">nums2</span></span></span><br><span class="hljs-comment"> * <span class="hljs-doctag">@return <span class="hljs-type">&#123;number&#125;</span></span></span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">var</span> findMedianSortedArrays = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">nums1, nums2</span>) </span>&#123;<br>  <span class="hljs-keyword">let</span> output;<br>  <span class="hljs-keyword">const</span> nums = nums1.concat(nums2);<br>  nums.sort(<span class="hljs-function">(<span class="hljs-params">x, y</span>) =&gt;</span> x - y);<br>  <span class="hljs-keyword">if</span> (nums.length % <span class="hljs-number">2</span> === <span class="hljs-number">0</span>) &#123;<br>    output = (nums[nums.length / <span class="hljs-number">2</span> - <span class="hljs-number">1</span>] + nums[nums.length / <span class="hljs-number">2</span>]) / <span class="hljs-number">2</span>;<br>  &#125; <span class="hljs-keyword">else</span> &#123;<br>    output = nums[(nums.length - <span class="hljs-number">1</span>) / <span class="hljs-number">2</span>];<br>  &#125;<br>  <span class="hljs-keyword">return</span> output;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><p><a href="https://leetcode-cn.com/problems/transpose-matrix/" target="_blank" rel="noopener">转置矩阵</a></p>
+<pre><code>难度：简单</code></pre><p><strong>给定一个矩阵  A，  返回  A  的转置矩阵。</strong></p>
+</li>
+</ol>
+<p><strong>矩阵的转置是指将矩阵的主对角线翻转，交换矩阵的行索引与列索引。</strong></p>
+<p>** **</p>
+<p><strong>示例 1：</strong></p>
+<p><strong>输入：[[1,2,3],[4,5,6],[7,8,9]]</strong><br><strong>输出：[[1,4,7],[2,5,8],[3,6,9]]</strong><br><strong>示例 2：</strong></p>
+<p><strong>输入：[[1,2,3],[4,5,6]]</strong><br><strong>输出：[[1,4],[2,5],[3,6]]</strong></p>
+<p>解法：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param <span class="hljs-type">&#123;number[][]&#125;</span> <span class="hljs-variable">A</span></span></span><br><span class="hljs-comment"> * <span class="hljs-doctag">@return <span class="hljs-type">&#123;number[][]&#125;</span></span></span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">var</span> transpose = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">A</span>) </span>&#123;<br>  <span class="hljs-comment">//    if(!A.length || !A[0].length)&#123;</span><br>  <span class="hljs-comment">//        return</span><br>  <span class="hljs-comment">//    &#125;</span><br>  <span class="hljs-keyword">var</span> output = [];<br>  <span class="hljs-keyword">const</span> lgth = A[<span class="hljs-number">0</span>].length;<br>  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; lgth; i++) &#123;<br>    <span class="hljs-keyword">let</span> row = A.map(<span class="hljs-function">(<span class="hljs-params">item</span>) =&gt;</span> item[i]);<br>    output.push(row);<br>  &#125;<br><br>  <span class="hljs-keyword">return</span> output;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<h2 id="贪心算法"><a href="#贪心算法" class="headerlink" title="贪心算法"></a>贪心算法</h2><ol>
+<li><p><a href="https://leetcode-cn.com/problems/queue-reconstruction-by-height/" target="_blank" rel="noopener">身高重建队列</a></p>
+<pre><code>难度:中等
+思路:先排身高值大的，后排身高值小的，因为大的排完，不会影响到小的排 值相等 顺序按照从位置小到大排</code></pre><p><strong>假设有打乱顺序的一群人站成一个队列。 每个人由一个整数对(h, k)表示，其中 h 是这个人的身高，k 是排在这个人前面且身高大于或等于 h 的人数。 编写一个算法来重建这个队列。</strong></p>
+</li>
+</ol>
+<p><strong>注意：</strong><br><strong>总人数少于 1100 人。</strong></p>
+<p><strong>示例</strong></p>
+<p><strong>输入:</strong><br><strong>[[7,0], [4,4], [7,1], [5,0], [6,1], [5,2]]</strong></p>
+<p><strong>输出:</strong><br><strong>[[5,0], [7,0], [5,2], [6,1], [4,4], [7,1]]</strong><br>**<br>解法：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param <span class="hljs-type">&#123;number[][]&#125;</span> <span class="hljs-variable">people</span></span></span><br><span class="hljs-comment"> * <span class="hljs-doctag">@return <span class="hljs-type">&#123;number[][]&#125;</span></span></span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">var</span> reconstructQueue = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">people</span>) </span>&#123;<br>  <span class="hljs-built_in">Array</span>.prototype.insert = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">item, idx</span>) </span>&#123;<br>    <span class="hljs-keyword">this</span>.length = <span class="hljs-keyword">this</span>.length + <span class="hljs-number">1</span>;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-keyword">this</span>.length - <span class="hljs-number">1</span>; i &gt; idx; i--) &#123;<br>      <span class="hljs-keyword">this</span>[i] = <span class="hljs-keyword">this</span>[i - <span class="hljs-number">1</span>];<br>    &#125;<br>    <span class="hljs-keyword">this</span>[idx] = item;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;<br>  &#125;;<br><br>  <span class="hljs-keyword">let</span> arrSortedByHeightDesc = people.sort(<span class="hljs-function">(<span class="hljs-params">x, y</span>) =&gt;</span> &#123;<br>    <span class="hljs-keyword">if</span> (x[<span class="hljs-number">0</span>] === y[<span class="hljs-number">0</span>]) &#123;<br>      <span class="hljs-keyword">return</span> x[<span class="hljs-number">1</span>] - y[<span class="hljs-number">1</span>];<br>    &#125;<br>    <span class="hljs-keyword">return</span> y[<span class="hljs-number">0</span>] - x[<span class="hljs-number">0</span>];<br>  &#125;);<br>  <span class="hljs-keyword">let</span> output = [];<br>  arrSortedByHeightDesc.forEach(<span class="hljs-function">(<span class="hljs-params">item</span>) =&gt;</span> &#123;<br>    <span class="hljs-keyword">if</span> (output[item[<span class="hljs-number">1</span>]]) &#123;<br>      output.insert(item, item[<span class="hljs-number">1</span>]);<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>      output[item[<span class="hljs-number">1</span>]] = item;<br>    &#125;<br>  &#125;);<br>  <span class="hljs-keyword">return</span> output;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><a href="https://leetcode-cn.com/problems/gas-station/" target="_blank" rel="noopener">加油站</a></li>
+</ol>
+<p>难度:中等<br>思路:先选择起始点 i，排除 cost[i]&gt;gas[i]的点,再迭代判断每一次的消耗是否会超出<br><strong>在一条环路上有  N  个加油站，其中第  i  个加油站有汽油  gas[i]  升。</strong></p>
+<p><strong>你有一辆油箱容量无限的的汽车，从第 i 个加油站开往第 i+1  个加油站需要消耗汽油  cost[i]  升。你从其中的一个加油站出发，开始时油箱为空。</strong></p>
+<p><strong>如果你可以绕环路行驶一周，则返回出发时加油站的编号，否则返回 -1。</strong></p>
+<p>*<em>说明: *</em></p>
+<p><strong>如果题目有解，该答案即为唯一答案。</strong><br><strong>输入数组均为非空数组，且长度相同。</strong><br><strong>输入数组中的元素均为非负数。</strong><br><strong>示例  1:</strong></p>
+<p><strong>输入: **<br>**gas  = [1,2,3,4,5]</strong><br><strong>cost = [3,4,5,1,2]</strong></p>
+<p><strong>输出: 3</strong></p>
+<p><strong>解释:</strong><br><strong>从 3 号加油站(索引为 3 处)出发，可获得 4 升汽油。此时油箱有 = 0 + 4 = 4 升汽油</strong><br><strong>开往 4 号加油站，此时油箱有 4 - 1 + 5 = 8 升汽油</strong><br><strong>开往 0 号加油站，此时油箱有 8 - 2 + 1 = 7 升汽油</strong><br><strong>开往 1 号加油站，此时油箱有 7 - 3 + 2 = 6 升汽油</strong><br><strong>开往 2 号加油站，此时油箱有 6 - 4 + 3 = 5 升汽油</strong><br><strong>开往 3 号加油站，你需要消耗 5 升汽油，正好足够你返回到 3 号加油站。</strong><br><strong>因此，3 可为起始索引。</strong><br><strong>示例 2:</strong></p>
+<p><strong>输入: **<br>**gas  = [2,3,4]</strong><br><strong>cost = [3,4,3]</strong></p>
+<p><strong>输出: -1</strong></p>
+<p><strong>解释:</strong><br><strong>你不能从 0 号或 1 号加油站出发，因为没有足够的汽油可以让你行驶到下一个加油站。</strong><br><strong>我们从 2 号加油站出发，可以获得 4 升汽油。 此时油箱有 = 0 + 4 = 4 升汽油</strong><br><strong>开往 0 号加油站，此时油箱有 4 - 3 + 2 = 3 升汽油</strong><br><strong>开往 1 号加油站，此时油箱有 3 - 3 + 3 = 3 升汽油</strong><br><strong>你无法返回 2 号加油站，因为返程需要消耗 4 升汽油，但是你的油箱只有 3 升汽油。</strong><br><strong>因此，无论怎样，你都不可能绕环路行驶一周。</strong></p>
+<p>解法：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param <span class="hljs-type">&#123;number[]&#125;</span> <span class="hljs-variable">gas</span></span></span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param <span class="hljs-type">&#123;number[]&#125;</span> <span class="hljs-variable">cost</span></span></span><br><span class="hljs-comment"> * <span class="hljs-doctag">@return <span class="hljs-type">&#123;number&#125;</span></span></span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">var</span> canCompleteCircuit = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">gas, cost</span>) </span>&#123;<br><br>  <span class="hljs-comment">// cost gt gas return -1</span><br><br>   <span class="hljs-built_in">Array</span>.prototype.sum=<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>&#123;<br>     <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.reduce(<span class="hljs-function">(<span class="hljs-params">cur,prev</span>)=&gt;</span>cur+prev)<br>   &#125;<br>    <span class="hljs-keyword">if</span>(gas.sum()&lt;cost.sum())&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span><br>    &#125;<br><br>   <span class="hljs-comment">// get start idxs</span><br>   <span class="hljs-keyword">let</span> idxs=[]<br>   <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i=<span class="hljs-number">0</span>;i&lt;gas.length;i++)&#123;<br>       <span class="hljs-keyword">if</span>(gas[i]&gt;cost[i])&#123;<br>           idxs.push(i)<br>       &#125;<br>   &#125;<br>   <span class="hljs-keyword">let</span> rst=<span class="hljs-number">0</span><br>   <span class="hljs-keyword">try</span>&#123;<br><br>   idxs.forEach(<span class="hljs-function">(<span class="hljs-params">idx,index</span>)=&gt;</span>&#123;<br>    <span class="hljs-keyword">let</span> storeIdx2=idx<br>    <span class="hljs-keyword">let</span> storeIdx=idx<br>   <span class="hljs-comment">// get sums by idxs</span><br>    <span class="hljs-keyword">let</span> secondLoop=<span class="hljs-literal">false</span><br>    <span class="hljs-keyword">let</span> sum=gas[idx]<br>    <span class="hljs-keyword">let</span> canGo=<span class="hljs-number">0</span><br>    <span class="hljs-keyword">while</span> (!(secondLoop&amp;&amp;storeIdx2%gas.length===storeIdx)&amp;&amp;canGo&gt;=<span class="hljs-number">0</span>)&#123;<br>       <span class="hljs-keyword">if</span>(storeIdx2+<span class="hljs-number">1</span>&gt;=gas.length)&#123;<br>        <span class="hljs-comment">//    storeIdx2=storeIdx2-gas.length</span><br>           secondLoop=<span class="hljs-literal">true</span><br>       &#125;<br>     <span class="hljs-keyword">const</span> minusIdx= storeIdx2+<span class="hljs-number">1</span>&gt;=gas.length?storeIdx2+<span class="hljs-number">1</span>-gas.length:storeIdx2+<span class="hljs-number">1</span><br>     <span class="hljs-keyword">const</span> preIdx=storeIdx2+<span class="hljs-number">1</span>&gt;gas.length?storeIdx2-gas.length:storeIdx2<br><br><br>     sum+= -cost[preIdx]+gas[minusIdx]<br>     canGo=sum-gas[minusIdx]<br><br>     storeIdx2++<br>   &#125;<br><br><span class="hljs-comment">//</span><br>   <span class="hljs-keyword">if</span>(canGo&gt;=<span class="hljs-number">0</span>)&#123;<br>       <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">`<span class="hljs-subst">$&#123;storeIdx&#125;</span>`</span>)<br>   &#125;<br>   <span class="hljs-keyword">if</span>(index===idxs.length<span class="hljs-number">-1</span>&amp;∑&lt;<span class="hljs-number">0</span>)&#123;<br>       rst=<span class="hljs-number">-1</span><br>   &#125;<br><br>   &#125;)<br>   &#125;<span class="hljs-keyword">catch</span>(e)&#123;<br>       rst=<span class="hljs-built_in">Number</span>(e.message)<br>   &#125;<br><br>    <span class="hljs-keyword">return</span>  rst<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<h2 id="树"><a href="#树" class="headerlink" title="树"></a>树</h2><ol>
+<li><p><a href="https://leetcode-cn.com/problems/balanced-binary-tree/" target="_blank" rel="noopener">平衡二叉树</a></p>
+<pre><code>难度：中等
+思路：深度递归 由底部向上 每迭代一个子树 高度累加1</code></pre><p>** 给定一个二叉树，判断它是否是高度平衡的二叉树。**</p>
+</li>
+</ol>
+<p><strong>本题中，一棵高度平衡二叉树定义为：</strong></p>
+<p><strong>一个二叉树每个节点   的左右两个子树的高度差的绝对值不超过 1。</strong></p>
+<p><strong>示例 1:</strong></p>
+<p><strong>给定二叉树 [3,9,20,null,null,15,7]</strong></p>
+<p><em>*    3**<br>**   / *\</em><br><em>*  9  20*\</em><br><em>*    /  *\</em><br><em>*   15   7*\</em><br><strong>返回 true 。</strong></p>
+<p><strong>示例 2:</strong></p>
+<p><strong>给定二叉树 [1,2,2,3,3,null,null,4,4]</strong></p>
+<p><em>*       1**<br>**      / *\</em><br><em>*     2   2*\</em><br><em>*    / *\</em><br><em>*   3   3*\</em><br><em>*  / *\</em><br><em>* 4   4*\</em><br><strong>返回  false 。</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * Definition for a binary tree node.</span><br><span class="hljs-comment"> * function TreeNode(val, left, right) &#123;</span><br><span class="hljs-comment"> *     this.val = (val===undefined ? 0 : val)</span><br><span class="hljs-comment"> *     this.left = (left===undefined ? null : left)</span><br><span class="hljs-comment"> *     this.right = (right===undefined ? null : right)</span><br><span class="hljs-comment"> * &#125;</span><br><span class="hljs-comment"> */</span><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param <span class="hljs-type">&#123;TreeNode&#125;</span> <span class="hljs-variable">root</span></span></span><br><span class="hljs-comment"> * <span class="hljs-doctag">@return <span class="hljs-type">&#123;boolean&#125;</span></span></span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">var</span> isBalanced = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">root</span>) </span>&#123;<br>  <span class="hljs-keyword">var</span> height = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">root</span>) </span>&#123;<br>    <span class="hljs-keyword">if</span> (root === <span class="hljs-literal">null</span>) &#123;<br>      <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>    &#125;<br>    <span class="hljs-keyword">const</span> left = height(root.left);<br>    <span class="hljs-keyword">const</span> right = height(root.right);<br>    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">Math</span>.abs(right - left) &gt; <span class="hljs-number">1</span> || left === <span class="hljs-number">-1</span> || right === <span class="hljs-number">-1</span>) &#123;<br>      <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>      <span class="hljs-keyword">return</span> <span class="hljs-built_in">Math</span>.max(left, right) + <span class="hljs-number">1</span>;<br>    &#125;<br>  &#125;;<br><br>  <span class="hljs-keyword">return</span> height(root) !== <span class="hljs-number">-1</span>;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><a href="https://leetcode-cn.com/problems/list-of-depth-lcci/" target="_blank" rel="noopener">面试题 04.03. 特定深度节点链表</a><br>难度：中等<br>思路：广度遍历 把同一深度的子树节点用链表连接</li>
+</ol>
+<p><strong>给定一棵二叉树，设计一个算法，创建含有某一深度上所有节点的链表（比如，若一棵树的深度为 D，则会创建出 D 个链表）。返回一个包含所有深度的链表的数组。</strong></p>
+<p>** **</p>
+<p><strong>示例：</strong></p>
+<p><strong>输入：[1,2,3,4,5,null,7,8]</strong></p>
+<p>**        1**<br>**       /  \ **<br>**      2    3**<br>**     / \    \ **<br>**    4   5    7**<br>**   /**<br>**  8**</p>
+<p><strong>输出：[[1],[2,3],[4,5,7],[8]]</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * Definition for a binary tree node.</span><br><span class="hljs-comment"> * function TreeNode(val) &#123;</span><br><span class="hljs-comment"> *     this.val = val;</span><br><span class="hljs-comment"> *     this.left = this.right = null;</span><br><span class="hljs-comment"> * &#125;</span><br><span class="hljs-comment"> */</span><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * Definition for singly-linked list.</span><br><span class="hljs-comment"> * function ListNode(val) &#123;</span><br><span class="hljs-comment"> *     this.val = val;</span><br><span class="hljs-comment"> *     this.next = null;</span><br><span class="hljs-comment"> * &#125;</span><br><span class="hljs-comment"> */</span><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param <span class="hljs-type">&#123;TreeNode&#125;</span> <span class="hljs-variable">tree</span></span></span><br><span class="hljs-comment"> * <span class="hljs-doctag">@return <span class="hljs-type">&#123;ListNode[]&#125;</span></span></span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">var</span> listOfDepth = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">tree</span>) </span>&#123;<br>  <span class="hljs-keyword">let</span> res = [];<br>  <span class="hljs-keyword">if</span> (tree === <span class="hljs-literal">null</span>) &#123;<br>    <span class="hljs-keyword">return</span> res;<br>  &#125;<br>  <span class="hljs-keyword">let</span> arr = [tree];<br>  <span class="hljs-keyword">while</span> (arr.length) &#123;<br>    <span class="hljs-keyword">let</span> linkList = <span class="hljs-keyword">new</span> ListNode(<span class="hljs-literal">null</span>);<br>    <span class="hljs-keyword">let</span> p = linkList;<br>    <span class="hljs-keyword">let</span> size = arr.length;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; size; i++) &#123;<br>      <span class="hljs-keyword">let</span> item = <span class="hljs-keyword">new</span> ListNode(arr[<span class="hljs-number">0</span>].val);<br>      <span class="hljs-comment">// if (arr[0].left != null) &#123;</span><br>      arr[<span class="hljs-number">0</span>].left &amp;&amp; arr.push(arr[<span class="hljs-number">0</span>].left);<br>      <span class="hljs-comment">// &#125;</span><br>      <span class="hljs-comment">// if (arr[0].right != null) &#123;</span><br>      arr[<span class="hljs-number">0</span>].right &amp;&amp; arr.push(arr[<span class="hljs-number">0</span>].right);<br>      <span class="hljs-comment">// &#125;</span><br>      p.next = item;<br>      p = p.next;<br>      arr.shift();<br>    &#125;<br>    res.push(linkList.next);<br>  &#125;<br><br>  <span class="hljs-keyword">return</span> res;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><p><a href="https://leetcode-cn.com/problems/er-cha-sou-suo-shu-de-di-kda-jie-dian-lcof/" target="_blank" rel="noopener">剑指 Offer 54. 二叉搜索树的第 k 大节点</a></p>
+<p>难度：简单<br>思路 深度优先 中序遍历 因为是搜索树 所以会按从小到大排序</p>
+</li>
+</ol>
+<p><strong>给定一棵二叉搜索树，请找出其中第 k 大的节点。</strong></p>
+<p>** **</p>
+<p><strong>示例 1:</strong></p>
+<p><strong>输入: root = [3,1,4,null,2], k = 1</strong><br><em>*   3**<br>**  / *\</em><br><em>* 1   4*\</em><br><em>*  *\</em><br><em>*   2*\</em><br><strong>输出: 4</strong><br><strong>示例 2:</strong></p>
+<p><strong>输入: root = [5,3,6,2,4,null,null,1], k = 3</strong><br><em>*       5**<br>**      / *\</em><br><em>*     3   6*\</em><br><em>*    / *\</em><br><em>*   2   4*\</em><br>**  /**<br>** 1**<br><strong>输出: 4</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> list = [];<br><br><span class="hljs-keyword">const</span> dfs = <span class="hljs-function">(<span class="hljs-params">root</span>) =&gt;</span> &#123;<br>  <span class="hljs-keyword">if</span> (root === <span class="hljs-literal">null</span>) &#123;<br>    <span class="hljs-keyword">return</span>;<br>  &#125;<br>  dfs(root.left);<br>  list.push(root.val);<br>  dfs(root.right);<br>&#125;;<br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * Definition for a binary tree node.</span><br><span class="hljs-comment"> * function TreeNode(val) &#123;</span><br><span class="hljs-comment"> *     this.val = val;</span><br><span class="hljs-comment"> *     this.left = this.right = null;</span><br><span class="hljs-comment"> * &#125;</span><br><span class="hljs-comment"> */</span><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param <span class="hljs-type">&#123;TreeNode&#125;</span> <span class="hljs-variable">root</span></span></span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param <span class="hljs-type">&#123;number&#125;</span> <span class="hljs-variable">k</span></span></span><br><span class="hljs-comment"> * <span class="hljs-doctag">@return <span class="hljs-type">&#123;number&#125;</span></span></span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">var</span> kthLargest = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">root, k</span>) </span>&#123;<br>  dfs(root);<br>  <span class="hljs-keyword">return</span> list[list.length - k];<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>**</p>
+
+    </section>
+    <section class="extra">
+      
+        <section class="donate">
+  <div class="qrcode">
+    <img   class="lazyload" data-original="http://img.u-to-world.com/blog/alipay.png" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" >
+  </div>
+  <div class="icon">
+    <a href="javascript:;" id="alipay"><i class="iconfont iconalipay"></i></a>
+    <a href="javascript:;" id="wechat"><i class="iconfont iconwechat-fill"></i></a>
+  </div>
+</section>
+      
+      
+  <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
+
+      
+<nav class="nav">
+  
+  
+    <a href="/2020/09/30/TypeScript%E5%88%9D%E6%8E%A2/">TypeScript初探<i class="iconfont iconright"></i></a>
+  
+</nav>
+
+    </section>
+    
+      <section class="comments">
+        
+          <div class="btn" id="comments-btn">查看评论</div>
+        
+        
+<div id="valine"></div>
+<script defer src="//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js"></script>
+<script>
+  window.onload = function () {
+    var loadValine = function () {
+      new Valine({
+        el: '#valine',
+        app_id: "XgHS51JuLkeipj92BK4KyIEI-gzGzoHsz",
+        app_key: "LHxBDnRt6RQCuByhRfp1pkVN",
+        placeholder: "ヾﾉ≧∀≦)o来啊，快活啊!",
+        avatar: "mp",
+        pageSize: "10",
+        lang: "zh-CN",
+      });
+    }
+    if ( true ) {
+      $("#comments-btn").on("click", function () {
+        $(this).hide();
+        loadValine();
+      });
+    } else {
+      loadValine();
+    }
+  };
+</script>
+
+
+      </section>
+    
+  </section>
+</article>
+  </div>
+</main>
+  <footer class="footer">
+  <div class="footer-social">
+    
+    
+    
+    
+    
+    <a href="tencent://message/?Menu=yes&uin=694534942 " target="_blank" onMouseOver="this.style.color= '#12B7F5'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconQQ "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="javascript:; " target="_blank" onMouseOver="this.style.color= '#09BB07'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconwechat-fill "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="https://www.instagram.com/izhaoo/ " target="_blank" onMouseOver="this.style.color= '#DA2E76'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconinstagram "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="https://github.com/godlikedeveloper " target="_blank" onMouseOver="this.style.color= '#24292E'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  icongithub-fill "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="mailto:694534942@qq.com " target="_blank" onMouseOver="this.style.color='#FFBE5B'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconmail"></i>
+    </a>
+    
+  </div>
+  <div class="footer-copyright"><p>Copyright© 2019-2020 | <a target="_blank" href="http://blog.u-to-world.com">小笼包</a> .AllRightsReserved</p></div>
+</footer>
+  
+      <div class="fab fab-plus">
+    <i class="iconfont iconplus"></i>
+  </div>
+  <div class="fab fab-up">
+    <i class="iconfont iconcaret-up"></i>
+  </div>
+  <div class="fab fab-menu">
+    <i class="iconfont iconmenu"></i>
+  </div>
+  
+</body>
+
+
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+
+
+
+
+
+
+<script src="https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+
+
+
+
+
+
+
+
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js"></script>
+
+
+
+
+
+
+<script src="https://cdn.bootcdn.net/ajax/libs/justifiedGallery/3.7.0/js/jquery.justifiedGallery.min.js"></script>
+
+
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+<script>
+  (function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+      bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</html>

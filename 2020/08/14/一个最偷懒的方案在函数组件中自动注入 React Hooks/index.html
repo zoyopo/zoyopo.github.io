@@ -1,0 +1,369 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>一个最偷懒的方案在函数组件中自动注入 React Hooks - Paige&#39;s XSpace</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="google" content="notranslate" />
+  <meta name="referrer" content="no-referrer" />
+  
+  <meta name="keywords" content="zhaoo, hexo-theme-zhaoo,"> 
+  
+  <meta name="description" content="tech blog about web develop,在用 hooks 写复杂页面时，很容易 因为声明 ho..."> 
+  
+  <meta name="author" content="zhangyp"> 
+
+  
+    <link rel="icon" href="/images/icons/favicon-16x16.png" type="image/png" sizes="16x16">
+  
+  
+    <link rel="icon" href="/images/icons/favicon-32x32.png" type="image/png" sizes="32x32">
+  
+  
+    <link rel="apple-touch-icon" href="/images/icons/apple-touch-icon.png" sizes="180x180">
+  
+  
+    <meta rel="mask-icon" href="/images/icons/stun-logo.svg" color="#333333">
+  
+  
+    <meta rel="msapplication-TileImage" content="/images/icons/favicon-144x144.png">
+    <meta rel="msapplication-TileColor" content="#000000">
+  
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+  
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1445822_58xq2j9v1id.css">
+
+  
+
+  
+  
+  
+<link rel="stylesheet" href="https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min.css">
+
+  
+
+  
+  
+  
+<link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.18.1/styles/dracula.min.css">
+
+  
+
+  
+  
+  
+<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/justifiedGallery/3.7.0/css/justifiedGallery.min.css">
+
+  
+
+  <script>
+    var CONFIG = window.CONFIG || {}
+    CONFIG = {
+      fancybox: true,
+      pjax: false,
+      lazyload: {
+        enable: true,
+        loadingImage: '/images/theme/loading.gif',
+      },
+      donate_alipay: 'http://img.u-to-world.com/blog/alipay.png',
+      donate_wechat: 'http://img.u-to-world.com/blog/weixinpay.png',
+      motto: {
+        api: 'http://api.lovelive.tools/api/SweetNothings',
+        default: '不要温和地走进那良夜'
+      },
+      galleries: {
+        enable: 'true'
+      },
+      fab: {
+        enable: 'true',
+        alwaysShow: 'false'
+      }
+    }
+  </script>
+
+  
+
+  
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body class="lock-screen">
+  <div class="loading"></div>
+  <nav class="menu">
+  <div class="menu-close">
+    <i class="iconfont iconplus"></i>
+  </div>
+  <ul class="menu-content">
+    
+    
+    
+    
+    <li class="menu-item"><a href="/ "> 首页</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="http://u-to-world.com:8080/index.html " target="_blank" rel="noopener"> 作品(我的音乐)</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/archives "> 归档</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/tags "> 标签</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/categories "> 分类</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/about "> 关于</a></li>
+    
+  </ul>
+  <div class="menu-copyright"><p>Copyright© 2019-2020 | <a target="_blank" href="http://blog.u-to-world.com">小笼包</a> .AllRightsReserved</p></div>
+</nav>
+  <main id="main">
+  <div class="container" id="container">
+    <article class="article">
+  <section class="head">
+  <img   class="lazyload" data-original="/images/theme/post-img.jpg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  draggable="false">
+  <div class="head-mask">
+    <h1 class="head-title">一个最偷懒的方案在函数组件中自动注入 React Hooks</h1>
+    <div class="head-info">
+      <span class="post-info-item"><i class="iconfont iconcalendar"></i>2020-08-14</span
+        class="post-info-item">
+      
+      <span class="post-info-item"><i class="iconfont iconfont-size"></i>319</span>
+    </div>
+  </div>
+</section>
+  <section class="main">
+    <section class="content">
+      <p>在用 hooks 写复杂页面时，很容易 因为声明 hooks 导致一个页面大半是 hooks 代码，看上去比较凌乱，应该给 hooks 分分类，再依次注入到页面中才比较优雅。</p>
+<h2 id="How"><a href="#How" class="headerlink" title="How"></a>How</h2><h3 id="我们希望输入的代码"><a href="#我们希望输入的代码" class="headerlink" title="我们希望输入的代码"></a>我们希望输入的代码</h3><p><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2020/png/1512483/1597371609125-4a5eabaa-dc43-4248-b5d7-fde76f36da03.png#align=left&display=inline&height=712&margin=%5Bobject%20Object%5D&name=athooks2.png&originHeight=712&originWidth=1349&size=72803&status=done&style=none&width=1349" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="athooks2.png"></p>
+<p><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2020/png/1512483/1597371617183-0b0d18b4-4325-4f2d-8866-52b7d0c54e94.png#align=left&display=inline&height=656&margin=%5Bobject%20Object%5D&name=athooks3.png&originHeight=656&originWidth=1429&size=55127&status=done&style=none&width=1429" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="athooks3.png"></p>
+<p><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2020/png/1512483/1597371624749-b900c42f-3867-49d9-bdd4-7e424f432a3c.png#align=left&display=inline&height=724&margin=%5Bobject%20Object%5D&name=athooks1.png&originHeight=724&originWidth=1544&size=97593&status=done&style=none&width=1544" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="athooks1.png"></p>
+<p>想达成的效果：在函数组件中写入<code>//@state</code> <code>//@effect</code>标记   然后将该目录下的<code>effect.js</code> ,<code>state.js</code>中的代码注入到该位置</p>
+<h3 id="用-loader-来进行实现"><a href="#用-loader-来进行实现" class="headerlink" title="用 loader 来进行实现"></a>用 loader 来进行实现</h3><ol>
+<li>我们先在<code>webpack.config.js</code>中声明一下 loader 配置 以及作用范围</li>
+</ol>
+<p><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2020/png/1512483/1597371704493-714c300e-7ce5-4ae7-96bd-8d8542494bee.png#align=left&display=inline&height=1560&margin=%5Bobject%20Object%5D&name=wpconfig.png&originHeight=1560&originWidth=1564&size=241328&status=done&style=none&width=1564" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="wpconfig.png"></p>
+<ol start="2">
+<li>编写 loader</li>
+</ol>
+<p><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2020/png/1512483/1597371719877-7495b3e3-bde9-4964-95e7-5cb2053ffe1f.png#align=left&display=inline&height=1200&margin=%5Bobject%20Object%5D&name=athooks4.png&originHeight=1200&originWidth=1430&size=268955&status=done&style=none&width=1430" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="athooks4.png"></p>
+<p><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2020/png/1512483/1597371738581-af403cfe-9210-4d53-bdea-8533d06c2c12.png#align=left&display=inline&height=1344&margin=%5Bobject%20Object%5D&name=athooks5.png&originHeight=1344&originWidth=1530&size=298868&status=done&style=none&width=1530" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="athooks5.png"></p>
+<h3 id="最终打包输出"><a href="#最终打包输出" class="headerlink" title="最终打包输出"></a>最终打包输出</h3><ol>
+<li>代码</li>
+</ol>
+<p><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2020/png/1512483/1597371766979-cba91624-4b90-478e-985e-b701a953d5b3.png#align=left&display=inline&height=1452&margin=%5Bobject%20Object%5D&name=athooks6.png&originHeight=1452&originWidth=1312&size=220183&status=done&style=none&width=1312" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="athooks6.png"></p>
+<ol start="2">
+<li>页面</li>
+</ol>
+<p><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2020/png/1512483/1597371783665-667aae05-af5a-4ee5-9c32-045c45e08fdb.png#align=left&display=inline&height=471&margin=%5Bobject%20Object%5D&name=athooks8.png&originHeight=471&originWidth=1095&size=35923&status=done&style=none&width=1095" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="athooks8.png"></p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>其实原理很简单，就是字符串的替换，但是借助<code>webpack</code>和<code>node</code>，真的就可以为所欲为。</p>
+
+    </section>
+    <section class="extra">
+      
+        <section class="donate">
+  <div class="qrcode">
+    <img   class="lazyload" data-original="http://img.u-to-world.com/blog/alipay.png" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" >
+  </div>
+  <div class="icon">
+    <a href="javascript:;" id="alipay"><i class="iconfont iconalipay"></i></a>
+    <a href="javascript:;" id="wechat"><i class="iconfont iconwechat-fill"></i></a>
+  </div>
+</section>
+      
+      
+      
+<nav class="nav">
+  
+    <a href="/2020/09/13/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3React%20Fiber/"><i class="iconfont iconleft"></i>深入理解React Fiber</a>
+  
+  
+    <a href="/2020/07/14/%E4%B8%9A%E5%8A%A1%E5%BC%80%E5%8F%91%E4%B8%AD%E7%9A%84%E7%BB%84%E4%BB%B6%E5%B0%81%E8%A3%85%E4%B8%8E%E6%94%B9%E9%80%A0/">业务开发中的组件封装与改造<i class="iconfont iconright"></i></a>
+  
+</nav>
+
+    </section>
+    
+      <section class="comments">
+        
+          <div class="btn" id="comments-btn">查看评论</div>
+        
+        
+<div id="valine"></div>
+<script defer src="//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js"></script>
+<script>
+  window.onload = function () {
+    var loadValine = function () {
+      new Valine({
+        el: '#valine',
+        app_id: "XgHS51JuLkeipj92BK4KyIEI-gzGzoHsz",
+        app_key: "LHxBDnRt6RQCuByhRfp1pkVN",
+        placeholder: "ヾﾉ≧∀≦)o来啊，快活啊!",
+        avatar: "mp",
+        pageSize: "10",
+        lang: "zh-CN",
+      });
+    }
+    if ( true ) {
+      $("#comments-btn").on("click", function () {
+        $(this).hide();
+        loadValine();
+      });
+    } else {
+      loadValine();
+    }
+  };
+</script>
+
+
+      </section>
+    
+  </section>
+</article>
+  </div>
+</main>
+  <footer class="footer">
+  <div class="footer-social">
+    
+    
+    
+    
+    
+    <a href="tencent://message/?Menu=yes&uin=694534942 " target="_blank" onMouseOver="this.style.color= '#12B7F5'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconQQ "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="javascript:; " target="_blank" onMouseOver="this.style.color= '#09BB07'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconwechat-fill "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="https://www.instagram.com/izhaoo/ " target="_blank" onMouseOver="this.style.color= '#DA2E76'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconinstagram "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="https://github.com/godlikedeveloper " target="_blank" onMouseOver="this.style.color= '#24292E'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  icongithub-fill "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="mailto:694534942@qq.com " target="_blank" onMouseOver="this.style.color='#FFBE5B'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconmail"></i>
+    </a>
+    
+  </div>
+  <div class="footer-copyright"><p>Copyright© 2019-2020 | <a target="_blank" href="http://blog.u-to-world.com">小笼包</a> .AllRightsReserved</p></div>
+</footer>
+  
+      <div class="fab fab-plus">
+    <i class="iconfont iconplus"></i>
+  </div>
+  <div class="fab fab-up">
+    <i class="iconfont iconcaret-up"></i>
+  </div>
+  <div class="fab fab-menu">
+    <i class="iconfont iconmenu"></i>
+  </div>
+  
+</body>
+
+
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+
+
+
+
+
+
+<script src="https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+
+
+
+
+
+
+
+
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js"></script>
+
+
+
+
+
+
+<script src="https://cdn.bootcdn.net/ajax/libs/justifiedGallery/3.7.0/js/jquery.justifiedGallery.min.js"></script>
+
+
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+<script>
+  (function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+      bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</html>

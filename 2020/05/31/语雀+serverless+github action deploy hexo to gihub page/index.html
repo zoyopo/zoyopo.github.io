@@ -1,0 +1,379 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>语雀+serverless+github action deploy hexo to gihub page - Paige&#39;s XSpace</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="google" content="notranslate" />
+  <meta name="referrer" content="no-referrer" />
+  
+  <meta name="keywords" content="zhaoo, hexo-theme-zhaoo,"> 
+  
+  <meta name="description" content="tech blog about web develop,前言语雀作为一个阿里提供的免费平台，在写作这方面用户体..."> 
+  
+  <meta name="author" content="zhangyp"> 
+
+  
+    <link rel="icon" href="/images/icons/favicon-16x16.png" type="image/png" sizes="16x16">
+  
+  
+    <link rel="icon" href="/images/icons/favicon-32x32.png" type="image/png" sizes="32x32">
+  
+  
+    <link rel="apple-touch-icon" href="/images/icons/apple-touch-icon.png" sizes="180x180">
+  
+  
+    <meta rel="mask-icon" href="/images/icons/stun-logo.svg" color="#333333">
+  
+  
+    <meta rel="msapplication-TileImage" content="/images/icons/favicon-144x144.png">
+    <meta rel="msapplication-TileColor" content="#000000">
+  
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+  
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1445822_58xq2j9v1id.css">
+
+  
+
+  
+  
+  
+<link rel="stylesheet" href="https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min.css">
+
+  
+
+  
+  
+  
+<link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.18.1/styles/dracula.min.css">
+
+  
+
+  
+  
+  
+<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/justifiedGallery/3.7.0/css/justifiedGallery.min.css">
+
+  
+
+  <script>
+    var CONFIG = window.CONFIG || {}
+    CONFIG = {
+      fancybox: true,
+      pjax: false,
+      lazyload: {
+        enable: true,
+        loadingImage: '/images/theme/loading.gif',
+      },
+      donate_alipay: 'http://img.u-to-world.com/blog/alipay.png',
+      donate_wechat: 'http://img.u-to-world.com/blog/weixinpay.png',
+      motto: {
+        api: 'http://api.lovelive.tools/api/SweetNothings',
+        default: '不要温和地走进那良夜'
+      },
+      galleries: {
+        enable: 'true'
+      },
+      fab: {
+        enable: 'true',
+        alwaysShow: 'false'
+      }
+    }
+  </script>
+
+  
+
+  
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body class="lock-screen">
+  <div class="loading"></div>
+  <nav class="menu">
+  <div class="menu-close">
+    <i class="iconfont iconplus"></i>
+  </div>
+  <ul class="menu-content">
+    
+    
+    
+    
+    <li class="menu-item"><a href="/ "> 首页</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="http://u-to-world.com:8080/index.html " target="_blank" rel="noopener"> 作品(我的音乐)</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/archives "> 归档</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/tags "> 标签</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/categories "> 分类</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/about "> 关于</a></li>
+    
+  </ul>
+  <div class="menu-copyright"><p>Copyright© 2019-2020 | <a target="_blank" href="http://blog.u-to-world.com">小笼包</a> .AllRightsReserved</p></div>
+</nav>
+  <main id="main">
+  <div class="container" id="container">
+    <article class="article">
+  <section class="head">
+  <img   class="lazyload" data-original="/images/theme/post-img.jpg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  draggable="false">
+  <div class="head-mask">
+    <h1 class="head-title">语雀+serverless+github action deploy hexo to gihub page</h1>
+    <div class="head-info">
+      <span class="post-info-item"><i class="iconfont iconcalendar"></i>2020-05-31</span
+        class="post-info-item">
+      
+      <span class="post-info-item"><i class="iconfont iconfont-size"></i>4026</span>
+    </div>
+  </div>
+</section>
+  <section class="main">
+    <section class="content">
+      <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2020/jpeg/1512483/1599910009298-154d2a4f-db41-4e29-91fe-858ef7718868.jpeg#align=left&display=inline&height=445&margin=%5Bobject%20Object%5D&name=yuque.jpeg&originHeight=445&originWidth=720&size=28716&status=done&style=none&width=720" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="yuque.jpeg"><br>语雀作为一个阿里提供的免费平台，在写作这方面用户体验没的说。但是我们想写的东西能够美美的展示出来，那就需要一个自己的网站。所以我们想要达到的效果就是，在语雀里写好了一篇文章，也会同样发布到我的网站上。</p>
+<h2 id="领一个免费的静态网站"><a href="#领一个免费的静态网站" class="headerlink" title="领一个免费的静态网站"></a>领一个免费的静态网站</h2><h2 id=""><a href="#" class="headerlink" title=""></a><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2020/jpeg/1512483/1599910100268-41bcb526-a77d-49e3-a12a-18c745061add.jpeg#align=left&display=inline&height=300&margin=%5Bobject%20Object%5D&name=ghpage.jpg&originHeight=300&originWidth=582&size=11399&status=done&style=none&width=582" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="ghpage.jpg"></h2><p>那就不得不提大名鼎鼎的 <code>github page</code> 。顾名思义，它是 github 帮你生成的网站，怎么生成呢？很简单，建一个仓库存放你的博客项目，项目名 <strong>有约定</strong> ， <strong>必须是</strong> <em>username**</em>.github.io。然后往里面加一个 index.html，就能作为你的博客主页进行访问啦。**</p>
+<h2 id="快速搭建一个优雅的静态博客"><a href="#快速搭建一个优雅的静态博客" class="headerlink" title="快速搭建一个优雅的静态博客"></a>快速搭建一个优雅的静态博客</h2><p><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2020/jpeg/1512483/1599910161121-60c996da-df9f-4bbe-8b3c-e91db11e43cc.jpeg#align=left&display=inline&height=282&margin=%5Bobject%20Object%5D&name=hexo.jpeg&originHeight=282&originWidth=540&size=129419&status=done&style=none&width=540" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="hexo.jpeg"><br>我使用的是一个名为 <code>hexo</code>  的搭建博客框架。应该算是比较流行的，部署简单，页面生成快，有很多大佬贡献的主题。<br>原理也很简单 在 node 环境下 将各种静态模板 通过模板引擎 转成页面文件。<br>可以通过 <code>yaml</code>  文件对网站进行各种配置。<br>这里就不多说，感兴趣的可以自行探索。（笔者也只是拿来主义）<br>官网地址 <a href="https://hexo.io/" target="_blank" rel="noopener">hexo</a></p>
+<p>我们先用官网的方式，生成一个 hexo 项目，命名为 <code>hexo-auto</code>  然后在 github 里创建此项目仓库，把本地的 push 上去。</p>
+<h2 id="搞一个云函数"><a href="#搞一个云函数" class="headerlink" title="搞一个云函数"></a>搞一个云函数</h2><p>说到这个，不得不提一下时下很火的 <code>serveless</code></p>
+<blockquote>
+<p><strong>The Serverless Framework</strong> – Build applications comprised of microservices that run in response to events, auto-scale for you, and only charge you when they run. This lowers the total cost of maintaining your apps, enabling you to build more logic, faster.<br>构建由微服务组成的应用程序，这些服务可以响应事件运行，为您自动伸缩运行空间，并且只在它们运行时向您收费。这降低了维护应用程序的总成本，使您能够更快地构建更多逻辑。</p>
+</blockquote>
+<p>这个框架，感觉就像流量日租卡，用时收费，也不要办啥额外套餐。所以它很适合一些专题活动场景，比如说各类节日活动对服务器的需求。<br>扯远了。<br>我用了一个名为 <code>SCF(serveless cloud function)</code>  的东东，中文叫做“云函数”，它干了一个什么事情呢？<br><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2020/png/1512483/1599905824664-2c42f834-9ab9-43e6-baf4-7f14d5e9a1c8.png#align=left&display=inline&height=1184&margin=%5Bobject%20Object%5D&name=%E4%BA%91%E5%87%BD%E6%95%B0.png&originHeight=1184&originWidth=2062&size=308926&status=done&style=none&width=2062" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="云函数.png"><br>在服务端执行一段脚本，作为一个触发器触发 github 的 action。触发我们先前就在 <code>hexo-auto</code>  项目中配置的自动部署脚本。<br><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2020/png/1512483/1599907167448-8488de3c-dd7f-49cb-89c3-f5667c1ac150.png#align=left&display=inline&height=732&margin=%5Bobject%20Object%5D&name=github%20workflow.png&originHeight=732&originWidth=1040&size=79894&status=done&style=none&width=1040" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="github workflow.png"></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-comment"># workflow name name: Deploy To Github Pages # 当有 push到仓库和外部触发的时候就运行</span><br><span class="hljs-attr">on:</span> <span class="hljs-string">[push,</span> <span class="hljs-string">repository_dispatch]</span><br><span class="hljs-comment"># YUQUE_TOKEN # GIT_SSH_PRIVATE_KEY</span><br><span class="hljs-attr">jobs:</span><br>  <span class="hljs-attr">deploy:</span><br>    <span class="hljs-attr">name:</span> <span class="hljs-string">Deploy</span> <span class="hljs-string">Hexo</span> <span class="hljs-string">Public</span> <span class="hljs-string">To</span> <span class="hljs-string">Pages</span><br>    <span class="hljs-attr">runs-on:</span> <span class="hljs-string">ubuntu-latest</span><br>    <span class="hljs-attr">env:</span><br>      <span class="hljs-attr">TZ:</span> <span class="hljs-string">Asia/Shanghai</span><br><br>    <span class="hljs-attr">steps:</span><br>      <span class="hljs-comment"># check it to your workflow can access it # from: https://github.com/actions/checkout</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Checkout</span> <span class="hljs-string">Repository</span> <span class="hljs-string">master</span> <span class="hljs-string">branch</span><br>        <span class="hljs-attr">uses:</span> <span class="hljs-string">actions/checkout@master</span><br>      <span class="hljs-comment"># from: https://github.com/actions/setup-node</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Setup</span> <span class="hljs-string">Node.js</span> <span class="hljs-number">10.</span><span class="hljs-string">x</span><br>        <span class="hljs-attr">uses:</span> <span class="hljs-string">actions/setup-node@master</span><br>        <span class="hljs-attr">with:</span><br>          <span class="hljs-attr">node-version:</span> <span class="hljs-string">"10.x"</span><br>      <span class="hljs-comment"># from https://github.com/x-cold/yuque-hexo</span><br>      <span class="hljs-comment"># npm 获取的hexo-cli或yuque-hexo有问题 generate不了 故用cnpm</span><br>      <span class="hljs-comment"># 主动clone获取next主题 防止部署缺失出错</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Setup</span> <span class="hljs-string">Hexo</span> <span class="hljs-string">Dependencies</span><br>        <span class="hljs-attr">run:</span> <span class="hljs-string">|</span><br>          <span class="hljs-string">npm</span> <span class="hljs-string">install</span> <span class="hljs-string">-g</span> <span class="hljs-string">cnpm</span> <span class="hljs-string">--registry=https://registry.npm.taobao.org</span><br>          <span class="hljs-string">cnpm</span> <span class="hljs-string">install</span> <span class="hljs-string">hexo-cli</span> <span class="hljs-string">-g</span> <br>          <span class="hljs-string">cnpm</span> <span class="hljs-string">install</span> <span class="hljs-string">yuque-hexo</span> <span class="hljs-string">-g</span> <br>          <span class="hljs-string">cnpm</span> <span class="hljs-string">install</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Setup</span> <span class="hljs-string">Deploy</span> <span class="hljs-string">Private</span> <span class="hljs-string">Key</span><br>        <span class="hljs-attr">env:</span><br>          <span class="hljs-attr">HEXO_DEPLOY_PRIVATE_KEY:</span> <span class="hljs-string">$&#123;&#123;</span> <span class="hljs-string">secrets.GIT_SSH_PRIVATE_KEY</span> <span class="hljs-string">&#125;&#125;</span><br>        <span class="hljs-attr">run:</span> <span class="hljs-string">|</span><br>          <span class="hljs-string">mkdir</span> <span class="hljs-string">-p</span> <span class="hljs-string">~/.ssh/</span> <br>          <span class="hljs-string">echo</span> <span class="hljs-string">"$HEXO_DEPLOY_PRIVATE_KEY"</span> <span class="hljs-string">&gt;</span> <span class="hljs-string">~/.ssh/id_rsa</span> <br>          <span class="hljs-string">chmod</span> <span class="hljs-number">600</span> <span class="hljs-string">~/.ssh/id_rsa</span> <br>          <span class="hljs-string">ssh-keyscan</span> <span class="hljs-string">github.com</span> <span class="hljs-string">&gt;&gt;</span> <span class="hljs-string">~/.ssh/known_hosts</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Setup</span> <span class="hljs-string">Git</span> <span class="hljs-string">Infomation</span><br>        <span class="hljs-attr">run:</span> <span class="hljs-string">|</span><br>          <span class="hljs-string">git</span> <span class="hljs-string">config</span> <span class="hljs-string">--global</span> <span class="hljs-string">user.name</span> <span class="hljs-string">'694534942@qq.com'</span> <br>          <span class="hljs-string">git</span> <span class="hljs-string">config</span> <span class="hljs-string">--global</span> <span class="hljs-string">user.email</span> <span class="hljs-string">'694534942@qq.com'</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Deploy</span> <span class="hljs-string">Hexo</span><br>        <span class="hljs-attr">env:</span><br>          <span class="hljs-attr">YUQUE_TOKEN:</span> <span class="hljs-string">$&#123;&#123;</span> <span class="hljs-string">secrets.YUQUE_TOKEN</span> <span class="hljs-string">&#125;&#125;</span><br>        <span class="hljs-attr">run:</span> <span class="hljs-string">|</span><br>          <span class="hljs-string">git</span> <span class="hljs-string">clone</span> <span class="hljs-string">https://github.com/theme-next/hexo-theme-next</span> <span class="hljs-string">themes/next</span><br>          <span class="hljs-string">yuque-hexo</span> <span class="hljs-string">clean</span> <br>          <span class="hljs-string">yuque-hexo</span> <span class="hljs-string">sync</span><br>          <span class="hljs-string">hexo</span> <span class="hljs-string">clean</span> <br>          <span class="hljs-string">hexo</span> <span class="hljs-string">generate</span><br>          <span class="hljs-string">hexo</span> <span class="hljs-string">d</span><br></code></pre></td></tr></table></figure>
+
+<p>里面的两个变量是从 github 项目配置里读取的。<br><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2020/png/1512483/1599906565502-36509499-0f0a-4414-b1b7-1d609f6a7540.png#align=left&display=inline&height=846&margin=%5Bobject%20Object%5D&name=github%20yaml%20config.png&originHeight=846&originWidth=2428&size=222968&status=done&style=none&width=2428" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="github yaml config.png"><br>github 这种类似自动部署的功能叫 <code>github action</code> ,上述过程我们只要触发此 <code>action</code> ,github 会为我们分配一个 linux 环境去执行 <code>yaml</code>  中的脚本。</p>
+<p>脚本里会执行 hexo 的部署命令，部署命令会执行 <code>hexo-auto</code>  <code>_config.yaml</code>  中的一段部署脚本</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-comment"># Deployment</span><br><span class="hljs-comment">## Docs: https://hexo.io/docs/deployment.html</span><br><span class="hljs-attr">deploy:</span><br>  <span class="hljs-attr">type:</span> <span class="hljs-string">git</span><br>  <span class="hljs-attr">repo:</span> <span class="hljs-string">git@github.com:godlikedeveloper/godlikedeveloper.github.io</span><br>  <span class="hljs-attr">branch:</span> <span class="hljs-string">master</span><br></code></pre></td></tr></table></figure>
+
+<p>简单来说就是部署到 github 的哪个库中，所以为了要能顺利部署,我们需要 <code>GIT_SSH_PRIVATE_KEY</code>  权限验证。<br>私钥是你本地之前生成的。<br><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2020/png/1512483/1599908264228-48e88894-4fc5-49fb-bd3e-c65ae0c3f370.png#align=left&display=inline&height=226&margin=%5Bobject%20Object%5D&name=%E7%A7%81%E9%92%A5.png&originHeight=226&originWidth=1112&size=30710&status=done&style=none&width=1112" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="私钥.png"><br>.pub 上面那个。</p>
+<h2 id="语雀"><a href="#语雀" class="headerlink" title="语雀"></a>语雀</h2><p>让我们再回到语雀，因为我们漏掉了最关键的一点，那就是 <strong>同步文章</strong>  到 hexo-auto 项目中。 <strong>只有将语雀里的文章同步到项目中，再部署才会生成我们想要看到的最新的博客</strong> 。<br>所以我们需要用一个库 <code>hexo-sync</code>  来进行同步文章。<br>同样的，我们也需要语雀的授权，所以要去语雀设置中，生成一个 <code>token</code></p>
+<p><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2020/png/1512483/1599908500527-8a0527eb-0796-424d-a8c8-4abd7c8531b4.png#align=left&display=inline&height=848&margin=%5Bobject%20Object%5D&name=yuque.png&originHeight=848&originWidth=2152&size=104308&status=done&style=none&width=2152" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="yuque.png"></p>
+<p>还有一个需要解决的问题。<br>我们在语雀里增删改文章，怎么去通知到云函数呢？<br>值得庆幸的是，语雀中提供了 <code>webhook</code>  来进行调用<br><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2020/png/1512483/1599908978401-93334343-c86a-40ba-9a9f-60bce529662e.png#align=left&display=inline&height=1118&margin=%5Bobject%20Object%5D&name=webhook%20yuque.png&originHeight=1118&originWidth=1862&size=175067&status=done&style=none&width=1862" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="webhook yuque.png"></p>
+<p>url 就是我们云函数暴露给外界调用的 url<br><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2020/png/1512483/1599909254184-d0812f7a-6ec4-498c-a289-2dbf275beb6a.png#align=left&display=inline&height=1078&margin=%5Bobject%20Object%5D&name=scf%20url.png&originHeight=1078&originWidth=1794&size=121408&status=done&style=none&width=1794" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="scf url.png"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>主要流程：<br><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2020/png/1512483/1590979698769-6ecdc30d-4146-455b-9ddd-715702b17f31.png#align=left&display=inline&height=506&margin=%5Bobject%20Object%5D&name=yuque_diagram%20%281%29.png&originHeight=506&originWidth=1120&size=76219&status=done&style=none&width=1120" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="yuque_diagram (1).png"></p>
+<p>##</p>
+<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><h3 id="部署到自己服务器"><a href="#部署到自己服务器" class="headerlink" title="部署到自己服务器"></a>部署到自己服务器</h3><p>由于一些显而易见的问题，github 访问比较慢，所以笔者还是在自己服务器上也搞了一个。</p>
+<h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><ol>
+<li>在自己的服务器上搭建一个 git 服务 建个文章的空仓库，在 <code>post-recieve</code>  钩子里去将文件的将内容同步到服务器的某个目录下，再放入<code>nginx</code>  的静态服务器，在 hexo 项目的主 <code>_config.yaml</code>  下的 <code>deploy</code>  的 <code>repo</code>  里填自己服务器的 git 地址</li>
+</ol>
+<p><strong>问题</strong> ：github action 的模拟环境 连接我的 git 服务器 无法使用公钥 和<code>ssh-copy-id</code> cmd 进行免登陆校验 设置</p>
+<ol start="2">
+<li>在自己服务器上写一个 <code>node</code>  脚本,开启一个定时任务进行 <code>git pull</code>  因为博客的实时性要求并不是很高 所以可以设置一个比较长的间隔 几个消失到一天感觉都行</li>
+</ol>
+<p>笔者使用了第二套方案，定时拉 github.io 库里的代码，再用 nginx 托管下就万事大吉了。</p>
+
+    </section>
+    <section class="extra">
+      
+        <section class="donate">
+  <div class="qrcode">
+    <img   class="lazyload" data-original="http://img.u-to-world.com/blog/alipay.png" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" >
+  </div>
+  <div class="icon">
+    <a href="javascript:;" id="alipay"><i class="iconfont iconalipay"></i></a>
+    <a href="javascript:;" id="wechat"><i class="iconfont iconwechat-fill"></i></a>
+  </div>
+</section>
+      
+      
+  <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/github-action/" rel="tag">github action</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/serverless/" rel="tag">serverless</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/yuque/" rel="tag">yuque</a></li></ul>
+
+      
+<nav class="nav">
+  
+    <a href="/2020/06/02/node.js%20%20%E5%BC%80%E5%90%AFwebsocket%E6%9C%8D%E5%8A%A1/"><i class="iconfont iconleft"></i>node.js  开启websocket服务</a>
+  
+  
+    <a href="/2020/05/30/%E4%BB%8A%E5%A4%A9%E5%A4%A9%E6%B0%94%E5%BE%88%E5%86%B7/">今天天气很冷<i class="iconfont iconright"></i></a>
+  
+</nav>
+
+    </section>
+    
+      <section class="comments">
+        
+          <div class="btn" id="comments-btn">查看评论</div>
+        
+        
+<div id="valine"></div>
+<script defer src="//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js"></script>
+<script>
+  window.onload = function () {
+    var loadValine = function () {
+      new Valine({
+        el: '#valine',
+        app_id: "XgHS51JuLkeipj92BK4KyIEI-gzGzoHsz",
+        app_key: "LHxBDnRt6RQCuByhRfp1pkVN",
+        placeholder: "ヾﾉ≧∀≦)o来啊，快活啊!",
+        avatar: "mp",
+        pageSize: "10",
+        lang: "zh-CN",
+      });
+    }
+    if ( true ) {
+      $("#comments-btn").on("click", function () {
+        $(this).hide();
+        loadValine();
+      });
+    } else {
+      loadValine();
+    }
+  };
+</script>
+
+
+      </section>
+    
+  </section>
+</article>
+  </div>
+</main>
+  <footer class="footer">
+  <div class="footer-social">
+    
+    
+    
+    
+    
+    <a href="tencent://message/?Menu=yes&uin=694534942 " target="_blank" onMouseOver="this.style.color= '#12B7F5'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconQQ "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="javascript:; " target="_blank" onMouseOver="this.style.color= '#09BB07'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconwechat-fill "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="https://www.instagram.com/izhaoo/ " target="_blank" onMouseOver="this.style.color= '#DA2E76'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconinstagram "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="https://github.com/godlikedeveloper " target="_blank" onMouseOver="this.style.color= '#24292E'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  icongithub-fill "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="mailto:694534942@qq.com " target="_blank" onMouseOver="this.style.color='#FFBE5B'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconmail"></i>
+    </a>
+    
+  </div>
+  <div class="footer-copyright"><p>Copyright© 2019-2020 | <a target="_blank" href="http://blog.u-to-world.com">小笼包</a> .AllRightsReserved</p></div>
+</footer>
+  
+      <div class="fab fab-plus">
+    <i class="iconfont iconplus"></i>
+  </div>
+  <div class="fab fab-up">
+    <i class="iconfont iconcaret-up"></i>
+  </div>
+  <div class="fab fab-menu">
+    <i class="iconfont iconmenu"></i>
+  </div>
+  
+</body>
+
+
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+
+
+
+
+
+
+<script src="https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+
+
+
+
+
+
+
+
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js"></script>
+
+
+
+
+
+
+<script src="https://cdn.bootcdn.net/ajax/libs/justifiedGallery/3.7.0/js/jquery.justifiedGallery.min.js"></script>
+
+
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+<script>
+  (function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+      bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</html>

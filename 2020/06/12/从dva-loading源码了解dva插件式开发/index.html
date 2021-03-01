@@ -1,0 +1,379 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>从dva-loading源码了解dva插件式开发 - Paige&#39;s XSpace</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="google" content="notranslate" />
+  <meta name="referrer" content="no-referrer" />
+  
+  <meta name="keywords" content="zhaoo, hexo-theme-zhaoo,"> 
+  
+  <meta name="description" content="tech blog about web develop,什么是 dva-loadingdva-loading是..."> 
+  
+  <meta name="author" content="zhangyp"> 
+
+  
+    <link rel="icon" href="/images/icons/favicon-16x16.png" type="image/png" sizes="16x16">
+  
+  
+    <link rel="icon" href="/images/icons/favicon-32x32.png" type="image/png" sizes="32x32">
+  
+  
+    <link rel="apple-touch-icon" href="/images/icons/apple-touch-icon.png" sizes="180x180">
+  
+  
+    <meta rel="mask-icon" href="/images/icons/stun-logo.svg" color="#333333">
+  
+  
+    <meta rel="msapplication-TileImage" content="/images/icons/favicon-144x144.png">
+    <meta rel="msapplication-TileColor" content="#000000">
+  
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+  
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1445822_58xq2j9v1id.css">
+
+  
+
+  
+  
+  
+<link rel="stylesheet" href="https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min.css">
+
+  
+
+  
+  
+  
+<link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.18.1/styles/dracula.min.css">
+
+  
+
+  
+  
+  
+<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/justifiedGallery/3.7.0/css/justifiedGallery.min.css">
+
+  
+
+  <script>
+    var CONFIG = window.CONFIG || {}
+    CONFIG = {
+      fancybox: true,
+      pjax: false,
+      lazyload: {
+        enable: true,
+        loadingImage: '/images/theme/loading.gif',
+      },
+      donate_alipay: 'http://img.u-to-world.com/blog/alipay.png',
+      donate_wechat: 'http://img.u-to-world.com/blog/weixinpay.png',
+      motto: {
+        api: 'http://api.lovelive.tools/api/SweetNothings',
+        default: '不要温和地走进那良夜'
+      },
+      galleries: {
+        enable: 'true'
+      },
+      fab: {
+        enable: 'true',
+        alwaysShow: 'false'
+      }
+    }
+  </script>
+
+  
+
+  
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body class="lock-screen">
+  <div class="loading"></div>
+  <nav class="menu">
+  <div class="menu-close">
+    <i class="iconfont iconplus"></i>
+  </div>
+  <ul class="menu-content">
+    
+    
+    
+    
+    <li class="menu-item"><a href="/ "> 首页</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="http://u-to-world.com:8080/index.html " target="_blank" rel="noopener"> 作品(我的音乐)</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/archives "> 归档</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/tags "> 标签</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/categories "> 分类</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/about "> 关于</a></li>
+    
+  </ul>
+  <div class="menu-copyright"><p>Copyright© 2019-2020 | <a target="_blank" href="http://blog.u-to-world.com">小笼包</a> .AllRightsReserved</p></div>
+</nav>
+  <main id="main">
+  <div class="container" id="container">
+    <article class="article">
+  <section class="head">
+  <img   class="lazyload" data-original="/images/theme/post-img.jpg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  draggable="false">
+  <div class="head-mask">
+    <h1 class="head-title">从dva-loading源码了解dva插件式开发</h1>
+    <div class="head-info">
+      <span class="post-info-item"><i class="iconfont iconcalendar"></i>2020-06-12</span
+        class="post-info-item">
+      
+      <span class="post-info-item"><i class="iconfont iconfont-size"></i>4350</span>
+    </div>
+  </div>
+</section>
+  <section class="main">
+    <section class="content">
+      <h3 id="什么是-dva-loading"><a href="#什么是-dva-loading" class="headerlink" title="什么是 dva-loading"></a>什么是 dva-loading</h3><p><code>dva-loading</code>是 dva 中的一个插件，由 dva 自带，主要是用状态表示<code>effects</code>里的某个<code>generator</code>是否在执行,探究一下<code>dva-loading</code>的实现，和插件化的加载方式。<br><code>generator</code>就是我们常写的 *开头的函数</p>
+<h3 id="代码入口"><a href="#代码入口" class="headerlink" title="代码入口"></a>代码入口</h3><p><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2020/png/1512483/1591944772720-4dad1ffe-a0cd-4fa2-8ea8-dc9fc3e4593b.png#align=left&display=inline&height=552&margin=%5Bobject%20Object%5D&originHeight=552&originWidth=237&size=0&status=done&style=none&width=237" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt=""></p>
+<p>1.方法体</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createLoading</span>(<span class="hljs-params">opts = &#123;&#125;</span>) </span>&#123;<br><br>.............................................<br><br>&#125;<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> createLoading;<br></code></pre></td></tr></table></figure>
+
+<p>2.方法体内的变量定义 和前置判断</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> SHOW = <span class="hljs-string">"@@DVA_LOADING/SHOW"</span>;<br><span class="hljs-keyword">const</span> HIDE = <span class="hljs-string">"@@DVA_LOADING/HIDE"</span>;<br><span class="hljs-keyword">const</span> NAMESPACE = <span class="hljs-string">"loading"</span>;<br><span class="hljs-keyword">const</span> namespace = opts.namespace || NAMESPACE;<br><br><span class="hljs-keyword">const</span> &#123; only = [], except = [] &#125; = opts;<br><span class="hljs-keyword">if</span> (only.length &gt; <span class="hljs-number">0</span> &amp;&amp; except.length &gt; <span class="hljs-number">0</span>) &#123;<br>  <span class="hljs-keyword">throw</span> <span class="hljs-built_in">Error</span>(<br>    <span class="hljs-string">"It is ambiguous to configurate `only` and `except` items at the same time."</span><br>  );<br>&#125;<br><br><span class="hljs-keyword">const</span> initialState = &#123;<br>  global: <span class="hljs-literal">false</span>,<br>  models: &#123;&#125;,<br>  effects: &#123;&#125;,<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><p><code>only</code>是允许的<code>action</code> <code>except</code>是排除的<code>action</code> 两者只需用一个就行了</p>
+</li>
+<li><p><code>SHOW</code>和<code>HIDE</code>分别是两个<code>type</code>来控制<code>loading</code>的状态</p>
+</li>
+<li><p><code>initialState</code>里的<code>models</code>用 key value 形式来存命名空间和是否正在执行</p>
+</li>
+<li><p><code>initialState</code>里的<code>effects</code>用 key value 形式来存<code>dispatch</code>的<code>type</code>名和是否正在执行</p>
+</li>
+<li><p><code>initialState</code>里的<code>global</code>表示所有模块有没有正在执行的<code>generator</code></p>
+<p>3.reducer</p>
+</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// `actionType`比如 ‘count/add’</span><br><span class="hljs-comment">// 第一个`namespace`默认是`loading`</span><br><span class="hljs-comment">// 第二个`namespace`是上面的`count`</span><br><span class="hljs-keyword">const</span> extraReducers = &#123;<br>  [namespace](state = initialState, &#123; type, payload &#125;) &#123;<br>    <span class="hljs-keyword">const</span> &#123; namespace, actionType &#125; = payload || &#123;&#125;;<br>    <span class="hljs-keyword">let</span> ret;<br>    <span class="hljs-keyword">switch</span> (type) &#123;<br>      <span class="hljs-keyword">case</span> SHOW:<br>        ret = &#123;<br>          ...state,<br>          global: <span class="hljs-literal">true</span>,<br>          models: &#123; ...state.models, [namespace]: <span class="hljs-literal">true</span> &#125;,<br>          effects: &#123; ...state.effects, [actionType]: <span class="hljs-literal">true</span> &#125;,<br>        &#125;;<br>        <span class="hljs-keyword">break</span>;<br>      <span class="hljs-keyword">case</span> HIDE: &#123;<br>        <span class="hljs-keyword">const</span> effects = &#123; ...state.effects, [actionType]: <span class="hljs-literal">false</span> &#125;;<br>        <span class="hljs-keyword">const</span> models = &#123;<br>          ...state.models,<br>          <span class="hljs-comment">// 这个命名空间里有执行的generator 这个命名空间才为true</span><br>          [namespace]: <span class="hljs-built_in">Object</span>.keys(effects).some(<span class="hljs-function">(<span class="hljs-params">actionType</span>) =&gt;</span> &#123;<br>            <span class="hljs-keyword">const</span> _namespace = actionType.split(<span class="hljs-string">"/"</span>)[<span class="hljs-number">0</span>];<br>            <span class="hljs-comment">// 如果不是该命名空间下的actionType</span><br>            <span class="hljs-keyword">if</span> (_namespace !== namespace) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>            <span class="hljs-keyword">return</span> effects[actionType];<br>          &#125;),<br>        &#125;;<br>        <span class="hljs-comment">// 有一个namespace是true gloal就是true</span><br>        <span class="hljs-keyword">const</span> global = <span class="hljs-built_in">Object</span>.keys(models).some(<span class="hljs-function">(<span class="hljs-params">namespace</span>) =&gt;</span> &#123;<br>          <span class="hljs-keyword">return</span> models[namespace];<br>        &#125;);<br>        ret = &#123;<br>          ...state,<br>          global,<br>          models,<br>          effects,<br>        &#125;;<br>        <span class="hljs-keyword">break</span>;<br>      &#125;<br>      <span class="hljs-keyword">default</span>:<br>        ret = state;<br>        <span class="hljs-keyword">break</span>;<br>    &#125;<br>    <span class="hljs-keyword">return</span> ret;<br>  &#125;,<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>4.generator 执行的监听</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">onEffect</span>(<span class="hljs-params">effect, &#123; put &#125;, model, actionType</span>) </span>&#123;<br>  <span class="hljs-keyword">const</span> &#123; namespace &#125; = model;<br>  <span class="hljs-comment">// 判断1.如果没有特殊的过滤 2.有白名单且包含 3.有黑名单且不包含</span><br>  <span class="hljs-keyword">if</span> (<br>    (only.length === <span class="hljs-number">0</span> &amp;&amp; except.length === <span class="hljs-number">0</span>) ||<br>    (only.length &gt; <span class="hljs-number">0</span> &amp;&amp; only.indexOf(actionType) !== <span class="hljs-number">-1</span>) ||<br>    (except.length &gt; <span class="hljs-number">0</span> &amp;&amp; except.indexOf(actionType) === <span class="hljs-number">-1</span>)<br>  ) &#123;<br>    <span class="hljs-comment">// 返回一个generator供调用</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span>* (<span class="hljs-params">...args</span>) </span>&#123;<br>      <span class="hljs-keyword">yield</span> put(&#123; <span class="hljs-attr">type</span>: SHOW, <span class="hljs-attr">payload</span>: &#123; namespace, actionType &#125; &#125;);<br>      <span class="hljs-keyword">yield</span> effect(...args);<br>      <span class="hljs-keyword">yield</span> put(&#123; <span class="hljs-attr">type</span>: HIDE, <span class="hljs-attr">payload</span>: &#123; namespace, actionType &#125; &#125;);<br>    &#125;;<br>  &#125; <span class="hljs-keyword">else</span> &#123;<br>    <span class="hljs-keyword">return</span> effect;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>5.返回结果</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">return</span> &#123;<br>  extraReducers,<br>  onEffect,<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<h4 id="use-是如何使用"><a href="#use-是如何使用" class="headerlink" title="use 是如何使用"></a>use 是如何使用</h4><p><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2020/png/1512483/1591944773251-1b25af48-7559-4484-ba9a-27b18848b1fa.png#align=left&display=inline&height=628&margin=%5Bobject%20Object%5D&originHeight=628&originWidth=228&size=0&status=done&style=none&width=228" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt=""></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Plugin</span> </span>&#123;<br><span class="hljs-keyword">constructor</span>() &#123;<br><span class="hljs-keyword">this</span>._handleActions = <span class="hljs-literal">null</span>;<br><span class="hljs-comment">// reduce 把hooks由['onError',...]转化成&#123;onError:[],...&#125;</span><br><span class="hljs-keyword">this</span>.hooks = hooks.reduce(<span class="hljs-function">(<span class="hljs-params">memo, key</span>) =&gt;</span> &#123;<br>memo[key] = [];<br><span class="hljs-keyword">return</span> memo;<br>&#125;, &#123;&#125;);<br>&#125;<br>use(plugin) &#123;<br>invariant(isPlainObject(plugin), <span class="hljs-string">'plugin.use: plugin should be plain object'</span>);<br><span class="hljs-keyword">const</span> &#123; hooks &#125; = <span class="hljs-keyword">this</span>;<br><span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> key <span class="hljs-keyword">in</span> plugin) &#123;<br><span class="hljs-comment">// 如果是hooks里存在的钩子</span><br><span class="hljs-keyword">if</span> (<span class="hljs-built_in">Object</span>.prototype.hasOwnProperty.call(plugin, key)) &#123;<br>invariant(hooks[key], plugin.use: unknown plugin property: $&#123;key&#125;);<br><span class="hljs-keyword">if</span> (key === <span class="hljs-string">'_handleActions'</span>) &#123;<br><span class="hljs-keyword">this</span>._handleActions = plugin[key];<br>&#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (key === <span class="hljs-string">'extraEnhancers'</span>) &#123;<br>hooks[key] = plugin[key];<br>&#125; <span class="hljs-keyword">else</span> &#123;<br><span class="hljs-comment">// 把方法push到数组</span><br>hooks[key].push(plugin[key]);<br>&#125;<br>&#125;<br>&#125;<br>&#125;<br>............................................................<br>...........................................................<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h3><p>钩子如何调用还需再深入探究，就放到下一篇里探讨，文章写的比较简单，如果有谬误，欢迎指正。</p>
+
+    </section>
+    <section class="extra">
+      
+        <section class="donate">
+  <div class="qrcode">
+    <img   class="lazyload" data-original="http://img.u-to-world.com/blog/alipay.png" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" >
+  </div>
+  <div class="icon">
+    <a href="javascript:;" id="alipay"><i class="iconfont iconalipay"></i></a>
+    <a href="javascript:;" id="wechat"><i class="iconfont iconwechat-fill"></i></a>
+  </div>
+</section>
+      
+      
+      
+<nav class="nav">
+  
+    <a href="/2020/06/12/%E5%85%B3%E4%BA%8E%E4%B8%80%E4%B8%AA%E6%8B%96%E6%8B%BD%E7%A7%BB%E5%8A%A8%E7%9A%84%E7%BB%84%E4%BB%B6%E7%9A%84%E5%B0%81%E8%A3%85/"><i class="iconfont iconleft"></i>关于一个拖拽移动的组件的封装</a>
+  
+  
+    <a href="/2020/06/12/%E5%9F%BA%E4%BA%8Eantd%E5%B0%81%E8%A3%85%E4%B8%80%E4%B8%AA%E9%AB%98%E5%8F%AF%E7%94%A8form%E7%BB%84%E4%BB%B6%20%E5%87%8F%E5%B0%91cv%E4%BB%A3%E7%A0%81%E5%AF%BC%E8%87%B4%E7%9A%84bug/">基于antd封装一个高可用form组件 减少cv代码导致的bug<i class="iconfont iconright"></i></a>
+  
+</nav>
+
+    </section>
+    
+      <section class="comments">
+        
+          <div class="btn" id="comments-btn">查看评论</div>
+        
+        
+<div id="valine"></div>
+<script defer src="//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js"></script>
+<script>
+  window.onload = function () {
+    var loadValine = function () {
+      new Valine({
+        el: '#valine',
+        app_id: "XgHS51JuLkeipj92BK4KyIEI-gzGzoHsz",
+        app_key: "LHxBDnRt6RQCuByhRfp1pkVN",
+        placeholder: "ヾﾉ≧∀≦)o来啊，快活啊!",
+        avatar: "mp",
+        pageSize: "10",
+        lang: "zh-CN",
+      });
+    }
+    if ( true ) {
+      $("#comments-btn").on("click", function () {
+        $(this).hide();
+        loadValine();
+      });
+    } else {
+      loadValine();
+    }
+  };
+</script>
+
+
+      </section>
+    
+  </section>
+</article>
+  </div>
+</main>
+  <footer class="footer">
+  <div class="footer-social">
+    
+    
+    
+    
+    
+    <a href="tencent://message/?Menu=yes&uin=694534942 " target="_blank" onMouseOver="this.style.color= '#12B7F5'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconQQ "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="javascript:; " target="_blank" onMouseOver="this.style.color= '#09BB07'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconwechat-fill "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="https://www.instagram.com/izhaoo/ " target="_blank" onMouseOver="this.style.color= '#DA2E76'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconinstagram "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="https://github.com/godlikedeveloper " target="_blank" onMouseOver="this.style.color= '#24292E'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  icongithub-fill "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="mailto:694534942@qq.com " target="_blank" onMouseOver="this.style.color='#FFBE5B'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconmail"></i>
+    </a>
+    
+  </div>
+  <div class="footer-copyright"><p>Copyright© 2019-2020 | <a target="_blank" href="http://blog.u-to-world.com">小笼包</a> .AllRightsReserved</p></div>
+</footer>
+  
+      <div class="fab fab-plus">
+    <i class="iconfont iconplus"></i>
+  </div>
+  <div class="fab fab-up">
+    <i class="iconfont iconcaret-up"></i>
+  </div>
+  <div class="fab fab-menu">
+    <i class="iconfont iconmenu"></i>
+  </div>
+  
+</body>
+
+
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+
+
+
+
+
+
+<script src="https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+
+
+
+
+
+
+
+
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js"></script>
+
+
+
+
+
+
+<script src="https://cdn.bootcdn.net/ajax/libs/justifiedGallery/3.7.0/js/jquery.justifiedGallery.min.js"></script>
+
+
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+<script>
+  (function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+      bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</html>

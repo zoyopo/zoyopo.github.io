@@ -1,0 +1,407 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>写一个umi插件 自动生成代码 解放cv的双手 - Paige&#39;s XSpace</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="google" content="notranslate" />
+  <meta name="referrer" content="no-referrer" />
+  
+  <meta name="keywords" content="zhaoo, hexo-theme-zhaoo,"> 
+  
+  <meta name="description" content="tech blog about web develop,引言最近在写一个中台项目，使用的react的umi框架..."> 
+  
+  <meta name="author" content="zhangyp"> 
+
+  
+    <link rel="icon" href="/images/icons/favicon-16x16.png" type="image/png" sizes="16x16">
+  
+  
+    <link rel="icon" href="/images/icons/favicon-32x32.png" type="image/png" sizes="32x32">
+  
+  
+    <link rel="apple-touch-icon" href="/images/icons/apple-touch-icon.png" sizes="180x180">
+  
+  
+    <meta rel="mask-icon" href="/images/icons/stun-logo.svg" color="#333333">
+  
+  
+    <meta rel="msapplication-TileImage" content="/images/icons/favicon-144x144.png">
+    <meta rel="msapplication-TileColor" content="#000000">
+  
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+  
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1445822_58xq2j9v1id.css">
+
+  
+
+  
+  
+  
+<link rel="stylesheet" href="https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min.css">
+
+  
+
+  
+  
+  
+<link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.18.1/styles/dracula.min.css">
+
+  
+
+  
+  
+  
+<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/justifiedGallery/3.7.0/css/justifiedGallery.min.css">
+
+  
+
+  <script>
+    var CONFIG = window.CONFIG || {}
+    CONFIG = {
+      fancybox: true,
+      pjax: false,
+      lazyload: {
+        enable: true,
+        loadingImage: '/images/theme/loading.gif',
+      },
+      donate_alipay: 'http://img.u-to-world.com/blog/alipay.png',
+      donate_wechat: 'http://img.u-to-world.com/blog/weixinpay.png',
+      motto: {
+        api: 'http://api.lovelive.tools/api/SweetNothings',
+        default: '不要温和地走进那良夜'
+      },
+      galleries: {
+        enable: 'true'
+      },
+      fab: {
+        enable: 'true',
+        alwaysShow: 'false'
+      }
+    }
+  </script>
+
+  
+
+  
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body class="lock-screen">
+  <div class="loading"></div>
+  <nav class="menu">
+  <div class="menu-close">
+    <i class="iconfont iconplus"></i>
+  </div>
+  <ul class="menu-content">
+    
+    
+    
+    
+    <li class="menu-item"><a href="/ "> 首页</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="http://u-to-world.com:8080/index.html " target="_blank" rel="noopener"> 作品(我的音乐)</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/archives "> 归档</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/tags "> 标签</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/categories "> 分类</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/about "> 关于</a></li>
+    
+  </ul>
+  <div class="menu-copyright"><p>Copyright© 2019-2020 | <a target="_blank" href="http://blog.u-to-world.com">小笼包</a> .AllRightsReserved</p></div>
+</nav>
+  <main id="main">
+  <div class="container" id="container">
+    <article class="article">
+  <section class="head">
+  <img   class="lazyload" data-original="/images/theme/post-img.jpg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  draggable="false">
+  <div class="head-mask">
+    <h1 class="head-title">写一个umi插件 自动生成代码 解放cv的双手</h1>
+    <div class="head-info">
+      <span class="post-info-item"><i class="iconfont iconcalendar"></i>2020-06-12</span
+        class="post-info-item">
+      
+      <span class="post-info-item"><i class="iconfont iconfont-size"></i>14931</span>
+    </div>
+  </div>
+</section>
+  <section class="main">
+    <section class="content">
+      <h3 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h3><p>最近在写一个中台项目，使用的<code>react</code>的<code>umi</code>框架。<br>各种增删改查。基本是列表页 新建页 详情页这种页面<br>为了避免不必要的简单重复（主要是想偷懒） 于是想去实现自己的一个代码生成器</p>
+<h3 id="简单探索"><a href="#简单探索" class="headerlink" title="简单探索"></a>简单探索</h3><p>首先，在官网上看到了官方写的一个生成器</p>
+<p>&lt;img src=”<a href="https://images.cnblogs.com/cnblogs_com/amigod/1602334/o_%E6%8E%A2%E7%B4%A2umi-%E5%AE%98%E7%BD%91.png" target="_blank" rel="noopener">https://images.cnblogs.com/cnblogs<em>com/amigod/1602334/o</em>探索 umi-官网.png</a>“/ alt=”官网图片”&gt;</p>
+<p>再去源码里扒一扒 找到关键所在</p>
+<p><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2020/png/1512483/1591943686220-fd368c99-431d-4618-8e24-1c3acb51d679.png#align=left&display=inline&height=167&margin=%5Bobject%20Object%5D&originHeight=167&originWidth=1025&size=0&status=done&style=none&width=1025" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt=""></p>
+<p>简而言之，就是利用插件的<code>api</code>注册了一个生成 model 的指令，生成器指向目录里的<code>model.js</code></p>
+<p>代码如下</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> &#123; join &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">'path'</span>;<br><span class="hljs-keyword">import</span> assert <span class="hljs-keyword">from</span> <span class="hljs-string">'assert'</span>;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> api =&gt; &#123;<br>  <span class="hljs-keyword">const</span> &#123; paths, config &#125; = api;<br>  <span class="hljs-keyword">const</span> absTemplatePath = join(__dirname, <span class="hljs-string">'../template/generators'</span>);<br><br>  <span class="hljs-keyword">return</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Generator</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">api</span>.<span class="hljs-title">Generator</span> </span>&#123;<br>    writing() &#123;<br>       ...<br>       <span class="hljs-comment">// 判断目录名是models还是model</span><br>      <span class="hljs-keyword">const</span> models = config.singular ? <span class="hljs-string">'model'</span> : <span class="hljs-string">'models'</span>;<br>      <span class="hljs-keyword">const</span> name = <span class="hljs-keyword">this</span>.args[<span class="hljs-number">0</span>].toString();<br>      ...<br>     <span class="hljs-comment">// 将模板目录下里的model代码 拷贝到项目的model目录下 并命名为指令输入的文件名</span><br>      <span class="hljs-keyword">this</span>.fs.copyTpl(<br>        join(absTemplatePath, <span class="hljs-string">'model.js'</span>),<br>        join(paths.absSrcPath, models, <span class="hljs-string">`<span class="hljs-subst">$&#123;name&#125;</span>.js`</span>),<br>        &#123;<br>          name,<br>        &#125;,<br>      );<br>    &#125;<br>  &#125;;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs javascript">../template/generators/model.js<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> &#123;<br>  state: <span class="hljs-string">'&lt;%= name %&gt;'</span>,<br>  subscriptions: &#123;<br>    setup(&#123; dispatch, history &#125;) &#123;<br>    &#125;,<br>  &#125;,<br>  reducers: &#123;<br>    update(state) &#123;<br>      <span class="hljs-keyword">return</span> <span class="hljs-string">`<span class="hljs-subst">$&#123;state&#125;</span>_&lt;%= name %&gt;`</span>;<br>    &#125;,<br>  &#125;,<br>  effects: &#123;<br>    *fetch(&#123; type, payload &#125;, &#123; put, call, select &#125;) &#123;<br>    &#125;,<br>  &#125;,<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>model 是一个常规的<code>dva</code>的<code>model</code><br>里面的<code>&lt;%= name %&gt;</code>是<code>ejs</code>语法,对应着<code>copyTpl</code>方法的第三个参数中的<code>name</code><br>模板 js 里的这个占位会被参数<code>name</code>替换</p>
+<p>因为我们项目中习惯将 model 写到模块文件夹下，而且 model 里的代码有些我们的自己的书写<br>所以需要自定义一个生成方法了。</p>
+<h3 id="继续深入"><a href="#继续深入" class="headerlink" title="继续深入"></a>继续深入</h3><p>虽然实现 但是还是带着一些疑问</p>
+<ul>
+<li>generator 是基于第三方的生成器还是 umi 自带</li>
+<li>如何注册到 umi 中去</li>
+<li>fs 又是用的是什么插件 如何运作的</li>
+</ul>
+<h4 id="generator"><a href="#generator" class="headerlink" title="generator"></a>generator</h4><p>稍微翻了一下代码 发现了 generator 的真面目<code>yeoman-generator</code><br>这玩意是一个脚手架生成器 用于生成的一些流程执行</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br></pre></td><td class="code"><pre><code class="hljs javascript">run(cb) &#123;<br>    <span class="hljs-keyword">const</span> promise = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve, reject</span>) =&gt;</span> &#123;<br>      <span class="hljs-keyword">const</span> self = <span class="hljs-keyword">this</span>;<br>      <span class="hljs-keyword">this</span>._running = <span class="hljs-literal">true</span>;<br>      <span class="hljs-keyword">this</span>.emit(<span class="hljs-string">'run'</span>);<br><br>      <span class="hljs-keyword">const</span> methods = <span class="hljs-built_in">Object</span>.getOwnPropertyNames(<span class="hljs-built_in">Object</span>.getPrototypeOf(<span class="hljs-keyword">this</span>));<br>      <span class="hljs-keyword">const</span> validMethods = methods.filter(methodIsValid);<br>      assert(<br>        validMethods.length,<br>        <span class="hljs-string">'This Generator is empty. Add at least one method for it to run.'</span><br>      );<br><br>      <span class="hljs-keyword">this</span>.env.runLoop.once(<span class="hljs-string">'end'</span>, () =&gt; &#123;<br>        <span class="hljs-keyword">this</span>.emit(<span class="hljs-string">'end'</span>);<br>        resolve();<br>      &#125;);<br><br>      <span class="hljs-comment">// Ensure a prototype method is a candidate run by default</span><br>      <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">methodIsValid</span>(<span class="hljs-params">name</span>) </span>&#123;<br>        <span class="hljs-keyword">return</span> name.charAt(<span class="hljs-number">0</span>) !== <span class="hljs-string">'_'</span> &amp;&amp; name !== <span class="hljs-string">'constructor'</span>;<br>      &#125;<br><br>      <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">addMethod</span>(<span class="hljs-params">method, methodName, queueName</span>) </span>&#123;<br>        queueName = queueName || <span class="hljs-string">'default'</span>;<br>        debug(<span class="hljs-string">`Queueing <span class="hljs-subst">$&#123;methodName&#125;</span> in <span class="hljs-subst">$&#123;queueName&#125;</span>`</span>);<br>        self.env.runLoop.add(queueName, completed =&gt; &#123;<br>          debug(<span class="hljs-string">`Running <span class="hljs-subst">$&#123;methodName&#125;</span>`</span>);<br>          self.emit(<span class="hljs-string">`method:<span class="hljs-subst">$&#123;methodName&#125;</span>`</span>);<br><br>          runAsync(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;<br>            self.async = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> <span class="hljs-keyword">this</span>.async();<br>            <span class="hljs-keyword">return</span> method.apply(self, self.args);<br>          &#125;)()<br>            .then(completed)<br>            .catch(<span class="hljs-function"><span class="hljs-params">err</span> =&gt;</span> &#123;<br>              debug(<span class="hljs-string">`An error occured while running <span class="hljs-subst">$&#123;methodName&#125;</span>`</span>, err);<br><br>              <span class="hljs-comment">// Ensure we emit the error event outside the promise context so it won't be</span><br>              <span class="hljs-comment">// swallowed when there's no listeners.</span><br>              setImmediate(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> &#123;<br>                self.emit(<span class="hljs-string">'error'</span>, err);<br>                reject(err);<br>              &#125;);<br>            &#125;);<br>        &#125;);<br>      &#125;<br><br>      <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">addInQueue</span>(<span class="hljs-params">name</span>) </span>&#123;<br>        <span class="hljs-keyword">const</span> item = <span class="hljs-built_in">Object</span>.getPrototypeOf(self)[name];<br>        <span class="hljs-keyword">const</span> queueName = self.env.runLoop.queueNames.indexOf(name) === <span class="hljs-number">-1</span> ? <span class="hljs-literal">null</span> : name;<br><br>        <span class="hljs-comment">// Name points to a function; run it!</span><br>        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> item === <span class="hljs-string">'function'</span>) &#123;<br>          <span class="hljs-keyword">return</span> addMethod(item, name, queueName);<br>        &#125;<br><br>        <span class="hljs-comment">// Not a queue hash; stop</span><br>        <span class="hljs-keyword">if</span> (!queueName) &#123;<br>          <span class="hljs-keyword">return</span>;<br>        &#125;<br><br>        <span class="hljs-comment">// Run each queue items</span><br>        _.each(item, (method, methodName) =&gt; &#123;<br>          <span class="hljs-keyword">if</span> (!_.isFunction(method) || !methodIsValid(methodName)) &#123;<br>            <span class="hljs-keyword">return</span>;<br>          &#125;<br><br>          addMethod(method, methodName, queueName);<br>        &#125;);<br>      &#125;<br><br>      validMethods.forEach(addInQueue);<br><br>      <span class="hljs-keyword">const</span> writeFiles = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> &#123;<br>        <span class="hljs-keyword">this</span>.env.runLoop.add(<span class="hljs-string">'conflicts'</span>, <span class="hljs-keyword">this</span>._writeFiles.bind(<span class="hljs-keyword">this</span>), &#123;<br>          once: <span class="hljs-string">'write memory fs to disk'</span><br>        &#125;);<br>      &#125;;<br><br>      <span class="hljs-keyword">this</span>.env.sharedFs.on(<span class="hljs-string">'change'</span>, writeFiles);<br>      writeFiles();<br><br>      <span class="hljs-comment">// Add the default conflicts handling</span><br>      <span class="hljs-keyword">this</span>.env.runLoop.add(<span class="hljs-string">'conflicts'</span>, done =&gt; &#123;<br>        <span class="hljs-keyword">this</span>.conflicter.resolve(<span class="hljs-function"><span class="hljs-params">err</span> =&gt;</span> &#123;<br>          <span class="hljs-keyword">if</span> (err) &#123;<br>            <span class="hljs-keyword">this</span>.emit(<span class="hljs-string">'error'</span>, err);<br>          &#125;<br><br>          done();<br>        &#125;);<br>      &#125;);<br><br>      _.invokeMap(<span class="hljs-keyword">this</span>._composedWith, <span class="hljs-string">'run'</span>);<br>    &#125;);<br><br>    <span class="hljs-comment">// Maintain backward compatibility with the callback function</span><br>    <span class="hljs-keyword">if</span> (_.isFunction(cb)) &#123;<br>      promise.then(cb, cb);<br>    &#125;<br><br>    <span class="hljs-keyword">return</span> promise;<br>  &#125;<br></code></pre></td></tr></table></figure>
+
+<p>这里用了 Promise 来进行流程控制</p>
+<h4 id="umi-如何整合的"><a href="#umi-如何整合的" class="headerlink" title="umi 如何整合的"></a>umi 如何整合的</h4><p>在 umi-build-dev 库下的 PluginAPI 里有这样一段代码</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> BasicGenerator <span class="hljs-keyword">from</span> <span class="hljs-string">'./BasicGenerator'</span>;<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">PluginAPI</span> </span>&#123;<br>  <span class="hljs-keyword">constructor</span>(id, service) &#123;<br> .....................<br>    <span class="hljs-keyword">this</span>.Generator = BasicGenerator;<br>  &#125;<br>  registerGenerator(name, opts) &#123;<br>    <span class="hljs-keyword">const</span> &#123; generators &#125; = <span class="hljs-keyword">this</span>.service;<br>    assert(<span class="hljs-keyword">typeof</span> name === <span class="hljs-string">'string'</span>, <span class="hljs-string">`name should be supplied with a string, but got <span class="hljs-subst">$&#123;name&#125;</span>`</span>);<br>    assert(opts &amp;&amp; opts.Generator, <span class="hljs-string">`opts.Generator should be supplied`</span>);<br>    assert(!(name <span class="hljs-keyword">in</span> generators), <span class="hljs-string">`Generator <span class="hljs-subst">$&#123;name&#125;</span> exists, please select another one.`</span>);<br>    generators[name] = opts;<br>  &#125;<br>..............<br></code></pre></td></tr></table></figure>
+
+<p>就是我们注册用的方法，这边一方便将 BasicGenerator 在实例化的时候 挂到 Generator 属性上<br>另一方吧提供了 registerGenerator 方法 也就是我们之前调用的，进行注册</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs javascript">BasicGenerator; <span class="hljs-comment">//js</span><br><span class="hljs-keyword">import</span> Generator <span class="hljs-keyword">from</span> <span class="hljs-string">"yeoman-generator"</span>;<br><span class="hljs-keyword">const</span> &#123; existsSync &#125; = <span class="hljs-built_in">require</span>(<span class="hljs-string">"fs"</span>);<br><span class="hljs-keyword">const</span> &#123; join &#125; = <span class="hljs-built_in">require</span>(<span class="hljs-string">"path"</span>);<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BasicGenerator</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Generator</span> </span>&#123;<br>  <span class="hljs-keyword">constructor</span>(args, opts) &#123;<br>    <span class="hljs-keyword">super</span>(args, opts);<br>    <span class="hljs-keyword">this</span>.isTypeScript = existsSync(join(opts.env.cwd, <span class="hljs-string">"tsconfig.json"</span>));<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> BasicGenerator;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// Service.js</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Service</span> </span>&#123;<br>  <span class="hljs-keyword">constructor</span>(&#123; cwd &#125;) &#123;<br>    <span class="hljs-comment">//  用户传入的 cmd 不可信任 转化一下</span><br>    <span class="hljs-keyword">this</span>.cwd = cwd || process.cwd();<br><br>    <span class="hljs-keyword">try</span> &#123;<br>    ....<br>    <span class="hljs-keyword">this</span>.generators = &#123;&#125;;<br>    ....<br></code></pre></td></tr></table></figure>
+
+<p>发现 generator 只是一个接收数据的对象</p>
+<p>这里顺便一提，umi 插件中经常用到的 api 其实就是在 service 中用 proxy 属性代理了一下 pluginAPI 生成的<br>在初始化插件件方法 <code>initPlugin</code>中</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">this</span>是service对象;<br><span class="hljs-keyword">const</span> api = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Proxy</span>(<span class="hljs-keyword">new</span> PluginAPI(id, <span class="hljs-keyword">this</span>), &#123;<br>  <span class="hljs-keyword">get</span>: (target, prop) =&gt; &#123;<br>    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.pluginMethods[prop]) &#123;<br>      <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.pluginMethods[prop];<br>    &#125;<br>    <span class="hljs-keyword">if</span> (<br>      [<br>        <span class="hljs-comment">// methods</span><br>        <span class="hljs-string">"changePluginOption"</span>,<br>        <span class="hljs-string">"applyPlugins"</span>,<br>        <span class="hljs-string">"_applyPluginsAsync"</span>,<br>        <span class="hljs-string">"writeTmpFile"</span>,<br>        <span class="hljs-string">"getRoutes"</span>,<br>        <span class="hljs-string">"getRouteComponents"</span>,<br>        <span class="hljs-comment">// properties</span><br>        <span class="hljs-string">"cwd"</span>,<br>        <span class="hljs-string">"config"</span>,<br>        <span class="hljs-string">"webpackConfig"</span>,<br>        <span class="hljs-string">"pkg"</span>,<br>        <span class="hljs-string">"paths"</span>,<br>        <span class="hljs-string">"routes"</span>,<br>        <span class="hljs-comment">// error handler</span><br>        <span class="hljs-string">"UmiError"</span>,<br>        <span class="hljs-string">"printUmiError"</span>,<br>        <span class="hljs-comment">// dev methods</span><br>        <span class="hljs-string">"restart"</span>,<br>        <span class="hljs-string">"printError"</span>,<br>        <span class="hljs-string">"printWarn"</span>,<br>        <span class="hljs-string">"refreshBrowser"</span>,<br>        <span class="hljs-string">"rebuildTmpFiles"</span>,<br>        <span class="hljs-string">"rebuildHTML"</span>,<br>      ].includes(prop)<br>    ) &#123;<br>      <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> <span class="hljs-keyword">this</span>[prop] === <span class="hljs-string">"function"</span>) &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>[prop].bind(<span class="hljs-keyword">this</span>);<br>      &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>[prop];<br>      &#125;<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>      <span class="hljs-keyword">return</span> target[prop];<br>    &#125;<br>  &#125;,<br>&#125;);<br></code></pre></td></tr></table></figure>
+
+<p>大概意思就是对 PluginAPI 实例化后的属性进行 get 的代理 优先使用 pluginMethods 里注册的方法 其次是如果是数组总的方法，优先在 service 里找 最后才到 PluignAPI</p>
+<h4 id="指令注册和方法实现"><a href="#指令注册和方法实现" class="headerlink" title="指令注册和方法实现"></a>指令注册和方法实现</h4><p>代码入口:umi-build-dev/src/plugin/commnds 下的 generate 文件夹下</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">api</span>) </span>&#123;<br>  <span class="hljs-keyword">const</span> &#123;<br>    service: &#123; generators &#125;,<br>    log,<br>  &#125; = api;<br><br>  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">generate</span>(<span class="hljs-params">args = &#123;&#125;</span>) </span>&#123;<br>    <span class="hljs-keyword">try</span> &#123;<br>      <span class="hljs-keyword">const</span> name = args._[<span class="hljs-number">0</span>];<br>      assert(name, <span class="hljs-string">`run <span class="hljs-subst">$&#123;chalk.cyan.underline(<span class="hljs-string">'umi help generate'</span>)&#125;</span> to checkout the usage`</span>);<br>      assert(generators[name], <span class="hljs-string">`Generator <span class="hljs-subst">$&#123;chalk.cyan.underline(name)&#125;</span> not found`</span>);<br>      <span class="hljs-keyword">const</span> &#123; Generator, resolved &#125; = generators[name];<br>      <span class="hljs-keyword">const</span> generator = <span class="hljs-keyword">new</span> Generator(args._.slice(<span class="hljs-number">1</span>), &#123;<br>        ...args,<br>        env: &#123;<br>          cwd: api.cwd,<br>        &#125;,<br>        resolved: resolved || __dirname,<br>      &#125;);<br>      <span class="hljs-keyword">return</span> generator<br>        .run()<br>        .then(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> &#123;<br>          log.success(<span class="hljs-string">''</span>);<br>        &#125;)<br>        .catch(<span class="hljs-function"><span class="hljs-params">e</span> =&gt;</span> &#123;<br>          log.error(e);<br>        &#125;);<br>    &#125; <span class="hljs-keyword">catch</span> (e) &#123;<br>      log.error(<span class="hljs-string">`Generate failed, <span class="hljs-subst">$&#123;e.message&#125;</span>`</span>);<br>      <span class="hljs-built_in">console</span>.log(e);<br>    &#125;<br>  &#125;<br><br>  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">registerCommand</span>(<span class="hljs-params">command, description</span>) </span>&#123;<br>    <span class="hljs-keyword">const</span> details = <span class="hljs-string">`</span><br><span class="hljs-string">Examples:</span><br><span class="hljs-string"></span><br><span class="hljs-string">  <span class="hljs-subst">$&#123;chalk.gray(<span class="hljs-string">'# generate page users'</span>)&#125;</span></span><br><span class="hljs-string">  umi generate page users</span><br><span class="hljs-string"></span><br><span class="hljs-string">  <span class="hljs-subst">$&#123;chalk.gray(<span class="hljs-string">'# g is the alias for generate'</span>)&#125;</span></span><br><span class="hljs-string">  umi g page index</span><br><span class="hljs-string"></span><br><span class="hljs-string">  <span class="hljs-subst">$&#123;chalk.gray(<span class="hljs-string">'# generate page with less file'</span>)&#125;</span></span><br><span class="hljs-string">  umi g page index --less</span><br><span class="hljs-string">  `</span>.trim();<br>    api.registerCommand(<br>      command,<br>      &#123;<br>        description,<br>        usage: <span class="hljs-string">`umi <span class="hljs-subst">$&#123;command&#125;</span> type name [options]`</span>,<br>        details,<br>      &#125;,<br>      generate,<br>    );<br>  &#125;<br><br>  registerCommand(<span class="hljs-string">'g'</span>, <span class="hljs-string">'generate code snippets quickly (alias for generate)'</span>);<br>  registerCommand(<span class="hljs-string">'generate'</span>, <span class="hljs-string">'generate code snippets quickly'</span>);<br></code></pre></td></tr></table></figure>
+
+<h4 id="关于-fs"><a href="#关于-fs" class="headerlink" title="关于 fs"></a>关于 fs</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// yeoman-generator</span><br><span class="hljs-keyword">const</span> FileEditor = <span class="hljs-built_in">require</span>(<span class="hljs-string">'mem-fs-editor'</span>);<br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Generator</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">EventEmitter</span> </span>&#123;<br>  <span class="hljs-keyword">constructor</span>(args, options) &#123;<br>    <span class="hljs-keyword">super</span>();<br>    ..........<br>    <span class="hljs-keyword">this</span>.fs = FileEditor.create(<span class="hljs-keyword">this</span>.env.sharedFs);<br>  &#125;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// mem-fs-editor</span><br><span class="hljs-meta">"use strict"</span>;<br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">EditionInterface</span>(<span class="hljs-params">store</span>) </span>&#123;<br>  <span class="hljs-keyword">this</span>.store = store;<br>&#125;<br><br>EditionInterface.prototype.read = <span class="hljs-built_in">require</span>(<span class="hljs-string">"./actions/read.js"</span>);<br>EditionInterface.prototype.readJSON = <span class="hljs-built_in">require</span>(<span class="hljs-string">"./actions/read-json.js"</span>);<br>EditionInterface.prototype.exists = <span class="hljs-built_in">require</span>(<span class="hljs-string">"./actions/exists"</span>);<br>EditionInterface.prototype.write = <span class="hljs-built_in">require</span>(<span class="hljs-string">"./actions/write.js"</span>);<br>EditionInterface.prototype.writeJSON = <span class="hljs-built_in">require</span>(<span class="hljs-string">"./actions/write-json.js"</span>);<br>EditionInterface.prototype.extendJSON = <span class="hljs-built_in">require</span>(<span class="hljs-string">"./actions/extend-json.js"</span>);<br>EditionInterface.prototype.append = <span class="hljs-built_in">require</span>(<span class="hljs-string">"./actions/append.js"</span>);<br>EditionInterface.prototype.delete = <span class="hljs-built_in">require</span>(<span class="hljs-string">"./actions/delete.js"</span>);<br>EditionInterface.prototype.copy = <span class="hljs-built_in">require</span>(<span class="hljs-string">"./actions/copy.js"</span>).copy;<br>EditionInterface.prototype._copySingle = <span class="hljs-built_in">require</span>(<span class="hljs-string">"./actions/copy.js"</span>)._copySingle;<br>EditionInterface.prototype.copyTpl = <span class="hljs-built_in">require</span>(<span class="hljs-string">"./actions/copy-tpl.js"</span>);<br>EditionInterface.prototype.move = <span class="hljs-built_in">require</span>(<span class="hljs-string">"./actions/move.js"</span>);<br>EditionInterface.prototype.commit = <span class="hljs-built_in">require</span>(<span class="hljs-string">"./actions/commit.js"</span>);<br><br>exports.create = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">store</span>) </span>&#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> EditionInterface(store);<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>我们用到的 copyTpl 方法</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-meta">"use strict"</span>;<br><br><span class="hljs-keyword">var</span> extend = <span class="hljs-built_in">require</span>(<span class="hljs-string">"deep-extend"</span>);<br><span class="hljs-keyword">var</span> ejs = <span class="hljs-built_in">require</span>(<span class="hljs-string">"ejs"</span>);<br><span class="hljs-keyword">var</span> isBinaryFileSync = <span class="hljs-built_in">require</span>(<span class="hljs-string">"isbinaryfile"</span>).isBinaryFileSync;<br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">render</span>(<span class="hljs-params">contents, filename, context, tplSettings</span>) </span>&#123;<br>  <span class="hljs-keyword">let</span> result;<br><br>  <span class="hljs-keyword">const</span> contentsBuffer = Buffer.from(contents, <span class="hljs-string">"binary"</span>);<br>  <span class="hljs-keyword">if</span> (isBinaryFileSync(contentsBuffer, contentsBuffer.length)) &#123;<br>    result = contentsBuffer;<br>  &#125; <span class="hljs-keyword">else</span> &#123;<br>    result = ejs.render(<br>      contents.toString(),<br>      context,<br>      <span class="hljs-comment">// Setting filename by default allow including partials.</span><br>      extend(&#123; <span class="hljs-attr">filename</span>: filename &#125;, tplSettings)<br>    );<br>  &#125;<br><br>  <span class="hljs-keyword">return</span> result;<br>&#125;<br><br><span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">from, to, context, tplSettings, options</span>) </span>&#123;<br>  context = context || &#123;&#125;;<br>  tplSettings = tplSettings || &#123;&#125;;<br><br>  <span class="hljs-keyword">this</span>.copy(<br>    <span class="hljs-keyword">from</span>,<br>    to,<br>    extend(options || &#123;&#125;, &#123;<br>      process: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">contents, filename</span>) </span>&#123;<br>        <span class="hljs-keyword">return</span> render(contents, filename, context, tplSettings);<br>      &#125;,<br>    &#125;),<br>    context,<br>    tplSettings<br>  );<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<h3 id="上手"><a href="#上手" class="headerlink" title="上手"></a>上手</h3><p>以下是我写的一个生成规则</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> &#123; join &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">"path"</span>;<br><span class="hljs-keyword">const</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">"fs"</span>);<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> (api) =&gt; &#123;<br>  <span class="hljs-keyword">const</span> &#123; paths &#125; = api;<br>  <span class="hljs-keyword">const</span> configPath = join(paths.absSrcPath, <span class="hljs-string">"generatorConfig.js"</span>);<br>  <span class="hljs-keyword">const</span> absTemplatePath = join(__dirname, <span class="hljs-string">"../template/generators"</span>);<br>  <span class="hljs-keyword">return</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Generator</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">api</span>.<span class="hljs-title">Generator</span> </span>&#123;<br>    writing() &#123;<br>      <span class="hljs-keyword">const</span> name = <span class="hljs-keyword">this</span>.args[<span class="hljs-number">0</span>].toString();<br>      <span class="hljs-comment">// assert(!name.includes('/'), `model name should not contains /, bug got $&#123;name&#125;`);</span><br>      <span class="hljs-keyword">const</span> type = <span class="hljs-keyword">this</span>.args[<span class="hljs-number">1</span>] &amp;&amp; <span class="hljs-keyword">this</span>.args[<span class="hljs-number">1</span>].toString();<br>      <span class="hljs-comment">// type即为命令后跟的参数</span><br>      <span class="hljs-keyword">switch</span> (type) &#123;<br>        <span class="hljs-keyword">case</span> <span class="hljs-string">"list"</span>:<br>          <span class="hljs-keyword">if</span> (!fs.existsSync(configPath)) &#123;<br>            api.log.error(<span class="hljs-string">"新建列表模板缺少generatorConfig.js"</span>);<br>            <span class="hljs-keyword">return</span>;<br>          &#125;<br>          <span class="hljs-keyword">const</span> genConfig = <span class="hljs-built_in">require</span>(configPath);<br>          <span class="hljs-keyword">this</span>.fs.copyTpl(<br>            join(absTemplatePath, <span class="hljs-string">"list.js"</span>),<br>            join(paths.absSrcPath, <span class="hljs-string">`pages/<span class="hljs-subst">$&#123;name&#125;</span>/<span class="hljs-subst">$&#123;type&#125;</span>`</span>, <span class="hljs-string">`index.js`</span>),<br>            &#123;<br>              name,<br>              queryFormItems: genConfig[name][<span class="hljs-string">"queryFormItems"</span>],<br>              columns: genConfig[name][<span class="hljs-string">"columns"</span>],<br>            &#125;<br>          );<br>      &#125;<br>      <span class="hljs-keyword">this</span>.fs.copyTpl(<br>        join(absTemplatePath, <span class="hljs-string">"model.js"</span>),<br>        join(paths.absSrcPath, <span class="hljs-string">`pages/<span class="hljs-subst">$&#123;name&#125;</span>`</span>, <span class="hljs-string">`model.js`</span>),<br>        &#123;<br>          name,<br>        &#125;<br>      );<br>      <span class="hljs-keyword">this</span>.fs.copyTpl(<br>        join(absTemplatePath, <span class="hljs-string">"index.less"</span>),<br>        join(paths.absSrcPath, <span class="hljs-string">`pages/<span class="hljs-subst">$&#123;name&#125;</span>`</span>, <span class="hljs-string">`index.less`</span>),<br>        &#123;<br>          name,<br>        &#125;<br>      );<br>      <span class="hljs-keyword">this</span>.fs.copyTpl(<br>        join(absTemplatePath, <span class="hljs-string">"service.js"</span>),<br>        join(paths.absSrcPath, <span class="hljs-string">`pages/<span class="hljs-subst">$&#123;name&#125;</span>`</span>, <span class="hljs-string">`service.js`</span>),<br>        &#123;<br>          name,<br>        &#125;<br>      );<br>    &#125;<br>  &#125;;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>添加了如下功能</p>
+<ul>
+<li>结合项目中的目录结构约定进行目录生成（比如我们约定用 service 来进行接口方法管理）</li>
+<li>增加在命令后面加不同参数 生成不同的特征模块（比如列表 详情）</li>
+<li>增加了配置项 可以在 node 环境下去读取配置 再生成到代码里去（比如 <code>antd</code>的列表的<code>columns</code>）</li>
+</ul>
+<p>再仿照<code>umi-dva-plugin</code>的流程进行<code>命令注册</code>和<code>插件导出</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs plain">import &#123; join &#125; from &#39;path&#39;;<br>export default(api, opts &#x3D; &#123;&#125;)&#x3D;&gt; &#123;<br>  api.registerGenerator(&#39;dva:newPage&#39;, &#123;<br>    Generator: require(&#39;.&#x2F;model&#39;).default(api),<br>    resolved: join(__dirname, &#39;.&#x2F;model&#39;),<br>  &#125;);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="遇到问题"><a href="#遇到问题" class="headerlink" title="遇到问题"></a>遇到问题</h3><p>在探索和上手遇到挺多问题，总结如下 1.阅读源码 加以甄别 ，因为<code>umi-dva-plugin</code>的代码贼多，模板功能只是其中的非核心功能，所以也是看了好几遍 发现这个功能其实和其他代码并不存在耦合 可以单独提出来 2.探索模板语法 一开始不知道是<code>ejs</code> 找了下<code>copyTpl</code>方法<br><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2020/png/1512483/1591943686860-58e3860d-fff7-4f46-af0a-dbfc5760430c.png#align=left&display=inline&height=556&margin=%5Bobject%20Object%5D&originHeight=556&originWidth=1590&size=0&status=done&style=none&width=1590" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt=""><br>然后就恍然大悟，怪不得看起来那么熟悉,顺便学了一下 ejs 模板<code>&lt;%= %&gt;</code>和<code>&lt;%- %&gt;</code>的区别 3.兼容性问题 遇到的一个贼奇怪的问题 node 环境兼容的问题<br>一开始不知道 用 babel 转成 es5 了   一直报错<code>class constructor Generator cannot be invoked without &#39;new</code><br>看上去就是个兼容问题 然后用 web 版的 babel 转换器 关闭<code>preset es2015</code> 调整<code>node版本</code>到<code>6.4</code>主要是把对象的<code>解构赋值要转换掉</code> 不然依赖的三方<code>Generator</code>可能不认</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>现在看来其实写这个插件其实并不难，但是在当时很多知识都不了解的情况下去看，确实还是有些许棘手，了解用法和原理比较有挑战，毕竟不是自己写的代码，所以还是要加强代码方便的阅读。</p>
+<h3 id="项目链接"><a href="#项目链接" class="headerlink" title="项目链接"></a>项目链接</h3><p><a href="https://www.npmjs.com/package/dva-enhance" target="_blank" rel="noopener">戳我查看</a></p>
+
+    </section>
+    <section class="extra">
+      
+        <section class="donate">
+  <div class="qrcode">
+    <img   class="lazyload" data-original="http://img.u-to-world.com/blog/alipay.png" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" >
+  </div>
+  <div class="icon">
+    <a href="javascript:;" id="alipay"><i class="iconfont iconalipay"></i></a>
+    <a href="javascript:;" id="wechat"><i class="iconfont iconwechat-fill"></i></a>
+  </div>
+</section>
+      
+      
+      
+<nav class="nav">
+  
+    <a href="/2020/06/12/%E5%9F%BA%E4%BA%8Eantd%E5%B0%81%E8%A3%85%E4%B8%80%E4%B8%AA%E9%AB%98%E5%8F%AF%E7%94%A8form%E7%BB%84%E4%BB%B6%20%E5%87%8F%E5%B0%91cv%E4%BB%A3%E7%A0%81%E5%AF%BC%E8%87%B4%E7%9A%84bug/"><i class="iconfont iconleft"></i>基于antd封装一个高可用form组件 减少cv代码导致的bug</a>
+  
+  
+    <a href="/2020/06/12/%E8%87%AA%E5%AE%9A%E4%B9%89hooks%E8%B8%A9%E5%9D%91%E8%AE%B0%E2%80%94%E2%80%94treeSelect%E7%BB%84%E4%BB%B6%E9%80%BB%E8%BE%91%E5%B0%81%E8%A3%85/">自定义hooks踩坑记——treeSelect组件逻辑封装<i class="iconfont iconright"></i></a>
+  
+</nav>
+
+    </section>
+    
+      <section class="comments">
+        
+          <div class="btn" id="comments-btn">查看评论</div>
+        
+        
+<div id="valine"></div>
+<script defer src="//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js"></script>
+<script>
+  window.onload = function () {
+    var loadValine = function () {
+      new Valine({
+        el: '#valine',
+        app_id: "XgHS51JuLkeipj92BK4KyIEI-gzGzoHsz",
+        app_key: "LHxBDnRt6RQCuByhRfp1pkVN",
+        placeholder: "ヾﾉ≧∀≦)o来啊，快活啊!",
+        avatar: "mp",
+        pageSize: "10",
+        lang: "zh-CN",
+      });
+    }
+    if ( true ) {
+      $("#comments-btn").on("click", function () {
+        $(this).hide();
+        loadValine();
+      });
+    } else {
+      loadValine();
+    }
+  };
+</script>
+
+
+      </section>
+    
+  </section>
+</article>
+  </div>
+</main>
+  <footer class="footer">
+  <div class="footer-social">
+    
+    
+    
+    
+    
+    <a href="tencent://message/?Menu=yes&uin=694534942 " target="_blank" onMouseOver="this.style.color= '#12B7F5'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconQQ "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="javascript:; " target="_blank" onMouseOver="this.style.color= '#09BB07'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconwechat-fill "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="https://www.instagram.com/izhaoo/ " target="_blank" onMouseOver="this.style.color= '#DA2E76'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconinstagram "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="https://github.com/godlikedeveloper " target="_blank" onMouseOver="this.style.color= '#24292E'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  icongithub-fill "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="mailto:694534942@qq.com " target="_blank" onMouseOver="this.style.color='#FFBE5B'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconmail"></i>
+    </a>
+    
+  </div>
+  <div class="footer-copyright"><p>Copyright© 2019-2020 | <a target="_blank" href="http://blog.u-to-world.com">小笼包</a> .AllRightsReserved</p></div>
+</footer>
+  
+      <div class="fab fab-plus">
+    <i class="iconfont iconplus"></i>
+  </div>
+  <div class="fab fab-up">
+    <i class="iconfont iconcaret-up"></i>
+  </div>
+  <div class="fab fab-menu">
+    <i class="iconfont iconmenu"></i>
+  </div>
+  
+</body>
+
+
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+
+
+
+
+
+
+<script src="https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+
+
+
+
+
+
+
+
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js"></script>
+
+
+
+
+
+
+<script src="https://cdn.bootcdn.net/ajax/libs/justifiedGallery/3.7.0/js/jquery.justifiedGallery.min.js"></script>
+
+
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+<script>
+  (function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+      bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</html>

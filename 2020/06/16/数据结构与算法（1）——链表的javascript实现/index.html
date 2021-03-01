@@ -1,0 +1,354 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>数据结构与算法（1）——链表的javascript实现 - Paige&#39;s XSpace</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="google" content="notranslate" />
+  <meta name="referrer" content="no-referrer" />
+  
+  <meta name="keywords" content="zhaoo, hexo-theme-zhaoo,"> 
+  
+  <meta name="description" content="tech blog about web develop,
+链表结构中主要包含头结点，尾结点和中间结点 一个结点..."> 
+  
+  <meta name="author" content="zhangyp"> 
+
+  
+    <link rel="icon" href="/images/icons/favicon-16x16.png" type="image/png" sizes="16x16">
+  
+  
+    <link rel="icon" href="/images/icons/favicon-32x32.png" type="image/png" sizes="32x32">
+  
+  
+    <link rel="apple-touch-icon" href="/images/icons/apple-touch-icon.png" sizes="180x180">
+  
+  
+    <meta rel="mask-icon" href="/images/icons/stun-logo.svg" color="#333333">
+  
+  
+    <meta rel="msapplication-TileImage" content="/images/icons/favicon-144x144.png">
+    <meta rel="msapplication-TileColor" content="#000000">
+  
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+  
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1445822_58xq2j9v1id.css">
+
+  
+
+  
+  
+  
+<link rel="stylesheet" href="https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min.css">
+
+  
+
+  
+  
+  
+<link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.18.1/styles/dracula.min.css">
+
+  
+
+  
+  
+  
+<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/justifiedGallery/3.7.0/css/justifiedGallery.min.css">
+
+  
+
+  <script>
+    var CONFIG = window.CONFIG || {}
+    CONFIG = {
+      fancybox: true,
+      pjax: false,
+      lazyload: {
+        enable: true,
+        loadingImage: '/images/theme/loading.gif',
+      },
+      donate_alipay: 'http://img.u-to-world.com/blog/alipay.png',
+      donate_wechat: 'http://img.u-to-world.com/blog/weixinpay.png',
+      motto: {
+        api: 'http://api.lovelive.tools/api/SweetNothings',
+        default: '不要温和地走进那良夜'
+      },
+      galleries: {
+        enable: 'true'
+      },
+      fab: {
+        enable: 'true',
+        alwaysShow: 'false'
+      }
+    }
+  </script>
+
+  
+
+  
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body class="lock-screen">
+  <div class="loading"></div>
+  <nav class="menu">
+  <div class="menu-close">
+    <i class="iconfont iconplus"></i>
+  </div>
+  <ul class="menu-content">
+    
+    
+    
+    
+    <li class="menu-item"><a href="/ "> 首页</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="http://u-to-world.com:8080/index.html " target="_blank" rel="noopener"> 作品(我的音乐)</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/archives "> 归档</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/tags "> 标签</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/categories "> 分类</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/about "> 关于</a></li>
+    
+  </ul>
+  <div class="menu-copyright"><p>Copyright© 2019-2020 | <a target="_blank" href="http://blog.u-to-world.com">小笼包</a> .AllRightsReserved</p></div>
+</nav>
+  <main id="main">
+  <div class="container" id="container">
+    <article class="article">
+  <section class="head">
+  <img   class="lazyload" data-original="/images/theme/post-img.jpg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  draggable="false">
+  <div class="head-mask">
+    <h1 class="head-title">数据结构与算法（1）——链表的javascript实现</h1>
+    <div class="head-info">
+      <span class="post-info-item"><i class="iconfont iconcalendar"></i>2020-06-16</span
+        class="post-info-item">
+      
+      <span class="post-info-item"><i class="iconfont iconfont-size"></i>8825</span>
+    </div>
+  </div>
+</section>
+  <section class="main">
+    <section class="content">
+      <p><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2020/svg/1512483/1592275761196-92bd7860-2cb1-4baf-b3b7-decd205858ee.svg#align=left&display=inline&height=49&margin=%5Bobject%20Object%5D&name=linkedList.svg&originHeight=41&originWidth=408&size=12690&status=done&style=none&width=483" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="linkedList.svg"></p>
+<p>链表结构中主要包含头结点，尾结点和中间结点 一个结点包含数据以及指向下个结点的指针</p>
+<h2 id="LinkedListNode"><a href="#LinkedListNode" class="headerlink" title="LinkedListNode"></a>LinkedListNode</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">LinkedListNode</span> </span>&#123;<br>  <span class="hljs-keyword">constructor</span>(value, next = null) &#123;<br>    <span class="hljs-keyword">this</span>.value = value; <span class="hljs-comment">//存放值</span><br>    <span class="hljs-keyword">this</span>.next = next; <span class="hljs-comment">// 指向下一个结点</span><br>  &#125;<br><br>  toString(callback) &#123;<br>    <span class="hljs-keyword">return</span> callback ? callback(<span class="hljs-keyword">this</span>.value) : <span class="hljs-string">`<span class="hljs-subst">$&#123;<span class="hljs-keyword">this</span>.value&#125;</span>`</span>;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="LinkedList"><a href="#LinkedList" class="headerlink" title="LinkedList"></a>LinkedList</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">LinkedList</span> </span>&#123;<br>  <span class="hljs-comment">/**</span><br><span class="hljs-comment">   * <span class="hljs-doctag">@param <span class="hljs-type">&#123;Function&#125;</span> </span>[comparatorFunction]</span><br><span class="hljs-comment">   */</span><br>  <span class="hljs-keyword">constructor</span>(comparatorFunction) &#123;<br>    <span class="hljs-comment">// 初始化 头结点 尾结点 引入值对比函数</span><br>    <span class="hljs-keyword">this</span>.head = <span class="hljs-literal">null</span>;<br>    <span class="hljs-keyword">this</span>.tail = <span class="hljs-literal">null</span>;<br>    <span class="hljs-keyword">this</span>.compare = <span class="hljs-keyword">new</span> Comparator(comparatorFunction);<br>  &#125;<br><br>  <span class="hljs-comment">/**</span><br><span class="hljs-comment">   * <span class="hljs-doctag">@param <span class="hljs-type">&#123;*&#125;</span> <span class="hljs-variable">value</span></span></span><br><span class="hljs-comment">   * <span class="hljs-doctag">@return <span class="hljs-type">&#123;LinkedList&#125;</span></span></span><br><span class="hljs-comment">   * 前置结点添加</span><br><span class="hljs-comment">   */</span><br>  prepend(value) &#123;<br>    <span class="hljs-comment">// 新结点成为一个头结点</span><br>    <span class="hljs-keyword">const</span> newNode = <span class="hljs-keyword">new</span> LinkedListNode(value, <span class="hljs-keyword">this</span>.head);<br>    <span class="hljs-keyword">this</span>.head = newNode;<br><br>    <span class="hljs-comment">// 如果是第一个结点 那么既是头也是尾</span><br>    <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.tail) &#123;<br>      <span class="hljs-keyword">this</span>.tail = newNode;<br>    &#125;<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;<br>  &#125;<br><br>  <span class="hljs-comment">/**</span><br><span class="hljs-comment">   * <span class="hljs-doctag">@param <span class="hljs-type">&#123;*&#125;</span> <span class="hljs-variable">value</span></span></span><br><span class="hljs-comment">   * <span class="hljs-doctag">@return <span class="hljs-type">&#123;LinkedList&#125;</span></span></span><br><span class="hljs-comment">   * 后置结点添加</span><br><span class="hljs-comment">   */</span><br>  append(value) &#123;<br>    <span class="hljs-keyword">const</span> newNode = <span class="hljs-keyword">new</span> LinkedListNode(value);<br><br>    <span class="hljs-comment">// If there is no head yet let's make new node a head.</span><br>    <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.head) &#123;<br>      <span class="hljs-keyword">this</span>.head = newNode;<br>      <span class="hljs-keyword">this</span>.tail = newNode;<br><br>      <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;<br>    &#125;<br><br>    <span class="hljs-comment">// 上一个尾部结点指向新结点 新结点成为尾部结点</span><br>    <span class="hljs-keyword">this</span>.tail.next = newNode;<br>    <span class="hljs-keyword">this</span>.tail = newNode;<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;<br>  &#125;<br><br>  <span class="hljs-comment">/**</span><br><span class="hljs-comment">   * <span class="hljs-doctag">@param <span class="hljs-type">&#123;*&#125;</span> <span class="hljs-variable">value</span></span></span><br><span class="hljs-comment">   * <span class="hljs-doctag">@return <span class="hljs-type">&#123;LinkedListNode&#125;</span></span></span><br><span class="hljs-comment">   */</span><br>  <span class="hljs-keyword">delete</span>(value) &#123;<br>    <span class="hljs-comment">// 没有头结点 还遍历个p</span><br>    <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.head) &#123;<br>      <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>    &#125;<br><br>    <span class="hljs-keyword">let</span> deletedNode = <span class="hljs-literal">null</span>;<br><br>    <span class="hljs-comment">// If the head must be deleted then make next node that is differ</span><br>    <span class="hljs-comment">// from the head to be a new head.</span><br>    <span class="hljs-keyword">while</span> (<span class="hljs-keyword">this</span>.head &amp;&amp; <span class="hljs-keyword">this</span>.compare.equal(<span class="hljs-keyword">this</span>.head.value, value)) &#123;<br>      deletedNode = <span class="hljs-keyword">this</span>.head;<br>      <span class="hljs-keyword">this</span>.head = <span class="hljs-keyword">this</span>.head.next;<br>    &#125;<br><br>    <span class="hljs-keyword">let</span> currentNode = <span class="hljs-keyword">this</span>.head;<br><br>    <span class="hljs-keyword">if</span> (currentNode !== <span class="hljs-literal">null</span>) &#123;<br>      <span class="hljs-keyword">while</span> (currentNode.next) &#123;<br>        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.compare.equal(currentNode.next.value, value)) &#123;<br>          <span class="hljs-comment">// 满足删除条件 把当前结点指针指向下结点的下个结点</span><br>          deletedNode = currentNode.next;<br>          currentNode.next = currentNode.next.next;<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>          <span class="hljs-comment">// 否则 继续遍历</span><br>          currentNode = currentNode.next;<br>        &#125;<br>      &#125;<br>    &#125;<br><br>    <span class="hljs-comment">// 如果是尾结点满足删除条件 上面已经处理了 currentNode是尾结点上个结点</span><br>    <span class="hljs-comment">// 这里重新指下尾结点</span><br>    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.compare.equal(<span class="hljs-keyword">this</span>.tail.value, value)) &#123;<br>      <span class="hljs-keyword">this</span>.tail = currentNode;<br>    &#125;<br><br>    <span class="hljs-keyword">return</span> deletedNode;<br>  &#125;<br><br>  <span class="hljs-comment">/**</span><br><span class="hljs-comment">   * <span class="hljs-doctag">@param <span class="hljs-type">&#123;Object&#125;</span> <span class="hljs-variable">findParams</span></span></span><br><span class="hljs-comment">   * <span class="hljs-doctag">@param <span class="hljs-type">&#123;*&#125;</span> </span>findParams.value</span><br><span class="hljs-comment">   * <span class="hljs-doctag">@param <span class="hljs-type">&#123;function&#125;</span> </span>[findParams.callback]</span><br><span class="hljs-comment">   * <span class="hljs-doctag">@return <span class="hljs-type">&#123;LinkedListNode&#125;</span></span></span><br><span class="hljs-comment">   */</span><br>  find(&#123; value = <span class="hljs-literal">undefined</span>, callback = <span class="hljs-literal">undefined</span> &#125;) &#123;<br>    <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.head) &#123;<br>      <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>    &#125;<br><br>    <span class="hljs-keyword">let</span> currentNode = <span class="hljs-keyword">this</span>.head;<br><br>    <span class="hljs-keyword">while</span> (currentNode) &#123;<br>      <span class="hljs-comment">// 若自定义查找方法callback 使用其查找</span><br>      <span class="hljs-keyword">if</span> (callback &amp;&amp; callback(currentNode.value)) &#123;<br>        <span class="hljs-keyword">return</span> currentNode;<br>      &#125;<br><br>      <span class="hljs-comment">// If value is specified then try to compare by value..</span><br>      <span class="hljs-keyword">if</span> (value !== <span class="hljs-literal">undefined</span> &amp;&amp; <span class="hljs-keyword">this</span>.compare.equal(currentNode.value, value)) &#123;<br>        <span class="hljs-keyword">return</span> currentNode;<br>      &#125;<br><br>      currentNode = currentNode.next;<br>    &#125;<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>  &#125;<br><br>  <span class="hljs-comment">/**</span><br><span class="hljs-comment">   * <span class="hljs-doctag">@return <span class="hljs-type">&#123;LinkedListNode&#125;</span></span></span><br><span class="hljs-comment">   */</span><br>  deleteTail() &#123;<br>    <span class="hljs-keyword">const</span> deletedTail = <span class="hljs-keyword">this</span>.tail;<br><br>    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.head === <span class="hljs-keyword">this</span>.tail) &#123;<br>      <span class="hljs-comment">// There is only one node in linked list.</span><br>      <span class="hljs-keyword">this</span>.head = <span class="hljs-literal">null</span>;<br>      <span class="hljs-keyword">this</span>.tail = <span class="hljs-literal">null</span>;<br><br>      <span class="hljs-keyword">return</span> deletedTail;<br>    &#125;<br><br>    <span class="hljs-comment">// If there are many nodes in linked list...</span><br><br>    <span class="hljs-comment">// Rewind to the last node and delete "next" link for the node before the last one.</span><br>    <span class="hljs-keyword">let</span> currentNode = <span class="hljs-keyword">this</span>.head;<br>    <span class="hljs-keyword">while</span> (currentNode.next) &#123;<br>      <span class="hljs-keyword">if</span> (!currentNode.next.next) &#123;<br>        currentNode.next = <span class="hljs-literal">null</span>;<br>      &#125; <span class="hljs-keyword">else</span> &#123;<br>        currentNode = currentNode.next;<br>      &#125;<br>    &#125;<br><br>    <span class="hljs-keyword">this</span>.tail = currentNode;<br><br>    <span class="hljs-keyword">return</span> deletedTail;<br>  &#125;<br><br>  <span class="hljs-comment">/**</span><br><span class="hljs-comment">   * <span class="hljs-doctag">@return <span class="hljs-type">&#123;LinkedListNode&#125;</span></span></span><br><span class="hljs-comment">   */</span><br>  deleteHead() &#123;<br>    <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.head) &#123;<br>      <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>    &#125;<br><br>    <span class="hljs-keyword">const</span> deletedHead = <span class="hljs-keyword">this</span>.head;<br><br>    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.head.next) &#123;<br>      <span class="hljs-keyword">this</span>.head = <span class="hljs-keyword">this</span>.head.next;<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>      <span class="hljs-keyword">this</span>.head = <span class="hljs-literal">null</span>;<br>      <span class="hljs-keyword">this</span>.tail = <span class="hljs-literal">null</span>;<br>    &#125;<br><br>    <span class="hljs-keyword">return</span> deletedHead;<br>  &#125;<br><br>  <span class="hljs-comment">/**</span><br><span class="hljs-comment">   * <span class="hljs-doctag">@param <span class="hljs-type">&#123;*[]&#125;</span> <span class="hljs-variable">values</span></span> - Array of values that need to be converted to linked list.</span><br><span class="hljs-comment">   * <span class="hljs-doctag">@return <span class="hljs-type">&#123;LinkedList&#125;</span></span></span><br><span class="hljs-comment">   * 数组转链表</span><br><span class="hljs-comment">   */</span><br>  fromArray(values) &#123;<br>    values.forEach(<span class="hljs-function">(<span class="hljs-params">value</span>) =&gt;</span> <span class="hljs-keyword">this</span>.append(value));<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;<br>  &#125;<br><br>  <span class="hljs-comment">/**</span><br><span class="hljs-comment">   * <span class="hljs-doctag">@return <span class="hljs-type">&#123;LinkedListNode[]&#125;</span></span></span><br><span class="hljs-comment">   * 链表转数组</span><br><span class="hljs-comment">   */</span><br>  toArray() &#123;<br>    <span class="hljs-keyword">const</span> nodes = [];<br><br>    <span class="hljs-keyword">let</span> currentNode = <span class="hljs-keyword">this</span>.head;<br>    <span class="hljs-keyword">while</span> (currentNode) &#123;<br>      nodes.push(currentNode);<br>      currentNode = currentNode.next;<br>    &#125;<br><br>    <span class="hljs-keyword">return</span> nodes;<br>  &#125;<br><br>  <span class="hljs-comment">/**</span><br><span class="hljs-comment">   * <span class="hljs-doctag">@param <span class="hljs-type">&#123;function&#125;</span> </span>[callback]</span><br><span class="hljs-comment">   * <span class="hljs-doctag">@return <span class="hljs-type">&#123;string&#125;</span></span></span><br><span class="hljs-comment">   */</span><br>  toString(callback) &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.toArray()<br>      .map(<span class="hljs-function">(<span class="hljs-params">node</span>) =&gt;</span> node.toString(callback))<br>      .toString();<br>  &#125;<br><br>  <span class="hljs-comment">/**</span><br><span class="hljs-comment">   * Reverse a linked list.</span><br><span class="hljs-comment">   * <span class="hljs-doctag">@returns <span class="hljs-type">&#123;LinkedList&#125;</span></span></span><br><span class="hljs-comment">   * 链表倒序</span><br><span class="hljs-comment">   */</span><br>  reverse() &#123;<br>    <span class="hljs-keyword">let</span> currNode = <span class="hljs-keyword">this</span>.head;<br>    <span class="hljs-keyword">let</span> prevNode = <span class="hljs-literal">null</span>;<br>    <span class="hljs-keyword">let</span> nextNode = <span class="hljs-literal">null</span>;<br><br>    <span class="hljs-keyword">while</span> (currNode) &#123;<br>      <span class="hljs-comment">// 存储下一个结点</span><br>      nextNode = currNode.next;<br><br>      <span class="hljs-comment">// 当前指针指向前一个</span><br>      currNode.next = prevNode;<br><br>      <span class="hljs-comment">// 为下一个循环准备</span><br>      prevNode = currNode;<br>      currNode = nextNode;<br>    &#125;<br><br>    <span class="hljs-comment">// 重置头尾指向</span><br>    <span class="hljs-keyword">this</span>.tail = <span class="hljs-keyword">this</span>.head;<br>    <span class="hljs-comment">// prevNode是最后一个节点</span><br>    <span class="hljs-keyword">this</span>.head = prevNode;<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br></pre></td><td class="code"><pre><code class="hljs javascript">   <span class="hljs-keyword">const</span> linkedList = <span class="hljs-keyword">new</span> LinkedList();<br><br>   <span class="hljs-comment">// 测试空链表</span><br>	linkedList.toString()===<span class="hljs-string">''</span>  <span class="hljs-comment">// true</span><br>   linkedList.head===<span class="hljs-literal">null</span>      <span class="hljs-comment">// true</span><br>   linkedList.tail===<span class="hljs-literal">null</span>      <span class="hljs-comment">// true</span><br><br>  <span class="hljs-comment">// append</span><br><br>   linkedList.append(<span class="hljs-number">1</span>);<br>   linkedList.append(<span class="hljs-number">2</span>);<br>	linkedList.toString()===<span class="hljs-string">'1,2'</span>  <span class="hljs-comment">//true</span><br>   linkedList.tail.next===<span class="hljs-literal">null</span>   <span class="hljs-comment">//true</span><br><br> <span class="hljs-comment">// prepend</span><br>  <span class="hljs-keyword">const</span> linkedList1 = <span class="hljs-keyword">new</span> LinkedList();<br>  linkedList1.prepend(<span class="hljs-number">2</span>);<br>  linkedList1.head.toString()===<span class="hljs-string">'2'</span> <span class="hljs-comment">//true</span><br>  linkedList1.tail.toString()===<span class="hljs-string">'2'</span> <span class="hljs-comment">//true</span><br> linkedList1.append(<span class="hljs-number">1</span>);<br>  linkedList1.prepend(<span class="hljs-number">3</span>);<br>  linkedList1.toString()===<span class="hljs-string">'3,2,1'</span> <span class="hljs-comment">//true</span><br><br>  <span class="hljs-comment">// delete</span><br><br>   <span class="hljs-keyword">const</span> linkedList2 = <span class="hljs-keyword">new</span> LinkedList();<br>   linkedList2.delete(<span class="hljs-number">5</span>)===<span class="hljs-literal">null</span> <span class="hljs-comment">//true</span><br>   linkedList2.append(<span class="hljs-number">1</span>);<br>   linkedList2.append(<span class="hljs-number">1</span>);<br>   linkedList2.append(<span class="hljs-number">2</span>);<br>   linkedList2.append(<span class="hljs-number">3</span>);<br>   linkedList2.append(<span class="hljs-number">3</span>);<br>   linkedList2.append(<span class="hljs-number">3</span>);<br>   linkedList2.append(<span class="hljs-number">4</span>);<br>   linkedList2.append(<span class="hljs-number">5</span>);<br>   <span class="hljs-keyword">const</span> deletedNode= linkedList2.delete(<span class="hljs-number">3</span>)<br>   deletedNode.value===<span class="hljs-number">3</span> <span class="hljs-comment">//true</span><br>   linkedList2.toString()===<span class="hljs-string">'1,1,2,4,5'</span> <span class="hljs-comment">//true</span><br><br>  <span class="hljs-comment">// delete tail</span><br>  <span class="hljs-keyword">const</span> linkedList3 = <span class="hljs-keyword">new</span> LinkedList();<br>  linkedList3.append(<span class="hljs-number">1</span>)<br>  linkedList3.append(<span class="hljs-number">2</span>)<br>  linkedList3.append(<span class="hljs-number">3</span>)<br>  <span class="hljs-keyword">const</span> tailNode= linkedList3.deleteTail()<br>  tailNode.value===<span class="hljs-number">3</span> <span class="hljs-comment">//true</span><br>  linkedList3.toString()===<span class="hljs-string">'1,2'</span> <span class="hljs-comment">//true</span><br><br> <span class="hljs-comment">// delete head</span><br> linkedList3.deleteHead()<br> linkedList3.toString()===<span class="hljs-string">'2'</span><br><br> <span class="hljs-comment">// objects value</span><br> <span class="hljs-keyword">const</span> linkedList4= <span class="hljs-keyword">new</span> LinkedList();<br> <span class="hljs-keyword">const</span> nodeValue1 = &#123; <span class="hljs-attr">value</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">key</span>: <span class="hljs-string">'key1'</span> &#125;;<br> <span class="hljs-keyword">const</span> nodeValue2 = &#123; <span class="hljs-attr">value</span>: <span class="hljs-number">2</span>, <span class="hljs-attr">key</span>: <span class="hljs-string">'key2'</span> &#125;;<br> linkedList4.append(nodeValue1).prepend(nodeValue2)<br> <span class="hljs-keyword">const</span> nodeStringfier=<span class="hljs-function"><span class="hljs-params">value</span>=&gt;</span><span class="hljs-string">`key:<span class="hljs-subst">$&#123;value.key&#125;</span> value:<span class="hljs-subst">$&#123;value.value&#125;</span>`</span><br> linkedList4.toString(nodeStringfier)===<span class="hljs-string">'key:key1 value:1,key:key2 value:2'</span><br><br> <span class="hljs-comment">// find</span><br>  <span class="hljs-keyword">const</span> linkedList5=<span class="hljs-keyword">new</span> LinkedList();<br>  linkedList5.append(<span class="hljs-number">1</span>).append(<span class="hljs-number">2.</span>append(<span class="hljs-number">3</span>).append(<span class="hljs-number">4</span>)<br>  <span class="hljs-keyword">const</span> node= linkedList5.find(&#123;<span class="hljs-attr">value</span>:<span class="hljs-number">3</span>&#125;)<br>  node.value===<span class="hljs-number">3</span> <span class="hljs-comment">//true</span><br><br>  <span class="hljs-comment">// find callback</span><br>  <span class="hljs-keyword">const</span> cbNode= linkedList4.find(&#123;<span class="hljs-attr">callback</span>:<span class="hljs-function"><span class="hljs-params">value</span>=&gt;</span>value.key===<span class="hljs-string">'key1'</span>&#125;)<br>  cbNode.value.value===<span class="hljs-number">1</span> <span class="hljs-comment">//true</span><br><br><span class="hljs-comment">// custom compare Function</span><br>  <span class="hljs-keyword">const</span> customFunc=<span class="hljs-function">(<span class="hljs-params">a,b</span>)=&gt;</span>&#123;<br>   <span class="hljs-keyword">if</span>(_.isEqual(a,b))&#123;<br>      <span class="hljs-keyword">return</span> <span class="hljs-number">0</span><br>   &#125;<span class="hljs-keyword">else</span>&#123;<br>     <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span><br>   &#125;<br>  &#125;<br> <span class="hljs-keyword">const</span> linkedList6=<span class="hljs-keyword">new</span> LinkedList(customFunc)<br> linkedList6.append( &#123; <span class="hljs-attr">value</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">key</span>: <span class="hljs-string">'key1'</span> &#125;).append( &#123; <span class="hljs-attr">value</span>: <span class="hljs-number">2</span>, <span class="hljs-attr">key</span>: <span class="hljs-string">'key2'</span> &#125;)<br> <span class="hljs-keyword">const</span> node =  linkedList6.find(&#123;<span class="hljs-attr">value</span>: &#123; <span class="hljs-attr">value</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">key</span>: <span class="hljs-string">'key1'</span> &#125;&#125;)<br> node.value.value===<span class="hljs-number">1</span> <span class="hljs-comment">//true</span><br> node.value.key===<span class="hljs-string">'key1'</span><br><br> <span class="hljs-comment">// reverse</span><br> <span class="hljs-keyword">const</span> linkedList7 = <span class="hljs-keyword">new</span> LinkedList();<br> linkedList7<br>     .append(<span class="hljs-number">1</span>)<br>     .append(<span class="hljs-number">2</span>)<br>     .append(<span class="hljs-number">3</span>);<br> linkedList7.toString()===<span class="hljs-string">'1,2,3'</span><br> linkedList7.reverse()<br> linkedList7.toString()===<span class="hljs-string">'3,2,1'</span><br></code></pre></td></tr></table></figure>
+
+    </section>
+    <section class="extra">
+      
+        <section class="donate">
+  <div class="qrcode">
+    <img   class="lazyload" data-original="http://img.u-to-world.com/blog/alipay.png" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" >
+  </div>
+  <div class="icon">
+    <a href="javascript:;" id="alipay"><i class="iconfont iconalipay"></i></a>
+    <a href="javascript:;" id="wechat"><i class="iconfont iconwechat-fill"></i></a>
+  </div>
+</section>
+      
+      
+      
+<nav class="nav">
+  
+    <a href="/2020/07/14/%E4%B8%9A%E5%8A%A1%E5%BC%80%E5%8F%91%E4%B8%AD%E7%9A%84%E7%BB%84%E4%BB%B6%E5%B0%81%E8%A3%85%E4%B8%8E%E6%94%B9%E9%80%A0/"><i class="iconfont iconleft"></i>业务开发中的组件封装与改造</a>
+  
+  
+    <a href="/2020/06/15/%E6%9B%BE%E7%BB%8F%E7%9A%84vue%E5%85%A5%E9%97%A8%E7%BB%83%E6%89%8B%E9%A1%B9%E7%9B%AE/">曾经的vue入门练手项目<i class="iconfont iconright"></i></a>
+  
+</nav>
+
+    </section>
+    
+      <section class="comments">
+        
+          <div class="btn" id="comments-btn">查看评论</div>
+        
+        
+<div id="valine"></div>
+<script defer src="//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js"></script>
+<script>
+  window.onload = function () {
+    var loadValine = function () {
+      new Valine({
+        el: '#valine',
+        app_id: "XgHS51JuLkeipj92BK4KyIEI-gzGzoHsz",
+        app_key: "LHxBDnRt6RQCuByhRfp1pkVN",
+        placeholder: "ヾﾉ≧∀≦)o来啊，快活啊!",
+        avatar: "mp",
+        pageSize: "10",
+        lang: "zh-CN",
+      });
+    }
+    if ( true ) {
+      $("#comments-btn").on("click", function () {
+        $(this).hide();
+        loadValine();
+      });
+    } else {
+      loadValine();
+    }
+  };
+</script>
+
+
+      </section>
+    
+  </section>
+</article>
+  </div>
+</main>
+  <footer class="footer">
+  <div class="footer-social">
+    
+    
+    
+    
+    
+    <a href="tencent://message/?Menu=yes&uin=694534942 " target="_blank" onMouseOver="this.style.color= '#12B7F5'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconQQ "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="javascript:; " target="_blank" onMouseOver="this.style.color= '#09BB07'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconwechat-fill "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="https://www.instagram.com/izhaoo/ " target="_blank" onMouseOver="this.style.color= '#DA2E76'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconinstagram "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="https://github.com/godlikedeveloper " target="_blank" onMouseOver="this.style.color= '#24292E'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  icongithub-fill "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="mailto:694534942@qq.com " target="_blank" onMouseOver="this.style.color='#FFBE5B'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconmail"></i>
+    </a>
+    
+  </div>
+  <div class="footer-copyright"><p>Copyright© 2019-2020 | <a target="_blank" href="http://blog.u-to-world.com">小笼包</a> .AllRightsReserved</p></div>
+</footer>
+  
+      <div class="fab fab-plus">
+    <i class="iconfont iconplus"></i>
+  </div>
+  <div class="fab fab-up">
+    <i class="iconfont iconcaret-up"></i>
+  </div>
+  <div class="fab fab-menu">
+    <i class="iconfont iconmenu"></i>
+  </div>
+  
+</body>
+
+
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+
+
+
+
+
+
+<script src="https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+
+
+
+
+
+
+
+
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js"></script>
+
+
+
+
+
+
+<script src="https://cdn.bootcdn.net/ajax/libs/justifiedGallery/3.7.0/js/jquery.justifiedGallery.min.js"></script>
+
+
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+<script>
+  (function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+      bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</html>

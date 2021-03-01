@@ -1,0 +1,432 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>关于一个拖拽移动的组件的封装 - Paige&#39;s XSpace</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="google" content="notranslate" />
+  <meta name="referrer" content="no-referrer" />
+  
+  <meta name="keywords" content="zhaoo, hexo-theme-zhaoo,"> 
+  
+  <meta name="description" content="tech blog about web develop,引言在需求中有用到一个可拖拽排序，可编辑删除的卡片组件..."> 
+  
+  <meta name="author" content="zhangyp"> 
+
+  
+    <link rel="icon" href="/images/icons/favicon-16x16.png" type="image/png" sizes="16x16">
+  
+  
+    <link rel="icon" href="/images/icons/favicon-32x32.png" type="image/png" sizes="32x32">
+  
+  
+    <link rel="apple-touch-icon" href="/images/icons/apple-touch-icon.png" sizes="180x180">
+  
+  
+    <meta rel="mask-icon" href="/images/icons/stun-logo.svg" color="#333333">
+  
+  
+    <meta rel="msapplication-TileImage" content="/images/icons/favicon-144x144.png">
+    <meta rel="msapplication-TileColor" content="#000000">
+  
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+  
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1445822_58xq2j9v1id.css">
+
+  
+
+  
+  
+  
+<link rel="stylesheet" href="https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min.css">
+
+  
+
+  
+  
+  
+<link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.18.1/styles/dracula.min.css">
+
+  
+
+  
+  
+  
+<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/justifiedGallery/3.7.0/css/justifiedGallery.min.css">
+
+  
+
+  <script>
+    var CONFIG = window.CONFIG || {}
+    CONFIG = {
+      fancybox: true,
+      pjax: false,
+      lazyload: {
+        enable: true,
+        loadingImage: '/images/theme/loading.gif',
+      },
+      donate_alipay: 'http://img.u-to-world.com/blog/alipay.png',
+      donate_wechat: 'http://img.u-to-world.com/blog/weixinpay.png',
+      motto: {
+        api: 'http://api.lovelive.tools/api/SweetNothings',
+        default: '不要温和地走进那良夜'
+      },
+      galleries: {
+        enable: 'true'
+      },
+      fab: {
+        enable: 'true',
+        alwaysShow: 'false'
+      }
+    }
+  </script>
+
+  
+
+  
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body class="lock-screen">
+  <div class="loading"></div>
+  <nav class="menu">
+  <div class="menu-close">
+    <i class="iconfont iconplus"></i>
+  </div>
+  <ul class="menu-content">
+    
+    
+    
+    
+    <li class="menu-item"><a href="/ "> 首页</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="http://u-to-world.com:8080/index.html " target="_blank" rel="noopener"> 作品(我的音乐)</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/archives "> 归档</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/tags "> 标签</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/categories "> 分类</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/about "> 关于</a></li>
+    
+  </ul>
+  <div class="menu-copyright"><p>Copyright© 2019-2020 | <a target="_blank" href="http://blog.u-to-world.com">小笼包</a> .AllRightsReserved</p></div>
+</nav>
+  <main id="main">
+  <div class="container" id="container">
+    <article class="article">
+  <section class="head">
+  <img   class="lazyload" data-original="/images/theme/post-img.jpg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  draggable="false">
+  <div class="head-mask">
+    <h1 class="head-title">关于一个拖拽移动的组件的封装</h1>
+    <div class="head-info">
+      <span class="post-info-item"><i class="iconfont iconcalendar"></i>2020-06-12</span
+        class="post-info-item">
+      
+      <span class="post-info-item"><i class="iconfont iconfont-size"></i>10208</span>
+    </div>
+  </div>
+</section>
+  <section class="main">
+    <section class="content">
+      <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>在需求中有用到一个可拖拽排序，可编辑删除的卡片组件</p>
+<h2 id="适用范围"><a href="#适用范围" class="headerlink" title="适用范围"></a>适用范围</h2><p>中台管理系统</p>
+<h2 id="组件实现"><a href="#组件实现" class="headerlink" title="组件实现"></a>组件实现</h2><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br></pre></td><td class="code"><pre><code class="hljs jsx"><span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">"react"</span>;<br><span class="hljs-keyword">import</span> Card <span class="hljs-keyword">from</span> <span class="hljs-string">"./Card"</span>;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DragList</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>&#123;<br>  <span class="hljs-keyword">constructor</span>(props) &#123;<br>    <span class="hljs-keyword">super</span>(props);<br>    <span class="hljs-keyword">this</span>.state = &#123; ...props &#125;;<br>  &#125;<br><br>  dragStart(e) &#123;<br>    <span class="hljs-keyword">this</span>.dragged = e.currentTarget;<br>  &#125;<br>  dragEnd(e) &#123;<br>    <span class="hljs-keyword">this</span>.dragged.style.display = <span class="hljs-string">"block"</span>;<br><br>    e.target.classList.remove(<span class="hljs-string">"drag-up"</span>);<br>    <span class="hljs-comment">// eslint-disable-next-line no-unused-expressions</span><br>    <span class="hljs-keyword">this</span>.over &amp;&amp; <span class="hljs-keyword">this</span>.over.classList.remove(<span class="hljs-string">"drag-up"</span>);<br><br>    e.target.classList.remove(<span class="hljs-string">"drag-down"</span>);<br>    <span class="hljs-comment">// eslint-disable-next-line no-unused-expressions</span><br>    <span class="hljs-keyword">this</span>.over &amp;&amp; <span class="hljs-keyword">this</span>.over.classList.remove(<span class="hljs-string">"drag-down"</span>);<br><br>    <span class="hljs-keyword">let</span> data = <span class="hljs-keyword">this</span>.state.data;<br>    <span class="hljs-keyword">const</span> <span class="hljs-keyword">from</span> = <span class="hljs-built_in">Number</span>(<span class="hljs-keyword">this</span>.dragged.dataset.id);<br>    <span class="hljs-keyword">const</span> to = <span class="hljs-built_in">Number</span>(<span class="hljs-keyword">this</span>.over.dataset.id);<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"from - to "</span>, <span class="hljs-keyword">from</span>, to);<br>    data.splice(to, <span class="hljs-number">0</span>, data.splice(<span class="hljs-keyword">from</span>, <span class="hljs-number">1</span>)[<span class="hljs-number">0</span>]);<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"from - to - data "</span>, data);<br>    <span class="hljs-comment">// set newIndex to judge direction of drag and drop</span><br>    data = data.map(<span class="hljs-function">(<span class="hljs-params">doc, index</span>) =&gt;</span> &#123;<br>      <span class="hljs-comment">// eslint-disable-next-line no-param-reassign</span><br>      doc.newIndex = index + <span class="hljs-number">1</span>;<br>      <span class="hljs-keyword">return</span> doc;<br>    &#125;);<br><br>    <span class="hljs-keyword">this</span>.setState(&#123; data &#125;);<br>    <span class="hljs-keyword">this</span>.props.onDragEndUpdate(data);<br>  &#125;<br><br>  dragOver(e) &#123;<br>    <span class="hljs-comment">// debugger</span><br>    <span class="hljs-built_in">console</span>.log(e.target);<br>    e.preventDefault();<br><br>    <span class="hljs-keyword">this</span>.dragged.style.display = <span class="hljs-string">"none"</span>;<br><br>    <span class="hljs-keyword">if</span> (e.target.tagName !== <span class="hljs-string">"LI"</span>) &#123;<br>      <span class="hljs-keyword">return</span>;<br>    &#125;<br><br>    <span class="hljs-comment">// 判断当前拖拽target 和 经过的target 的 newIndex</span><br><br>    <span class="hljs-keyword">const</span> dgIndex = <span class="hljs-built_in">JSON</span>.parse(<span class="hljs-keyword">this</span>.dragged.dataset.item).newIndex;<br>    <span class="hljs-keyword">const</span> taIndex = <span class="hljs-built_in">JSON</span>.parse(e.target.dataset.item).newIndex;<br>    <span class="hljs-keyword">const</span> animateName = dgIndex &gt; taIndex ? <span class="hljs-string">"drag-up"</span> : <span class="hljs-string">"drag-down"</span>;<br><br>    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.over &amp;&amp; e.target.dataset.item !== <span class="hljs-keyword">this</span>.over.dataset.item) &#123;<br>      <span class="hljs-keyword">this</span>.over.classList.remove(<span class="hljs-string">"drag-up"</span>, <span class="hljs-string">"drag-down"</span>);<br>    &#125;<br><br>    <span class="hljs-keyword">if</span> (!e.target.classList.contains(animateName)) &#123;<br>      e.target.classList.add(animateName);<br>      <span class="hljs-keyword">this</span>.over = e.target;<br>    &#125;<br>  &#125;<br>  render() &#123;<br>    <span class="hljs-comment">// eslint-disable-next-line react/prop-types</span><br>    <span class="hljs-keyword">const</span> &#123; onCardDelete, onCardEdit, onInputChange &#125; = <span class="hljs-keyword">this</span>.props;<br>    <span class="hljs-keyword">const</span> listItems = <span class="hljs-keyword">this</span>.state.data<br>      .filter(<span class="hljs-function">(<span class="hljs-params">q</span>) =&gt;</span> q.type !== <span class="hljs-string">"richText"</span>)<br>      .map(<span class="hljs-function">(<span class="hljs-params">item, i</span>) =&gt;</span> &#123;<br>        <span class="hljs-keyword">return</span> (<br>          &lt;li<br>            data-id=&#123;i&#125;<br>            key=&#123;i&#125;<br>            style=&#123;&#123; <span class="hljs-attr">height</span>: <span class="hljs-string">"auto"</span>, <span class="hljs-attr">margin</span>: <span class="hljs-string">"10px 8.5%"</span> &#125;&#125;<br>            draggable=<span class="hljs-string">"true"</span><br>            onDragEnd=&#123;<span class="hljs-keyword">this</span>.dragEnd.bind(<span class="hljs-keyword">this</span>)&#125;<br>            onDragStart=&#123;<span class="hljs-keyword">this</span>.dragStart.bind(<span class="hljs-keyword">this</span>)&#125;<br>            data-item=&#123;<span class="hljs-built_in">JSON</span>.stringify(item)&#125;<br>          &gt;<br>            &lt;Card<br>              value=&#123;item.value&#125;<br>              onInputChange=&#123;onInputChange&#125;<br>              newIndex=&#123;item.newIndex&#125;<br>              idx=&#123;i&#125;<br>              cardType=&#123;item.type&#125;<br>              cardTitle=&#123;item.cardTitle&#125;<br>              cardPrice=&#123;item.cardPrice&#125;<br>              onDelete=&#123;onCardDelete&#125;<br>              onEdit=&#123;onCardEdit&#125;<br>              cardImgId=&#123;item.cardImgId&#125;<br>              id=&#123;item.id&#125;<br>              packIdEn=&#123;item.packIdEn&#125;<br>            /&gt;<br>          &lt;<span class="hljs-regexp">/li&gt;</span><br><span class="hljs-regexp">        );</span><br><span class="hljs-regexp">      &#125;);</span><br><span class="hljs-regexp">    return (</span><br><span class="hljs-regexp">      &lt;ul onDragOver=&#123;this.dragOver.bind(this)&#125; className="contain"&gt;</span><br><span class="hljs-regexp">        &#123;listItems&#125;</span><br><span class="hljs-regexp">      &lt;/u</span>l&gt;<br>    );<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> DragList;<br></code></pre></td></tr></table></figure>
+
+<h2 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h2><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs jsx">&lt;DragList<br>  onInputChange=&#123;<span class="hljs-keyword">this</span>.onCardInputChange&#125;<br>  key=&#123;<span class="hljs-keyword">this</span>.state.dragListKey&#125;<br>  data=&#123;<span class="hljs-keyword">this</span>.state.data&#125;<br>  onCardDelete=&#123;<span class="hljs-keyword">this</span>.onCardDelete&#125;<br>  onCardEdit=&#123;<span class="hljs-keyword">this</span>.onCardEdit&#125;<br>  onDragEndUpdate=&#123;<span class="hljs-keyword">this</span>.onDragEndUpdate&#125;<br>/&gt;<br></code></pre></td></tr></table></figure>
+
+<h3 id="外部属性"><a href="#外部属性" class="headerlink" title="外部属性"></a>外部属性</h3><table>
+<thead>
+<tr>
+<th align="center">名称</th>
+<th align="center">类型</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">data</td>
+<td align="center">array</td>
+<td align="center">卡片内容数组</td>
+</tr>
+<tr>
+<td align="center">onInputChange</td>
+<td align="center">function</td>
+<td align="center">拖拽组件内部卡片文本的编辑</td>
+</tr>
+<tr>
+<td align="center">key</td>
+<td align="center">number</td>
+<td align="center">编辑 删除之后更新完数组之后 更新此值 重新渲染组件</td>
+</tr>
+<tr>
+<td align="center">onCardDelete</td>
+<td align="center">function</td>
+<td align="center">删除事件</td>
+</tr>
+<tr>
+<td align="center">onCardEdit</td>
+<td align="center">function</td>
+<td align="center">编辑事件</td>
+</tr>
+<tr>
+<td align="center">onDragEndUpdate</td>
+<td align="center">function</td>
+<td align="center">拖拽完对数组的更新</td>
+</tr>
+</tbody></table>
+<h3 id="内部方法"><a href="#内部方法" class="headerlink" title="内部方法"></a>内部方法</h3><table>
+<thead>
+<tr>
+<th align="center">名称</th>
+<th align="center">类型</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">dragStart</td>
+<td align="center">function</td>
+<td align="center">拖拽开始 保存拖拽元素</td>
+</tr>
+<tr>
+<td align="center">dragOver</td>
+<td align="center">function</td>
+<td align="center">拖拽时 设置拖拽元素样式和经过的元素样式 并记录互换的元素</td>
+</tr>
+<tr>
+<td align="center">dragEnd</td>
+<td align="center">function</td>
+<td align="center">拖拽结束 清除过程中的样式 两项交换位置</td>
+</tr>
+</tbody></table>
+<p>具体代码可以到<code>ck-lion-front/src/feature/content/addContent/dragList.js</code> 下查阅</p>
+<h3 id="实现思路"><a href="#实现思路" class="headerlink" title="实现思路"></a>实现思路</h3><p>通过<code>onDragStart</code>事件获取拖拽元素  <code>onDragOver</code>事件获取经过的最后一个元素 即需要置换位置的元素   然后在<code>onDragEnd</code>事件里面进行数组位置处理</p>
+<h2 id="不足"><a href="#不足" class="headerlink" title="不足"></a>不足</h2><ul>
+<li>封装的不够解耦 和业务代码耦合较多</li>
+<li>组件的动画效果方面有所欠缺</li>
+<li>组件的实现思路是对 dom 的操作 不够优雅</li>
+<li>不能支持移动端</li>
+</ul>
+<h2 id="重构方案"><a href="#重构方案" class="headerlink" title="重构方案"></a>重构方案</h2><h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br></pre></td><td class="code"><pre><code class="hljs jsx"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DraggbleItem</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>&#123;<br>  <span class="hljs-keyword">constructor</span>(props) &#123;<br>    <span class="hljs-keyword">super</span>(props);<br>    <span class="hljs-keyword">this</span>.state = &#123;<br>		<span class="hljs-comment">// 索引</span><br>      idx: <span class="hljs-literal">null</span>,<br>			<span class="hljs-comment">// 排序序号</span><br>      no: <span class="hljs-literal">null</span>,<br>			<span class="hljs-comment">// 索引存储</span><br>      val: <span class="hljs-literal">null</span>,<br>      <span class="hljs-comment">// 判断是不是已处于点击或拖拽状态</span><br>      down: <span class="hljs-literal">false</span>,<br>      deltaScale: <span class="hljs-number">0.0</span>,<br>      v: <span class="hljs-number">0</span>,<br>      clicked: <span class="hljs-number">0</span>,<br>      posScale: <span class="hljs-number">1</span>,<br>      z: <span class="hljs-number">1</span>,<br>      y: <span class="hljs-number">0</span>,<br>      posy: <span class="hljs-number">0</span>,<br>      newPos: <span class="hljs-number">0</span>,<br>      <span class="hljs-comment">// y轴方向的阴影</span><br>      yaxisShadow: <span class="hljs-number">1</span>,<br>      <span class="hljs-comment">// 模糊程度</span><br>      shadowDim: <span class="hljs-number">2</span>,<br>      deltaYaxisShadow: <span class="hljs-number">0</span>,<br>      deltaShadowDim: <span class="hljs-number">0</span>,<br>      ps1: <span class="hljs-number">0</span>,<br>      ps2: <span class="hljs-number">0</span>,<br>    &#125;;<br>	<span class="hljs-comment">// 绑定this</span><br>    <span class="hljs-keyword">this</span>.animate = <span class="hljs-keyword">this</span>.animate.bind(<span class="hljs-keyword">this</span>);<br>    ...<br>		...<br>    <span class="hljs-keyword">this</span>.handleTouchMove = <span class="hljs-keyword">this</span>.handleTouchMove.bind(<span class="hljs-keyword">this</span>);<br>  &#125;<br><br>  componentWillMount() &#123;<br>    <span class="hljs-keyword">this</span>.setState(&#123;<br>      idx: <span class="hljs-keyword">this</span>.props.idx,<br>      val: <span class="hljs-keyword">this</span>.props.idx,<br>      y: <span class="hljs-keyword">this</span>.props.idx * <span class="hljs-number">100</span>,<br>      no: <span class="hljs-keyword">this</span>.props.idx,<br>    &#125;);<br>  &#125;<br><br>  componentDidMount() &#123;<br>    <span class="hljs-comment">// 注册动画</span><br>    <span class="hljs-keyword">this</span>.startLoop();<br>  &#125;<br><br>  componentWillReceiveProps(newProps) &#123;<br>    <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.state.down) &#123;<br>      <span class="hljs-keyword">this</span>.setState(&#123;<br>        idx: newProps.idx,<br>        val: newProps.idx,<br>      &#125;);<br>    &#125;<br>  &#125;<br><br>   componentWillUnmount() &#123;<br>    <span class="hljs-comment">// 解绑动画</span><br>    <span class="hljs-keyword">this</span>.stopLoop();<br>   &#125;<br><br><span class="hljs-comment">// pc的开始托转</span><br>  handleDown(e) &#123;<br>    <span class="hljs-keyword">this</span>.setState(&#123;<br>      down: <span class="hljs-literal">true</span>,<br>      z: <span class="hljs-number">4</span>,<br>      posy: e.clientY,<br>    &#125;);<br>  &#125;<br><span class="hljs-comment">// 移动端开始拖拽</span><br>  handleTouchStart(e) &#123;<br>    e.persist();<br>    <span class="hljs-keyword">this</span>.setState(&#123;<br>      down: <span class="hljs-literal">true</span>,<br>      z: <span class="hljs-number">4</span>,<br>      posy: e.touches[<span class="hljs-number">0</span>].screenY,<br>    &#125;);<br>  &#125;<br>	<span class="hljs-comment">// pc结束拖拽</span><br>  handleUp() &#123;<br>    <span class="hljs-keyword">this</span>.setState(&#123;<br>      down: <span class="hljs-literal">false</span>,<br>    &#125;);<br>  &#125;<br>	<span class="hljs-comment">// 移动端结束拖拽</span><br>  handleTouchEnd() &#123;<br>    <span class="hljs-keyword">this</span>.setState(&#123;<br>      down: <span class="hljs-literal">false</span>,<br>    &#125;);<br>  &#125;<br>	<span class="hljs-comment">// pc拖拽过程</span><br>  handleMove(e) &#123;<br>    <span class="hljs-keyword">this</span>.moveHandler(e,<span class="hljs-string">'move'</span>)<br>  &#125;<br>	<span class="hljs-comment">// 移动端拖拽过程</span><br>  handleTouchMove(e) &#123;<br>    e.persist();<br>    <span class="hljs-keyword">this</span>.moveHandler(e,<span class="hljs-string">'touch'</span>)<br>  &#125;<br>	 <span class="hljs-comment">// 根据type判断pc还是移动端</span><br>  getTargetByType=<span class="hljs-function">(<span class="hljs-params">e,type</span>)=&gt;</span>&#123;<br>    <span class="hljs-keyword">return</span> type===<span class="hljs-string">'touch'</span>? e.touches[<span class="hljs-number">0</span>].screenY:e.clientY<br>  &#125;<br>  moveHandler = <span class="hljs-function">(<span class="hljs-params">e, type</span>) =&gt;</span> &#123;<br>    <span class="hljs-comment">// 如果已经点击</span><br>    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.state.down) &#123;<br>      <span class="hljs-comment">// 移动的距离 减去初始距离</span><br>      <span class="hljs-keyword">let</span> newPos = <span class="hljs-keyword">this</span>.getTargetByType(e, type) - <span class="hljs-keyword">this</span>.state.posy;<br>      <span class="hljs-comment">// y是最终距离 val是第几个方块</span><br>      <span class="hljs-keyword">this</span>.setState(<br>        &#123;<br>          y: <span class="hljs-keyword">this</span>.state.val * <span class="hljs-number">100</span> + newPos,<br>        &#125;,<br>        () =&gt; &#123;<br>          <span class="hljs-comment">// 如果移动的距离 大于一半距离 下移</span><br>          <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'this.state.y'</span>, <span class="hljs-keyword">this</span>.state.y, <span class="hljs-string">'this.state.idx * 100'</span>, <span class="hljs-keyword">this</span>.state.idx * <span class="hljs-number">100</span>);<br>          <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.state.y &gt; <span class="hljs-keyword">this</span>.state.idx * <span class="hljs-number">100</span> + <span class="hljs-number">50</span>) &#123;<br>            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.state.idx + <span class="hljs-number">1</span> &lt; <span class="hljs-keyword">this</span>.props.cardLength) &#123;<br>              <span class="hljs-keyword">this</span>.setState(<br>                &#123;<br>                  idx: <span class="hljs-keyword">this</span>.state.idx + <span class="hljs-number">1</span>,<br>                &#125;,<br>                () =&gt; &#123;<br>                  <span class="hljs-keyword">this</span>.props.handlePos(<br>                    <span class="hljs-keyword">this</span>.state.no,<br>                    <span class="hljs-keyword">this</span>.state.idx,<br>                    <span class="hljs-keyword">this</span>.state.idx - <span class="hljs-number">1</span>,<br>                  );<br>                &#125;,<br>              );<br>            &#125;<br>            <span class="hljs-comment">// 上移</span><br>          &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.state.y &lt; <span class="hljs-keyword">this</span>.state.idx * <span class="hljs-number">100</span> - <span class="hljs-number">50</span>) &#123;<br>            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.state.idx - <span class="hljs-number">1</span> &gt; <span class="hljs-number">-1</span>) &#123;<br>              <span class="hljs-keyword">this</span>.setState(<br>                &#123;<br>                  idx: <span class="hljs-keyword">this</span>.state.idx - <span class="hljs-number">1</span>,<br>                &#125;,<br>                () =&gt; &#123;<br>                  <span class="hljs-keyword">this</span>.props.handlePos(<br>                    <span class="hljs-keyword">this</span>.state.no,<br>                    <span class="hljs-keyword">this</span>.state.idx,<br>                    <span class="hljs-keyword">this</span>.state.idx + <span class="hljs-number">1</span>,<br>                  );<br>                &#125;,<br>              );<br>            &#125;<br>          &#125;<br>        &#125;,<br>      );<br>    &#125;<br>  &#125;;<br><br>  <span class="hljs-comment">// 更新拖拽缩放大小</span><br>  updateScale() &#123;<br>  ..........<br>  &#125;<br>  <span class="hljs-comment">// 更新拖拽时y方向的位置</span><br>  updateYaxis() &#123;<br> ..........<br>  &#125;<br><br>	<span class="hljs-comment">// 动画开始</span><br>  startLoop() &#123;<br>    <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>._frameId) &#123;<br>      <span class="hljs-keyword">this</span>._frameId = <span class="hljs-built_in">window</span>.requestAnimationFrame(<span class="hljs-keyword">this</span>.animate);<br>    &#125;<br>  &#125;<br><br>  animate() &#123;<br>    <span class="hljs-keyword">this</span>.updateScale();<br>    <span class="hljs-keyword">this</span>.updateYaxis();<br>    <span class="hljs-keyword">this</span>.updateShadow();<br>    <span class="hljs-keyword">const</span> cardDom = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'card'</span> + <span class="hljs-keyword">this</span>.state.no);<br>    cardDom &amp;&amp; (cardDom.style.transform =<br>      <span class="hljs-string">' translate3d(0px ,'</span> +<br>      <span class="hljs-keyword">this</span>.state.y +<br>      <span class="hljs-string">'px, 0px)scale('</span> +<br>      <span class="hljs-keyword">this</span>.state.posScale +<br>      <span class="hljs-string">')'</span>);<br>    cardDom &amp;&amp; (cardDom.style.zIndex = <span class="hljs-keyword">this</span>.state.z);<br>    cardDom &amp;&amp; (cardDom.style.boxShadow =<br>      <span class="hljs-string">'rgba(0, 0, 0, 0.2) 0px '</span> +<br>      <span class="hljs-keyword">this</span>.state.yaxisShadow +<br>      <span class="hljs-string">'px '</span> +<br>      <span class="hljs-keyword">this</span>.state.shadowDim +<br>      <span class="hljs-string">'px 0px'</span>);<br>    <span class="hljs-keyword">this</span>.frameId = <span class="hljs-built_in">window</span>.requestAnimationFrame(<span class="hljs-keyword">this</span>.animate);<br>  &#125;<br><br>  stopLoop() &#123;<br>    <span class="hljs-built_in">window</span>.cancelAnimationFrame(<span class="hljs-keyword">this</span>._frameId);<br>  &#125;<br><br>  render() &#123;<br>    <span class="hljs-keyword">return</span> (<br>      &lt;div<br>        id=&#123;<span class="hljs-string">'card'</span> + <span class="hljs-keyword">this</span>.state.no&#125;<br>        className=&#123;draggable.card&#125;<br>        onMouseDown=&#123;<span class="hljs-keyword">this</span>.handleDown&#125;<br>        onMouseUp=&#123;<span class="hljs-keyword">this</span>.handleUp&#125;<br>        onMouseMove=&#123;<span class="hljs-keyword">this</span>.handleMove&#125;<br>        onMouseLeave=&#123;<span class="hljs-keyword">this</span>.handleUp&#125;<br>        onTouchStart=&#123;<span class="hljs-keyword">this</span>.handleTouchStart&#125;<br>        onTouchMove=&#123;<span class="hljs-keyword">this</span>.handleTouchMove&#125;<br>        onTouchEnd=&#123;<span class="hljs-keyword">this</span>.handleTouchEnd&#125;<br>      &gt;<br>        &#123;<span class="hljs-keyword">this</span>.props.children&#125;<br>       &lt;div className=&#123;draggable.close&#125; onClick=&#123;<span class="hljs-keyword">this</span>.props.onDelete(<span class="hljs-keyword">this</span>.state.no)&#125;&gt;&lt;<span class="hljs-regexp">/div&gt;</span><br><span class="hljs-regexp">      &lt;/</span>div&gt;<br>    );<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>这个组件是在<code>codepen</code>上面找的 自己再结合实际改造了一下</li>
+<li>用了<code>requestAnimationFrame</code>来实现动画效果 很流畅</li>
+<li>对于一些不支持的浏览器可能要做向下兼容</li>
+</ul>
+<h3 id="效果图"><a href="#效果图" class="headerlink" title="效果图"></a>效果图</h3><p><a href="https://www.yuque.com/xiaolongbao-mk0lr/codelifebalance/gngkyg?_lake_card=%7B%22status%22%3A%22done%22%2C%22name%22%3A%22learnUmi.mp4%22%2C%22size%22%3A298742%2C%22percent%22%3A100%2C%22taskId%22%3A%22C2Ob1VN810ax%22%2C%22margin%22%3Atrue%2C%22id%22%3A%22TfWjG%22%2C%22videoId%22%3A%22inputs%2Fprod%2Fyuque%2F2020%2F1512483%2Fmp4%2F1591945104586-83e0ffd1-cded-4581-9b54-97bd27f375ba.mp4%22%2C%22card%22%3A%22video%22%7D#TfWjG" target="_blank" rel="noopener"><img   class="lazyload" data-original="https://gw.alipayobjects.com/mdn/prod_resou/afts/img/A*NNs6TKOR3isAAAAAAAAAAABkARQnAQ" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="learnUmi.mp4 (291.74KB)"></a></p>
+<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>时间仓促 还有很多其他的组件特性没考虑到 后续还会做出进一步的优化</p>
+
+    </section>
+    <section class="extra">
+      
+        <section class="donate">
+  <div class="qrcode">
+    <img   class="lazyload" data-original="http://img.u-to-world.com/blog/alipay.png" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" >
+  </div>
+  <div class="icon">
+    <a href="javascript:;" id="alipay"><i class="iconfont iconalipay"></i></a>
+    <a href="javascript:;" id="wechat"><i class="iconfont iconwechat-fill"></i></a>
+  </div>
+</section>
+      
+      
+      
+<nav class="nav">
+  
+    <a href="/2020/06/15/React+Webpack4+Babel7+React-hot-loader%E8%87%AA%E5%AE%9A%E4%B9%89%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/"><i class="iconfont iconleft"></i>React+Webpack4+Babel7+React-hot-loader自定义前端开发环境</a>
+  
+  
+    <a href="/2020/06/12/%E4%BB%8Edva-loading%E6%BA%90%E7%A0%81%E4%BA%86%E8%A7%A3dva%E6%8F%92%E4%BB%B6%E5%BC%8F%E5%BC%80%E5%8F%91/">从dva-loading源码了解dva插件式开发<i class="iconfont iconright"></i></a>
+  
+</nav>
+
+    </section>
+    
+      <section class="comments">
+        
+          <div class="btn" id="comments-btn">查看评论</div>
+        
+        
+<div id="valine"></div>
+<script defer src="//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js"></script>
+<script>
+  window.onload = function () {
+    var loadValine = function () {
+      new Valine({
+        el: '#valine',
+        app_id: "XgHS51JuLkeipj92BK4KyIEI-gzGzoHsz",
+        app_key: "LHxBDnRt6RQCuByhRfp1pkVN",
+        placeholder: "ヾﾉ≧∀≦)o来啊，快活啊!",
+        avatar: "mp",
+        pageSize: "10",
+        lang: "zh-CN",
+      });
+    }
+    if ( true ) {
+      $("#comments-btn").on("click", function () {
+        $(this).hide();
+        loadValine();
+      });
+    } else {
+      loadValine();
+    }
+  };
+</script>
+
+
+      </section>
+    
+  </section>
+</article>
+  </div>
+</main>
+  <footer class="footer">
+  <div class="footer-social">
+    
+    
+    
+    
+    
+    <a href="tencent://message/?Menu=yes&uin=694534942 " target="_blank" onMouseOver="this.style.color= '#12B7F5'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconQQ "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="javascript:; " target="_blank" onMouseOver="this.style.color= '#09BB07'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconwechat-fill "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="https://www.instagram.com/izhaoo/ " target="_blank" onMouseOver="this.style.color= '#DA2E76'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconinstagram "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="https://github.com/godlikedeveloper " target="_blank" onMouseOver="this.style.color= '#24292E'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  icongithub-fill "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="mailto:694534942@qq.com " target="_blank" onMouseOver="this.style.color='#FFBE5B'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconmail"></i>
+    </a>
+    
+  </div>
+  <div class="footer-copyright"><p>Copyright© 2019-2020 | <a target="_blank" href="http://blog.u-to-world.com">小笼包</a> .AllRightsReserved</p></div>
+</footer>
+  
+      <div class="fab fab-plus">
+    <i class="iconfont iconplus"></i>
+  </div>
+  <div class="fab fab-up">
+    <i class="iconfont iconcaret-up"></i>
+  </div>
+  <div class="fab fab-menu">
+    <i class="iconfont iconmenu"></i>
+  </div>
+  
+</body>
+
+
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+
+
+
+
+
+
+<script src="https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+
+
+
+
+
+
+
+
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js"></script>
+
+
+
+
+
+
+<script src="https://cdn.bootcdn.net/ajax/libs/justifiedGallery/3.7.0/js/jquery.justifiedGallery.min.js"></script>
+
+
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+<script>
+  (function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+      bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</html>
