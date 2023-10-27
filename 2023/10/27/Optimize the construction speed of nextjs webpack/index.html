@@ -1,0 +1,387 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Optimize the construction speed of nextjs webpack - 小笼包的须弥芥子</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="google" content="notranslate" />
+  <meta name="referrer" content="no-referrer" />
+  
+  <meta name="keywords" content="react,vue,react-native,webpack,javascript,css,nodejs,happy daily,"> 
+  
+  <meta name="description" content="a blog share frontend coding experience and happy day,使用工具speed-measure-webpack-p..."> 
+  
+  <meta name="author" content="zhangyunpeng"> 
+
+  
+    <link rel="icon" href="/images/icons/favicon-16x16.png" type="image/png" sizes="16x16">
+  
+  
+    <link rel="icon" href="/images/icons/favicon-32x32.png" type="image/png" sizes="32x32">
+  
+  
+    <link rel="apple-touch-icon" href="/images/icons/apple-touch-icon.png" sizes="180x180">
+  
+  
+    <meta rel="mask-icon" href="/images/icons/stun-logo.svg" color="#333333">
+  
+  
+    <meta rel="msapplication-TileImage" content="/images/icons/favicon-128x128.png">
+    <meta rel="msapplication-TileColor" content="#000000">
+  
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+  
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1445822_58xq2j9v1id.css">
+
+  
+
+  
+  
+  
+<link rel="stylesheet" href="/lib/fancybox/fancybox.css">
+
+  
+
+  
+  
+  
+<link rel="stylesheet" href="/lib/highlight/drucula.min.css">
+
+  
+
+  
+  
+  
+<link rel="stylesheet" href="/lib/justifiedGallery/justifiedGallery.css">
+
+  
+
+  <script>
+    var CONFIG = window.CONFIG || {}
+    CONFIG = {
+      fancybox: true,
+      pjax: false,
+      lazyload: {
+        enable: true,
+        loadingImage: '/images/theme/loading.gif',
+      },
+      donate_alipay: 'https://pic.imgdb.cn/item/622edf135baa1a80abb1276b.jpg',
+      donate_wechat: 'https://pic.imgdb.cn/item/622edf115baa1a80abb1253f.jpg',
+      motto: {
+        api: 'https://v1.hitokoto.cn/?encode=text&amp;c=d',
+        default: '不要温和地走进那良夜'
+      },
+      galleries: {
+        enable: 'true'
+      },
+      fab: {
+        enable: 'true',
+        alwaysShow: 'false'
+      }
+    }
+  </script>
+
+  
+
+  
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body class="lock-screen">
+  <div class="loading"></div>
+  <nav class="menu">
+  <div class="menu-close">
+    <i class="iconfont iconplus"></i>
+  </div>
+  <ul class="menu-content">
+    
+    
+    
+    
+    <li class="menu-item"><a href="/ "> 首页</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="https://juejin.cn/user/8451824025757 " target="_blank" rel="noopener"> 掘金</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/archives "> 归档</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/tags "> 标签</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/categories "> 分类</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/about "> 关于</a></li>
+    
+  </ul>
+  <div class="menu-copyright"><p>Copyright© 2021-2022 | <a target="_blank" href="https://github.com/zoyopo">小笼包</a> .AllRightsReserved</p></div>
+</nav>
+  <main id="main">
+  <div class="container" id="container">
+    <article class="article">
+  <section class="head">
+  <img   class="lazyload" data-original="https://pic.imgdb.cn/item/622b16055baa1a80abe87e5f.jpg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  draggable="false">
+  <div class="head-mask">
+    <h1 class="head-title">Optimize the construction speed of nextjs webpack</h1>
+    <div class="head-info">
+      <span class="post-info-item"><i class="iconfont iconcalendar"></i>2023-10-27</span
+        class="post-info-item">
+      
+      <span class="post-info-item"><i class="iconfont iconfont-size"></i>3910</span>
+    </div>
+  </div>
+</section>
+
+  <section class="main">
+    <section class="content">
+      <h1 id="使用工具"><a href="#使用工具" class="headerlink" title="使用工具"></a>使用工具</h1><h2 id="speed-measure-webpack-plugin"><a href="#speed-measure-webpack-plugin" class="headerlink" title="speed-measure-webpack-plugin"></a><a href="https://www.npmjs.com/package/speed-measure-webpack-plugin" target="_blank" rel="noopener">speed-measure-webpack-plugin</a></h2><p>测算打包过程中各plugin,loader所耗费的时间</p>
+<h2 id="webpack-bundle-analyzer"><a href="#webpack-bundle-analyzer" class="headerlink" title="webpack-bundle-analyzer"></a><a href="https://npmjs.com/package/webpack-bundle-analyzer" target="_blank" rel="noopener">webpack-bundle-analyzer</a></h2><p>分析打包出来的各资源大小，方便对过大的包进行优化</p>
+<h1 id="提速方案"><a href="#提速方案" class="headerlink" title="提速方案"></a>提速方案</h1><h2 id="cache-loader"><a href="#cache-loader" class="headerlink" title="cache-loader"></a>cache-loader</h2><h3 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h3><p><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2022/png/1512483/1646202167189-e06397aa-93de-4b3a-94f1-e9b9f8d17083.png#clientId=u334ae171-e172-4&from=paste&height=277&id=ue40fa45c&originHeight=277&originWidth=575&originalType=binary&ratio=1&rotation=0&showTitle=false&size=17096&status=done&style=none&taskId=ue8488d49-681b-42e5-8f07-8cab761a6a8&title=&width=575" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="image.png"></p>
+<p><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2022/png/1512483/1646202211120-08df609a-a668-42c5-b4d0-17279a1265a5.png#clientId=u334ae171-e172-4&from=paste&height=506&id=u1a6277b0&originHeight=506&originWidth=452&originalType=binary&ratio=1&rotation=0&showTitle=false&size=41918&status=done&style=none&taskId=u5d7562de-4445-41ac-8edc-bfd52113a60&title=&width=452" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="image.png"></p>
+<p><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2022/png/1512483/1646202357808-9f42983a-605f-41fa-a857-fe4ccace5753.png#clientId=u334ae171-e172-4&from=paste&height=178&id=uf02879a6&originHeight=178&originWidth=474&originalType=binary&ratio=1&rotation=0&showTitle=false&size=13252&status=done&style=none&taskId=ufe328cc4-2989-423b-8fac-b37d4bc472f&title=&width=474" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="image.png"></p>
+<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2022/png/1512483/1646878510417-a9806a98-7198-49aa-b380-b0a41a5fe164.png#clientId=ua44d2009-3654-4&from=paste&height=672&id=uea4c4ca8&originHeight=672&originWidth=1114&originalType=binary&ratio=1&rotation=0&showTitle=false&size=93698&status=done&style=none&taskId=uea20f36b-a802-4ffd-ba1a-113f24cb2b5&title=&width=1114" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="image.png"><br><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2022/png/1512483/1646878931394-5b8a9e5f-3939-4f16-8c95-afff841da0ef.png#clientId=ua44d2009-3654-4&from=paste&height=618&id=u10ecdf78&originHeight=618&originWidth=891&originalType=binary&ratio=1&rotation=0&showTitle=false&size=68606&status=done&style=none&taskId=ua61abcff-6333-43b0-bc1b-b03579c0d2d&title=&width=891" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="image.png"></p>
+<h2 id="公共模块提取"><a href="#公共模块提取" class="headerlink" title="公共模块提取"></a>公共模块提取</h2><h3 id="autodll-webpack-plugin"><a href="#autodll-webpack-plugin" class="headerlink" title="autodll-webpack-plugin"></a><a href="https://www.npmjs.com/package/autodll-webpack-plugin" target="_blank" rel="noopener">autodll-webpack-plugin</a></h3><p>dll全称<code>dynamic link library</code>，是微软率先提出的概念，译作动态链接库。<br>分别通过两个<code>plugin</code>来运行<br><strong>dllPlugin</strong><br>进行构建资源文件，生成一个<code>mainfest.json</code>字典,字典里存储模块与id的映射<br><strong>dllRefrencePlugin</strong><br>通过id对模块进行引入<br><code>autodll-webpack-plugin</code>是对两个插件的整合，减少使用的复杂度。</p>
+<h4 id="原理-1"><a href="#原理-1" class="headerlink" title="原理"></a>原理</h4><h5 id="资源加载方式"><a href="#资源加载方式" class="headerlink" title="资源加载方式"></a>资源加载方式</h5><p><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2022/png/1512483/1646982295500-4dd7a9fd-f3c3-4e9b-8dd5-5fd1673609f5.png#clientId=u255c305b-d3e8-4&from=paste&height=337&id=u225dfb31&originHeight=337&originWidth=927&originalType=binary&ratio=1&rotation=0&showTitle=true&size=37026&status=done&style=none&taskId=u189d8d3d-0f7c-41aa-8c9c-d6d6d66cdf9&title=%E9%85%8D%E7%BD%AE&width=927" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="配置" title="配置"><br><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2022/png/1512483/1646982578385-aa71e0c7-4be9-4948-935c-9c98a29a2329.png#clientId=u255c305b-d3e8-4&from=paste&height=781&id=u1f2c96b9&originHeight=781&originWidth=860&originalType=binary&ratio=1&rotation=0&showTitle=true&size=60645&status=done&style=none&taskId=uac501025-6196-4f4d-9ec4-94d192df4aa&title=mainfest.json&width=860" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="mainfest.json" title="mainfest.json"></p>
+<p><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2022/png/1512483/1646982069952-c77a66df-b62b-40dd-9a6c-d566c7114eff.png#clientId=u255c305b-d3e8-4&from=paste&height=658&id=u18e8cb56&originHeight=658&originWidth=1735&originalType=binary&ratio=1&rotation=0&showTitle=true&size=134397&status=done&style=none&taskId=u04445020-3e16-4136-a85e-c70f89d9d06&title=vendor&width=1735" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="vendor" title="vendor"><br><code>vendor</code>不太好辨认，我们可以粘入控制台</p>
+<p><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2022/png/1512483/1646982688619-dfc43ebe-b4a0-4097-9f0e-ff67f5eb0f8a.png#clientId=u255c305b-d3e8-4&from=paste&height=542&id=ud7ed91ec&originHeight=542&originWidth=895&originalType=binary&ratio=1&rotation=0&showTitle=false&size=60918&status=done&style=none&taskId=u2291e118-0ea2-4912-8ce5-fa6a866aad7&title=&width=895" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="image.png"><br>其他模块同理，输入模块索引，获取对应模块。</p>
+<h5 id="打包缓存方式"><a href="#打包缓存方式" class="headerlink" title="打包缓存方式"></a>打包缓存方式</h5><p><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2022/png/1512483/1646983152209-27cfa530-1477-4b53-9be7-8b90b0184e9e.png#clientId=uad38fd5a-1f8d-4&from=paste&height=720&id=u950f4c97&originHeight=720&originWidth=1773&originalType=binary&ratio=1&rotation=0&showTitle=true&size=143979&status=done&style=none&taskId=udfe632d5-3927-45b8-8cdd-90ebf8fc961&title=package.json.hash&width=1773" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="package.json.hash" title="package.json.hash"></p>
+<p><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2022/png/1512483/1646983079841-d6cccd34-d548-468e-a8e9-e3d823b6c04b.png#clientId=u255c305b-d3e8-4&from=paste&height=689&id=ua52dbdc7&originHeight=689&originWidth=1686&originalType=binary&ratio=1&rotation=0&showTitle=true&size=134440&status=done&style=none&taskId=u92f29d72-4924-4a92-8af6-58c6b7e8513&title=package.json&width=1686" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="package.json" title="package.json"></p>
+<p><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2022/png/1512483/1646983641898-7582de68-cacf-4591-81c8-6d337a3d50da.png#clientId=uad38fd5a-1f8d-4&from=paste&height=195&id=uda6e52d8&originHeight=195&originWidth=610&originalType=binary&ratio=1&rotation=0&showTitle=false&size=14738&status=done&style=none&taskId=ufa4e6343-fa48-4991-85e6-6b81778bff7&title=&width=610" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="image.png"><br><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2022/png/1512483/1646983395743-a291c901-3873-498f-b294-ebff7ae2b7e0.png#clientId=uad38fd5a-1f8d-4&from=paste&height=658&id=ue295a2e7&originHeight=658&originWidth=1618&originalType=binary&ratio=1&rotation=0&showTitle=true&size=256943&status=done&style=none&taskId=u1ccfb131-baca-42b4-b644-4baa29b96c6&title=validateCache.js&width=1618" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="validateCache.js" title="validateCache.js"></p>
+<ol>
+<li>缓存目录下<code>autodll-webpack-plugin</code>内存在<code>production_instance_0_cda54207bafebb237a6e726378cf1b00</code>目录</li>
+<li>存在<code>packge.json.hash</code></li>
+<li>当前<code>packge.json</code>和<code>packge.json.hash</code>对比无有变化</li>
+</ol>
+<p>若不满足上述条件，就会重新写入<code>packge.json.hash</code></p>
+<h3 id="对比dll方式和spiltChunks方式"><a href="#对比dll方式和spiltChunks方式" class="headerlink" title="对比dll方式和spiltChunks方式"></a>对比dll方式和spiltChunks方式</h3><p>可参考这个问题<br><a href="https://stackoverflow.com/questions/41890855/webpack-common-chunks-plugin-vs-webpack-dll-plugin" target="_blank" rel="noopener">webpack-common-chunks-plugin-vs-webpack-dll-plugin</a></p>
+<p>因为在模块打包方式上，dll需要手动声明需要打入一起的模块</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> dllLibs = [<br>  <span class="hljs-string">'react'</span>,<br>  <span class="hljs-string">'react-dom'</span>,<br>  <span class="hljs-string">'scheduler'</span>,<br>  <span class="hljs-string">'lottie-web'</span>,<br>  <span class="hljs-string">'html2canvas'</span>,<br>  <span class="hljs-string">'lodash'</span>,<br>  <span class="hljs-string">'@xyz/antd-mobile'</span>,<br>  <span class="hljs-string">'dayjs'</span><br>]<br><span class="hljs-keyword">new</span> AutoDllPlugin(&#123;<br>    inject: <span class="hljs-literal">true</span>, <span class="hljs-comment">// will inject the DLL bundle to index.html</span><br>    debug: <span class="hljs-literal">true</span>,<br>    filename: <span class="hljs-string">'[name]_[hash].js'</span>,<br>    path: <span class="hljs-string">'./dll'</span>,<br>    context: __dirname,<br>    entry: &#123;<br>      vendor: dllLibs<br>    &#125;<br>  &#125;)<br></code></pre></td></tr></table></figure>
+<p>而<code>spiltChunks</code>可以自由定义模块提取的<code>最小引用</code>，<code>最小体积</code>，以及<code>正则匹配</code>，功能更加强大智能。<br>(需要webpack4及以上才能使用，低版本可用<code>commonChunkPlugin</code>替代)<br><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2022/png/1512483/1646879978421-ab7b8145-efa4-4d15-bdad-c4bf1580def2.png#clientId=ua44d2009-3654-4&from=paste&height=492&id=rP12a&originHeight=492&originWidth=881&originalType=binary&ratio=1&rotation=0&showTitle=false&size=51481&status=done&style=none&taskId=ua965ca68-a2c9-40e5-b589-cc618dfa6f6&title=&width=881" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="image.png"></p>
+<h3 id="模块分布"><a href="#模块分布" class="headerlink" title="模块分布"></a>模块分布</h3><p><strong>优化前</strong><br><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2022/png/1512483/1646879474228-349d9ae7-abe6-489a-a163-2f8533897691.png#clientId=ua44d2009-3654-4&from=paste&height=924&id=u7f1dbde3&originHeight=924&originWidth=1493&originalType=binary&ratio=1&rotation=0&showTitle=false&size=290394&status=done&style=none&taskId=ufef887e8-f86b-4fc6-8930-7f7a428eb3d&title=&width=1493" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="image.png"><br><strong>优化后</strong><br><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2022/png/1512483/1646879067298-f35f5381-8b5f-4fb5-86c6-f77a0015bbdd.png#clientId=ua44d2009-3654-4&from=paste&height=873&id=u4cc4bd2b&originHeight=873&originWidth=1433&originalType=binary&ratio=1&rotation=0&showTitle=false&size=313986&status=done&style=none&taskId=uc255be94-ebd1-45ef-996c-3cfdef37aee&title=&width=1433" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="image.png"></p>
+<h3 id="资源体积大小"><a href="#资源体积大小" class="headerlink" title="资源体积大小"></a>资源体积大小</h3><p><strong>优化前</strong><br><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2022/png/1512483/1646879660780-95080077-f6aa-465b-991e-3b9ccfc1b235.png#clientId=ua44d2009-3654-4&from=paste&height=241&id=u1752fff3&originHeight=241&originWidth=826&originalType=binary&ratio=1&rotation=0&showTitle=false&size=39255&status=done&style=none&taskId=u90f39c1b-13d9-4739-ab05-d034dddd6c5&title=&width=826" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="image.png"><br><strong>优化后</strong><br><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2022/png/1512483/1646879111370-9c5a1bff-cfd4-4224-a98b-4246150353f5.png#clientId=ua44d2009-3654-4&from=paste&height=236&id=ufac06b6a&originHeight=236&originWidth=834&originalType=binary&ratio=1&rotation=0&showTitle=false&size=44408&status=done&style=none&taskId=u953e0fc9-9978-4a81-babb-d8879aea681&title=&width=834" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="image.png"></p>
+<h3 id="打包耗时"><a href="#打包耗时" class="headerlink" title="打包耗时"></a>打包耗时</h3><p><strong>优化前</strong><br><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2022/png/1512483/1646879557047-6ae3eb3f-98a9-400e-abf1-c8fbf3a40440.png#clientId=ua44d2009-3654-4&from=paste&height=269&id=u5090da4c&originHeight=269&originWidth=1040&originalType=binary&ratio=1&rotation=0&showTitle=false&size=13914&status=done&style=none&taskId=u992e1e43-4193-4c58-94d9-8a346449c57&title=&width=1040" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="image.png"><br><strong>优化后</strong><br><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2022/png/1512483/1646879146482-46828d71-efbc-432d-8cdf-6bca6327cb04.png#clientId=ua44d2009-3654-4&from=paste&height=209&id=u1d8d12ef&originHeight=209&originWidth=1140&originalType=binary&ratio=1&rotation=0&showTitle=false&size=12586&status=done&style=none&taskId=ud0d12f28-033d-49b5-9ee2-869433ff4b1&title=&width=1140" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="image.png"></p>
+<h1 id="接入方式"><a href="#接入方式" class="headerlink" title="接入方式"></a>接入方式</h1><p>因为<code>nextjs</code>内置了<code>webpack</code>打包脚本，所以我们要在外侧复写</p>
+<h2 id="内置配置"><a href="#内置配置" class="headerlink" title="内置配置 "></a>内置配置 <img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2022/png/1512483/1646880511264-9e1b6154-f81e-41b5-8ff1-a69ca934f939.png#clientId=ua44d2009-3654-4&from=paste&height=494&id=ufaa186da&originHeight=494&originWidth=1741&originalType=binary&ratio=1&rotation=0&showTitle=false&size=103329&status=done&style=none&taskId=uf3218aa5-4cd7-4b62-9a4e-12c0e51674d&title=&width=1741" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="image.png"></h2><h2 id="复写"><a href="#复写" class="headerlink" title="复写"></a>复写</h2><p>在<code>next.config.js</code>中进行配置<br><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2022/png/1512483/1646881114743-cc4672b0-ab67-4aae-863c-8f7a1bd8492e.png#clientId=ua44d2009-3654-4&from=paste&height=399&id=ubcaab9d2&originHeight=399&originWidth=663&originalType=binary&ratio=1&rotation=0&showTitle=false&size=48865&status=done&style=none&taskId=ud8b94c7e-af38-4d5e-968b-939c04abcff&title=&width=663" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="image.png"></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// customWebpack</span><br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@title</span>: webpack.extend.js</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@projectName <span class="hljs-variable">fe</span></span>-xyz-wap-next</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@description</span>: webpack 扩展配置</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@author <span class="hljs-variable">zhangyunpeng0126</span></span></span><br><span class="hljs-comment"> * <span class="hljs-doctag">@date </span>2022/3/29:37</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">const</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">'path'</span>)<br><br><span class="hljs-built_in">module</span>.exports = <span class="hljs-function">(<span class="hljs-params">config, &#123;isServer&#125;</span>) =&gt;</span> &#123;<br>  <span class="hljs-keyword">const</span> isDevelopment = process.env.NODE_ENV === <span class="hljs-string">'development'</span><br><br>  <span class="hljs-keyword">let</span> splitChunksConfig<br>  <span class="hljs-keyword">const</span> splitChunksConfigs = &#123;<br>    dev: &#123;<span class="hljs-attr">cacheGroups</span>: &#123;<span class="hljs-attr">default</span>: <span class="hljs-literal">false</span>, <span class="hljs-attr">vendors</span>: <span class="hljs-literal">false</span>&#125;&#125;,<br>    prod: &#123;<br>      chunks: <span class="hljs-string">'all'</span>,<br>      cacheGroups: &#123;<br>        <span class="hljs-keyword">default</span>: <span class="hljs-literal">false</span>,<br>        vendors: <span class="hljs-literal">false</span>,<br>        commons: &#123;<span class="hljs-attr">name</span>: <span class="hljs-string">'commons'</span>, <span class="hljs-attr">chunks</span>: <span class="hljs-string">'all'</span>, <span class="hljs-attr">minChunks</span>: <span class="hljs-number">10</span>&#125;,<br>        react: &#123;<br>          name: <span class="hljs-string">'commons'</span>,<br>          chunks: <span class="hljs-string">'all'</span>,<br>          test: <span class="hljs-regexp">/[\\/]node_modules[\\/](react|react-dom|scheduler)[\\/]/</span><br>        &#125;,<br>      &#125;,<br>    &#125;,<br>  &#125;<br><br>  <span class="hljs-keyword">if</span> (isDevelopment) &#123;<br>    splitChunksConfig = splitChunksConfigs.dev<br>  &#125; <span class="hljs-keyword">else</span> &#123;<br>    splitChunksConfig = splitChunksConfigs.prod<br>  &#125;<br><br>  config.optimization = &#123;<br>    ...config.optimization,<br>    splitChunks: isServer ? <span class="hljs-literal">false</span> : splitChunksConfig,<br>  &#125;<br><br><br>  config.module.rules = config.module.rules.filter(<br>    (item) =&gt; <span class="hljs-string">`<span class="hljs-subst">$&#123;item.test&#125;</span>`</span> !== <span class="hljs-string">'/\\.(jpe?g|png|svg|gif|ico|webp)$/'</span>,<br>  )<br><br><br>  config.module.rules.push(&#123;<br>    test: <span class="hljs-regexp">/\.(jpe?g|png|svg|gif|ico|webp)$/</span>,<br>    use: [<br>      <span class="hljs-string">'cache-loader'</span>,<br>      &#123;<br>        loader: <span class="hljs-string">'url-loader'</span>,<br>        options: &#123;<br>          limit: <span class="hljs-number">2048</span>,<br>          fallback: <span class="hljs-string">'file-loader'</span>,<br>          publicPath: <span class="hljs-string">`/_next/static/images/`</span>,<br>          outputPath: <span class="hljs-string">`<span class="hljs-subst">$&#123;isServer ? <span class="hljs-string">'../'</span> : <span class="hljs-string">''</span>&#125;</span>static/images/`</span>,<br>          name: <span class="hljs-string">'[name]-[hash].[ext]'</span>,<br>        &#125;,<br>      &#125;,<br>    ],<br>  &#125;)<br>  config.resolve.alias = &#123;<br>    ...config.resolve.alias,<br>    <span class="hljs-string">'@/components'</span>: path.resolve(__dirname, <span class="hljs-string">'.'</span>, <span class="hljs-string">'src/components'</span>),<br>    <span class="hljs-string">'@/utils'</span>: path.resolve(__dirname, <span class="hljs-string">'.'</span>, <span class="hljs-string">'src/utils'</span>),<br>    <span class="hljs-string">'@/models'</span>: path.resolve(__dirname, <span class="hljs-string">'.'</span>, <span class="hljs-string">'src/models'</span>),<br>    <span class="hljs-string">'@/requests'</span>: path.resolve(__dirname, <span class="hljs-string">'.'</span>, <span class="hljs-string">'src/requests'</span>),<br>    <span class="hljs-string">'@/assets'</span>: path.resolve(__dirname, <span class="hljs-string">'.'</span>, <span class="hljs-string">'src/assets'</span>),<br>  &#125;<br>  <span class="hljs-keyword">return</span> config<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h1 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h1><h2 id="ci打包速度测试"><a href="#ci打包速度测试" class="headerlink" title="ci打包速度测试"></a>ci打包速度测试</h2><p><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2022/png/1512483/1646881233585-71c39386-2060-45ee-be8f-9f90a3e047be.png#clientId=ua44d2009-3654-4&from=paste&height=155&id=ub2df12e4&originHeight=155&originWidth=1184&originalType=binary&ratio=1&rotation=0&showTitle=false&size=26017&status=done&style=none&taskId=u8ebfce28-def0-40f0-ace1-1e0f1b09170&title=&width=1184" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="image.png"></p>
+<h2 id="可用性测试"><a href="#可用性测试" class="headerlink" title="可用性测试"></a>可用性测试</h2><h3 id="增量"><a href="#增量" class="headerlink" title="增量"></a>增量</h3><p><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2022/png/1512483/1646881375784-c53f0c2b-55ae-4d19-a102-439427f8f2b4.png#clientId=ua44d2009-3654-4&from=paste&height=164&id=u02ca4d2a&originHeight=164&originWidth=392&originalType=binary&ratio=1&rotation=0&showTitle=false&size=7035&status=done&style=none&taskId=ub02ca986-f512-49b4-8e02-b214375a09a&title=&width=392" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="image.png"></p>
+<p><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2022/png/1512483/1646881731322-24ace0c7-5998-4837-a9d0-4675c36ba5d4.png#clientId=ua44d2009-3654-4&from=paste&height=706&id=u13aee84f&originHeight=706&originWidth=441&originalType=binary&ratio=1&rotation=0&showTitle=false&size=33131&status=done&style=none&taskId=u5f52dc06-4f5b-45eb-aca0-812bcf75234&title=&width=441" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="image.png"></p>
+<h3 id="存量更新"><a href="#存量更新" class="headerlink" title="存量更新"></a>存量更新</h3><p>改变标签颜色<br><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2022/png/1512483/1646881751932-f545b5ff-c9a5-4517-8086-59c96405a23b.png#clientId=ua44d2009-3654-4&from=paste&height=96&id=u65636859&originHeight=96&originWidth=369&originalType=binary&ratio=1&rotation=0&showTitle=false&size=5823&status=done&style=none&taskId=u3fe6db5d-c5b7-4cb6-90c9-7db5064b4d8&title=&width=369" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="image.png">)<img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2022/png/1512483/1646881766804-1887c967-e29d-47bc-8965-1f779c949c9d.png#clientId=ua44d2009-3654-4&from=paste&height=683&id=ubca2dc25&originHeight=683&originWidth=385&originalType=binary&ratio=1&rotation=0&showTitle=false&size=31587&status=done&style=none&taskId=u94eb40b5-2601-4284-bc7a-50c5adcc719&title=&width=385" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="image.png"></p>
+<h1 id="其他优化思路"><a href="#其他优化思路" class="headerlink" title="其他优化思路"></a>其他优化思路</h1><h2 id="提升依赖查找速度"><a href="#提升依赖查找速度" class="headerlink" title="提升依赖查找速度"></a>提升依赖查找速度</h2><p>webpack对模块的搜索本质上是遍历资源树</p>
+<h2 id="提升loader解析速度"><a href="#提升loader解析速度" class="headerlink" title="提升loader解析速度"></a>提升loader解析速度</h2><p>loader要对对应扩展名的文件进行解析，遍历，替换，例如<code>babel-loader</code></p>
+<h2 id="提高插件处理速度"><a href="#提高插件处理速度" class="headerlink" title="提高插件处理速度"></a>提高插件处理速度</h2><p>插件对代码的压缩和混淆，cpu会是速度的瓶颈</p>
+<p>好消息是<code>next</code>内置配置都从这三个方面进行了优化，让笔者轻松了不少。 </p>
+<h1 id="知识拓展"><a href="#知识拓展" class="headerlink" title="知识拓展"></a>知识拓展</h1><h2 id="IgnorePlugin"><a href="#IgnorePlugin" class="headerlink" title="IgnorePlugin"></a>IgnorePlugin</h2><p>一个可忽略包中某些资源的库，比如<code>moment.js</code>中的时区信息<br><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2022/png/1512483/1646985696865-a88c3bdc-14b3-4860-b6a0-14011f69a1a6.png#clientId=u255c305b-d3e8-4&from=paste&height=52&id=uc331b379&originHeight=52&originWidth=689&originalType=binary&ratio=1&rotation=0&showTitle=false&size=9709&status=done&style=none&taskId=ubd3c17ff-c53b-4fc1-9f17-39a85813746&title=&width=689" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="image.png"><br>方式是使用正则匹配</p>
+<h2 id="modules-with-no-loaders"><a href="#modules-with-no-loaders" class="headerlink" title="modules-with-no-loaders"></a><a href="https://stackoverflow.com/questions/61526290/webpack-what-are-modules-with-no-loaders-how-to-optimize-them" target="_blank" rel="noopener">modules-with-no-loaders</a></h2><p>使用<a href="https://www.npmjs.com/package/speed-measure-webpack-plugin" target="_blank" rel="noopener">speed-measure-webpack-plugin</a>时发现有些模块未被loader处理<br><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2022/png/1512483/1646986290449-49a2a0b7-dc40-4cc6-b9b3-c9c095364fe2.png#clientId=u255c305b-d3e8-4&from=paste&height=297&id=ue4b146c6&originHeight=297&originWidth=679&originalType=binary&ratio=1&rotation=0&showTitle=false&size=30491&status=done&style=none&taskId=u02b5b935-a031-4a0f-aaa7-6b7258fd7f3&title=&width=679" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="image.png"><br>因为存在<code>loader</code>需要<code>exclude</code>的模块，比如<code>node_modules</code>里的三方包，已经经过相应loader转换，我们不必再进行处理，这样可以提高<code>loader</code>转换速度，是正常的<br>如果<code>modules-with-no-loaders</code>耗时较长，可能是引入的库比较多导致的。</p>
+
+    </section>
+    <section class="extra">
+      
+        <section class="donate">
+  <div class="qrcode">
+    <img   class="lazyload" data-original="https://pic.imgdb.cn/item/622edf135baa1a80abb1276b.jpg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" >
+  </div>
+  <div class="icon">
+    <a href="javascript:;" id="alipay"><i class="iconfont iconalipay"></i></a>
+    <a href="javascript:;" id="wechat"><i class="iconfont iconwechat-fill"></i></a>
+  </div>
+</section>
+      
+      
+      
+<nav class="nav">
+  
+    <a href="/2023/10/27/A%20workspace%20with%20an%20example%20tech%20you%20how%20to%20create%20babel%20plugin/"><i class="iconfont iconleft"></i>A workspace with an example tech you how to create babel plugin</a>
+  
+  
+    <a href="/2023/10/27/React+Webpack4+Babel7+React-hot-loader%E8%87%AA%E5%AE%9A%E4%B9%89%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/">React+Webpack4+Babel7+React-hot-loader自定义前端开发环境<i class="iconfont iconright"></i></a>
+  
+</nav>
+
+    </section>
+    
+      <section class="comments">
+        
+          <div class="btn" id="comments-btn">查看评论</div>
+        
+        
+<div id="valine"></div>
+<script defer src="//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js"></script>
+<script>
+  window.onload = function () {
+    var loadValine = function () {
+      new Valine({
+        el: '#valine',
+        app_id: "XgHS51JuLkeipj92BK4KyIEI-gzGzoHsz",
+        app_key: "LHxBDnRt6RQCuByhRfp1pkVN",
+        placeholder: "ヾﾉ≧∀≦)o来啊，快活啊!",
+        avatar: "mp",
+        pageSize: "10",
+        lang: "zh-CN",
+      });
+    }
+    if ( true ) {
+      $("#comments-btn").on("click", function () {
+        $(this).hide();
+        loadValine();
+      });
+    } else {
+      loadValine();
+    }
+  };
+</script>
+
+
+      </section>
+    
+  </section>
+</article>
+  </div>
+</main>
+  <footer class="footer">
+  <div class="footer-social">
+    
+    
+    
+    
+    
+    <a href="tencent://message/?Menu=yes&uin=694534942 " target="_blank" onMouseOver="this.style.color= '#12B7F5'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconQQ "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="https://pic.imgdb.cn/item/6231b2785baa1a80abf9af9c.jpg " target="_blank" onMouseOver="this.style.color= '#09BB07'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconwechat-fill "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="https://www.instagram.com/gaintpenggle/ " target="_blank" onMouseOver="this.style.color= '#DA2E76'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconinstagram "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="https://github.com/zoyopo " target="_blank" onMouseOver="this.style.color= '#24292E'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  icongithub-fill "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="mailto:694534942@qq.com " target="_blank" onMouseOver="this.style.color='#ff9800'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconmail"></i>
+    </a>
+    
+  </div>
+  <div class="footer-copyright"><p>Copyright© 2021-2022 | <a target="_blank" href="https://github.com/zoyopo">小笼包</a> .AllRightsReserved</p></div>
+</footer>
+  
+      <div class="fab fab-plus">
+    <i class="iconfont iconplus"></i>
+  </div>
+  <div class="fab fab-up">
+    <i class="iconfont iconcaret-up"></i>
+  </div>
+  <div class="fab fab-menu">
+    <i class="iconfont iconmenu"></i>
+  </div>
+  
+</body>
+
+
+<script src="/lib/jquery/jquery.js"></script>
+
+
+
+
+
+
+<script src="/lib/fancybox/fancybox.js"></script>
+
+
+
+
+
+
+
+
+<script src="/lib/lazyload/lazyload.js"></script>
+
+
+
+
+
+
+<script src="/lib/justifiedGallery/justifiedGallery.js"></script>
+
+
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+<script>
+  (function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+      bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</html>

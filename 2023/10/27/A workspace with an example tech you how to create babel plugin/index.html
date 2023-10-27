@@ -1,0 +1,392 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>A workspace with an example tech you how to create babel plugin - 小笼包的须弥芥子</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="google" content="notranslate" />
+  <meta name="referrer" content="no-referrer" />
+  
+  <meta name="keywords" content="react,vue,react-native,webpack,javascript,css,nodejs,happy daily,"> 
+  
+  <meta name="description" content="a blog share frontend coding experience and happy day,how-to-implement-babel-opti..."> 
+  
+  <meta name="author" content="zhangyunpeng"> 
+
+  
+    <link rel="icon" href="/images/icons/favicon-16x16.png" type="image/png" sizes="16x16">
+  
+  
+    <link rel="icon" href="/images/icons/favicon-32x32.png" type="image/png" sizes="32x32">
+  
+  
+    <link rel="apple-touch-icon" href="/images/icons/apple-touch-icon.png" sizes="180x180">
+  
+  
+    <meta rel="mask-icon" href="/images/icons/stun-logo.svg" color="#333333">
+  
+  
+    <meta rel="msapplication-TileImage" content="/images/icons/favicon-128x128.png">
+    <meta rel="msapplication-TileColor" content="#000000">
+  
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+  
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1445822_58xq2j9v1id.css">
+
+  
+
+  
+  
+  
+<link rel="stylesheet" href="/lib/fancybox/fancybox.css">
+
+  
+
+  
+  
+  
+<link rel="stylesheet" href="/lib/highlight/drucula.min.css">
+
+  
+
+  
+  
+  
+<link rel="stylesheet" href="/lib/justifiedGallery/justifiedGallery.css">
+
+  
+
+  <script>
+    var CONFIG = window.CONFIG || {}
+    CONFIG = {
+      fancybox: true,
+      pjax: false,
+      lazyload: {
+        enable: true,
+        loadingImage: '/images/theme/loading.gif',
+      },
+      donate_alipay: 'https://pic.imgdb.cn/item/622edf135baa1a80abb1276b.jpg',
+      donate_wechat: 'https://pic.imgdb.cn/item/622edf115baa1a80abb1253f.jpg',
+      motto: {
+        api: 'https://v1.hitokoto.cn/?encode=text&amp;c=d',
+        default: '不要温和地走进那良夜'
+      },
+      galleries: {
+        enable: 'true'
+      },
+      fab: {
+        enable: 'true',
+        alwaysShow: 'false'
+      }
+    }
+  </script>
+
+  
+
+  
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body class="lock-screen">
+  <div class="loading"></div>
+  <nav class="menu">
+  <div class="menu-close">
+    <i class="iconfont iconplus"></i>
+  </div>
+  <ul class="menu-content">
+    
+    
+    
+    
+    <li class="menu-item"><a href="/ "> 首页</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="https://juejin.cn/user/8451824025757 " target="_blank" rel="noopener"> 掘金</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/archives "> 归档</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/tags "> 标签</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/categories "> 分类</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/about "> 关于</a></li>
+    
+  </ul>
+  <div class="menu-copyright"><p>Copyright© 2021-2022 | <a target="_blank" href="https://github.com/zoyopo">小笼包</a> .AllRightsReserved</p></div>
+</nav>
+  <main id="main">
+  <div class="container" id="container">
+    <article class="article">
+  <section class="head">
+  <img   class="lazyload" data-original="https://pic.imgdb.cn/item/622b16055baa1a80abe87e50.jpg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  draggable="false">
+  <div class="head-mask">
+    <h1 class="head-title">A workspace with an example tech you how to create babel plugin</h1>
+    <div class="head-info">
+      <span class="post-info-item"><i class="iconfont iconcalendar"></i>2023-10-27</span
+        class="post-info-item">
+      
+      <span class="post-info-item"><i class="iconfont iconfont-size"></i>4784</span>
+    </div>
+  </div>
+</section>
+
+  <section class="main">
+    <section class="content">
+      <h1 id="how-to-implement-babel-optional-chain"><a href="#how-to-implement-babel-optional-chain" class="headerlink" title="how-to-implement-babel-optional-chain"></a><a href="https://github.com/zoyopo/how-to-implement-babel-optional-chain" target="_blank" rel="noopener">how-to-implement-babel-optional-chain</a></h1><p>This is an example about how to implement <code>babel-optional-chain</code> plugin.Also,you can use it as simple babel plugin workspace.</p>
+<h2 id="Quick-start"><a href="#Quick-start" class="headerlink" title="Quick start"></a>Quick start</h2><ul>
+<li>step 1</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">yarn or npm install<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>step2 entry config<br>config your entry in <code>babel.config.js</code> like:</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-built_in">module</span>.exports = &#123;<br>  plugins: [[<span class="hljs-string">"./plugin-with-option-loose.js"</span>, &#123; <span class="hljs-attr">loose</span>: <span class="hljs-literal">true</span> &#125;]],<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>step3</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">npm run watch<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>step4</li>
+</ul>
+<p>modify code in input.js and save,you will see genrated code in output.js</p>
+<p><strong>If you wanna konw about option-chain implement progress,keep page moving up</strong></p>
+<h2 id="The-simplest-implementation"><a href="#The-simplest-implementation" class="headerlink" title="The simplest implementation"></a>The simplest implementation</h2><p><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2021/png/1512483/1633772642217-dfd9f0f8-638c-459a-a7ea-d51bab6b8bfc.png#clientId=ubb1d753a-e999-4&from=ui&id=u6de8c905&margin=%5Bobject%20Object%5D&name=c1.png&originHeight=466&originWidth=1062&originalType=binary&ratio=1&size=30343&status=done&style=none&taskId=u57b77761-4245-498f-8acc-460556cc3b2#id=XNLIC&originHeight=466&originWidth=1062&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="c1.png"></p>
+<p><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2021/png/1512483/1633772811427-f06aeee2-4ef4-456d-ba21-66836fbc50fc.png#clientId=ubb1d753a-e999-4&from=ui&id=uc6fc7e07&margin=%5Bobject%20Object%5D&name=c2.png&originHeight=380&originWidth=1085&originalType=binary&ratio=1&size=22211&status=done&style=none&taskId=u3df0642b-342e-4a8c-9d8d-4d0087184b3#id=pEBw6&originHeight=380&originWidth=1085&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="c2.png"></p>
+<p><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2021/png/1512483/1633772842675-2b777cb7-8ab4-46b5-8c0b-a35732e628c8.png#clientId=ubb1d753a-e999-4&from=ui&id=u3a872809&margin=%5Bobject%20Object%5D&name=c3.png&originHeight=423&originWidth=977&originalType=binary&ratio=1&size=24498&status=done&style=none&taskId=uf8cc1459-9c38-481e-9e6c-4852e682241#id=zhBMx&originHeight=423&originWidth=977&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="c3.png"><br>Although simple, it achieves the simplest effect,But add another attribute and kneel immediately<br><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2021/png/1512483/1633773096772-eeef896d-3571-4428-9483-3fd008d851a7.png#clientId=ubb1d753a-e999-4&from=ui&id=ub0b29d71&margin=%5Bobject%20Object%5D&name=c4.png&originHeight=529&originWidth=1094&originalType=binary&ratio=1&size=33335&status=done&style=none&taskId=uc4060f2f-66ac-4234-b92f-a3192af3fbe#id=Py9uH&originHeight=529&originWidth=1094&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="c4.png"></p>
+<p><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2021/png/1512483/1633773114901-667cbe3f-7fc1-4325-9aed-991a42ab3c19.png#clientId=ubb1d753a-e999-4&from=ui&id=udfeb8f7e&margin=%5Bobject%20Object%5D&name=c5.png&originHeight=470&originWidth=1315&originalType=binary&ratio=1&size=28247&status=done&style=none&taskId=u76935c61-6da0-42cd-b57e-9a442c052fc#id=RWctg&originHeight=470&originWidth=1315&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="c5.png"></p>
+<h2 id="Repair-normal-‘-’-symbol-also-triggers-“-”-Conversion-problem"><a href="#Repair-normal-‘-’-symbol-also-triggers-“-”-Conversion-problem" class="headerlink" title="Repair normal ‘.’ symbol also triggers “?.” Conversion problem"></a>Repair normal ‘.’ symbol also triggers “?.” Conversion problem</h2><p>Obviously, b.c does not need to judge b, so we continue to improve it</p>
+<p><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2021/png/1512483/1633917368341-42d91c27-e387-4829-8d9d-93a157a5c388.png#clientId=ucbc57d5c-bffa-4&from=ui&id=u5874a0aa&margin=%5Bobject%20Object%5D&name=c9.png&originHeight=510&originWidth=1021&originalType=binary&ratio=1&size=32878&status=done&style=none&taskId=u1cdb31f0-d5c8-44bc-9ee2-b06e8f4b480#id=M292P&originHeight=510&originWidth=1021&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="c9.png"><br>Try again, it ‘s not bad</p>
+<p><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2021/png/1512483/1633917469210-b120f3e7-0f29-49f2-8798-e222c23d6636.png#clientId=ucbc57d5c-bffa-4&from=ui&id=uc129eec2&margin=%5Bobject%20Object%5D&name=c10.png&originHeight=239&originWidth=940&originalType=binary&ratio=1&size=14024&status=done&style=none&taskId=u1877a779-e435-452d-ac16-b83d1572af1#id=coTjR&originHeight=239&originWidth=940&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="c10.png"></p>
+<p>But if you add an optional value<br><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2021/png/1512483/1633917642510-d5f34feb-f2a6-4475-bae9-258bab849a0b.png#clientId=ucbc57d5c-bffa-4&from=ui&id=u4480e249&margin=%5Bobject%20Object%5D&name=c11.png&originHeight=253&originWidth=714&originalType=binary&ratio=1&size=14303&status=done&style=none&taskId=uf26e58ba-1b01-4231-8bdf-6da00b10a12#id=btKAo&originHeight=253&originWidth=714&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="c11.png"><br>There will be problems<br><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2021/png/1512483/1633917651958-c216df1a-71c7-4409-ac34-5e51fb081fcb.png#clientId=ucbc57d5c-bffa-4&from=ui&id=u4ed40422&margin=%5Bobject%20Object%5D&name=c12.png&originHeight=244&originWidth=1272&originalType=binary&ratio=1&size=15539&status=done&style=none&taskId=ude0be574-ee36-4238-a0c7-ba86be76ddd#id=OuUSP&originHeight=244&originWidth=1272&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="c12.png"></p>
+<h2 id="Store-calculation-results"><a href="#Store-calculation-results" class="headerlink" title="Store calculation results"></a>Store calculation results</h2><p><code>a==null?undefined:a.b</code>It was repeated twice，<strong>So let’s optimize it again, as shown below</strong><br><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2021/png/1512483/1633918062184-b40e1537-49b8-43ac-939e-fc8edabb2eb1.png#clientId=ucbc57d5c-bffa-4&from=ui&id=u475a33cc&margin=%5Bobject%20Object%5D&name=c13.png&originHeight=508&originWidth=1102&originalType=binary&ratio=1&size=34171&status=done&style=none&taskId=ua5d81bd7-bb35-445d-b2c5-d2f193099f6#id=ij6a6&originHeight=508&originWidth=1102&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="c13.png"><br>First,we create a unique variable in the current scope and injects it into the scope. Then, while performing the ternary operation, we assign the result and store the operation result</p>
+<p><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2021/png/1512483/1633918200394-b294d27f-246c-4cb0-bd5b-873f20216c35.png#clientId=ucbc57d5c-bffa-4&from=ui&id=ud9023fe3&margin=%5Bobject%20Object%5D&name=c14.png&originHeight=323&originWidth=1257&originalType=binary&ratio=1&size=22233&status=done&style=none&taskId=ua328f2a2-e30c-4199-9d98-40d48d37551#id=yv9eX&originHeight=323&originWidth=1257&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="c14.png"></p>
+<p>You think it’s over, but there’s another question<br><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2021/png/1512483/1633919298883-89684e57-e47b-49bd-b23c-2e8c72b94321.png#clientId=ucbc57d5c-bffa-4&from=ui&id=uf3890796&margin=%5Bobject%20Object%5D&name=c15.png&originHeight=326&originWidth=1223&originalType=binary&ratio=1&size=25973&status=done&style=none&taskId=ua34e985f-9e3c-4d46-b117-36c2a1bef97#id=VX0h7&originHeight=326&originWidth=1223&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="c15.png"></p>
+<h2 id="avoid-‘undefined’-being-declared-like-‘let-undefined-2’"><a href="#avoid-‘undefined’-being-declared-like-‘let-undefined-2’" class="headerlink" title="avoid ‘undefined’ being declared,like ‘let undefined = 2’"></a>avoid ‘undefined’ being declared,like ‘let undefined = 2’</h2><p>In order to prevent a big brother from assigning an undefined value, we need to use Babel’s API to build the undefined value in the scope<br><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2021/png/1512483/1633919467079-b0b9d41d-f649-4ef4-867d-8405b98274bd.png#clientId=ucbc57d5c-bffa-4&from=ui&id=uaf640400&margin=%5Bobject%20Object%5D&name=c17.png&originHeight=533&originWidth=1070&originalType=binary&ratio=1&size=37508&status=done&style=none&taskId=uc31e2784-1278-4ad5-a45a-dd640d02d1c#id=z9YdJ&originHeight=533&originWidth=1070&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="c17.png"><br>here is the result below<br><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2021/png/1512483/1633919667172-f129df16-ee57-4720-882a-b2e9b4723aa7.png#clientId=ucbc57d5c-bffa-4&from=ui&id=u98a13f37&margin=%5Bobject%20Object%5D&name=c18.png&originHeight=303&originWidth=1223&originalType=binary&ratio=1&size=25557&status=done&style=none&taskId=uf563f335-3487-4c89-9822-75aff77f31b#id=DuYra&originHeight=303&originWidth=1223&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="c18.png"></p>
+<h2 id="add-‘-amp-amp-’-form"><a href="#add-‘-amp-amp-’-form" class="headerlink" title="add ‘&amp;&amp;’ form"></a>add ‘&amp;&amp;’ form</h2><p>Before we finish, let’s play again. Babel’s afferent option constructs another form<br><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2021/png/1512483/1633919945726-7cbba642-44d5-4f9c-a4f2-2c585a5fb5d4.png#clientId=ucbc57d5c-bffa-4&from=ui&id=uda9a4340&margin=%5Bobject%20Object%5D&name=c20.png&originHeight=814&originWidth=1614&originalType=binary&ratio=1&size=136523&status=done&style=shadow&taskId=u5fd6ff88-7edc-46ea-9f97-a6e6076b7b7#id=mUAmH&originHeight=814&originWidth=1614&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="c20.png"></p>
+<p>Parameter incoming<br><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2021/png/1512483/1633920121928-635582b3-f57b-4996-bce1-97dc9658f8cd.png#clientId=ucbc57d5c-bffa-4&from=ui&id=uc7ca890e&margin=%5Bobject%20Object%5D&name=c21.png&originHeight=351&originWidth=1037&originalType=binary&ratio=1&size=25299&status=done&style=none&taskId=u0bccb021-b66f-4567-a4ed-4220435abe2#id=HqY2O&originHeight=351&originWidth=1037&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="c21.png"><br>result outing<br><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2021/png/1512483/1633920135249-0c257e41-268c-4d1f-af30-8cf52817c578.png#clientId=ucbc57d5c-bffa-4&from=ui&id=u39265a60&margin=%5Bobject%20Object%5D&name=c22.png&originHeight=350&originWidth=929&originalType=binary&ratio=1&size=20120&status=done&style=none&taskId=u96194ffd-4e63-4c87-92e3-f036216ef3c#id=FMhPk&originHeight=350&originWidth=929&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="c22.png"></p>
+<p><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2021/png/1512483/1633920135308-1e4218ca-229e-4903-92cf-db5eb470d31f.png#clientId=ucbc57d5c-bffa-4&from=ui&id=u3bd91012&margin=%5Bobject%20Object%5D&name=c23.png&originHeight=270&originWidth=922&originalType=binary&ratio=1&size=16373&status=done&style=none&taskId=u4ff86db8-9188-4b3f-bd04-cc1ff39759a#id=RQcTc&originHeight=270&originWidth=922&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="c23.png"><br>Just a simple plug-in.</p>
+<h2 id="Complete-code"><a href="#Complete-code" class="headerlink" title="Complete code"></a>Complete code</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">plugin</span>(<span class="hljs-params"></span></span><br><span class="hljs-function"><span class="hljs-params">  &#123; types: t, template &#125;,</span></span><br><span class="hljs-function"><span class="hljs-params">  &#123; loose = false &#125; = &#123;&#125;</span></span><br><span class="hljs-function"><span class="hljs-params"></span>) </span>&#123;<br>  <span class="hljs-keyword">const</span> buildLoose = template.expression(<span class="hljs-string">`</span><br><span class="hljs-string">    (%%tmp%% = %%obj%%) &amp;&amp; %%expr%%</span><br><span class="hljs-string">  `</span>);<br><br>  <span class="hljs-keyword">return</span> &#123;<br>    name: <span class="hljs-string">"optional-chaining"</span>,<br>    visitor: &#123;<br>      OptionalMemberExpression(path) &#123;<br>        <span class="hljs-keyword">let</span> &#123; object, property &#125; = path.node;<br>        <span class="hljs-keyword">if</span> (path.node.optional) &#123;<br>          <span class="hljs-keyword">let</span> tmp = path.scope.generateUidIdentifier(<span class="hljs-string">"obj"</span>);<br>          path.scope.push(&#123; <span class="hljs-attr">id</span>: tmp &#125;);<br>          <span class="hljs-keyword">let</span> undef = path.scope.buildUndefinedNode();<br>          <span class="hljs-keyword">if</span> (loose) &#123;<br>            path.replaceWith(<br>              buildLoose(&#123;<br>                tmp,<br>                obj: object,<br>                expr: template.expression.ast<span class="hljs-string">`<span class="hljs-subst">$&#123;tmp&#125;</span>.<span class="hljs-subst">$&#123;property&#125;</span>`</span>,<br>              &#125;)<br>            );<br>            <span class="hljs-keyword">return</span>;<br>          &#125;<br>          path.replaceWith(<br>            template.expression<br>              .ast<span class="hljs-string">`(<span class="hljs-subst">$&#123;tmp&#125;</span> =<span class="hljs-subst">$&#123;object&#125;</span>)== null?<span class="hljs-subst">$&#123;undef&#125;</span>:<span class="hljs-subst">$&#123;tmp&#125;</span>.<span class="hljs-subst">$&#123;property&#125;</span>`</span><br>          );<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>          path.replaceWith(template.expression.ast<span class="hljs-string">`<span class="hljs-subst">$&#123;object&#125;</span>.<span class="hljs-subst">$&#123;property&#125;</span>`</span>);<br>        &#125;<br>      &#125;,<br>    &#125;,<br>  &#125;;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<h2 id="Another-implementation"><a href="#Another-implementation" class="headerlink" title="Another implementation"></a>Another implementation</h2><p>This is the original author’s implementation, but it is more complex to understand</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">plugin</span>(<span class="hljs-params"></span></span><br><span class="hljs-function"><span class="hljs-params">  &#123; types: t, template &#125;,</span></span><br><span class="hljs-function"><span class="hljs-params">  &#123; loose = false &#125; = &#123;&#125;</span></span><br><span class="hljs-function"><span class="hljs-params"></span>) </span>&#123;<br>  <span class="hljs-keyword">const</span> buildLoose = template.expression(<span class="hljs-string">`</span><br><span class="hljs-string">    (%%tmp%% = %%obj%%) &amp;&amp; %%expr%%</span><br><span class="hljs-string">  `</span>);<br><br>  <span class="hljs-keyword">return</span> &#123;<br>    name: <span class="hljs-string">"optional-chaining"</span>,<br>    visitor: &#123;<br>      OptionalMemberExpression(path) &#123;<br>        <span class="hljs-comment">//#region 另一种实现方式</span><br>        <span class="hljs-keyword">let</span> originalPath = path;<br>        <span class="hljs-keyword">let</span> tmp = path.scope.generateUidIdentifier(<span class="hljs-string">"obj"</span>);<br>        path.scope.push(&#123; <span class="hljs-attr">id</span>: tmp &#125;);<br><br>        <span class="hljs-keyword">while</span> (!path.node.optional) &#123;<br>          path = path.get(<span class="hljs-string">"object"</span>);<br>        &#125;<br><br>        <span class="hljs-keyword">let</span> &#123; object &#125; = path.node;<br><br>        <span class="hljs-keyword">let</span> memberExpr = tmp;<br>        <span class="hljs-keyword">do</span> &#123;<br>          memberExpr = t.memberExpression(<br>            memberExpr,<br>            path.node.property,<br>            path.node.computed<br>          );<br><br>          <span class="hljs-keyword">if</span> (path === originalPath) &#123;<br>            <span class="hljs-keyword">break</span>;<br>          &#125;<br><br>          path = path.parentPath;<br>        &#125; <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>);<br>        <span class="hljs-keyword">if</span> (loose) &#123;<br>          path.replaceWith(<br>            buildLoose(&#123;<br>              tmp,<br>              obj: object,<br>              expr: memberExpr,<br>            &#125;)<br>          );<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>          <span class="hljs-keyword">let</span> undef = path.scope.buildUndefinedNode();<br><br>          originalPath.replaceWith(<br>            template.expression.ast<span class="hljs-string">`</span><br><span class="hljs-string">                    (<span class="hljs-subst">$&#123;tmp&#125;</span> = <span class="hljs-subst">$&#123;object&#125;</span>) == null</span><br><span class="hljs-string">                      ? <span class="hljs-subst">$&#123;undef&#125;</span></span><br><span class="hljs-string">                      : <span class="hljs-subst">$&#123;memberExpr&#125;</span></span><br><span class="hljs-string">                  `</span><br>          );<br>        &#125;<br>      &#125;,<br>      <span class="hljs-comment">//#endregion</span><br>    &#125;,<br>  &#125;;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p><a href="https://github.com/zoyopo/how-to-implement-babel-optional-chain" target="_blank" rel="noopener">Github repo address</a></p>
+<p>Welcome to star.</p>
+<h2 id="reference-resources"><a href="#reference-resources" class="headerlink" title="reference resources"></a>reference resources</h2><p><a href="https://www.youtube.com/embed/UeVq_U5obnE" target="_blank" rel="noopener">video address</a></p>
+<p><a href="https://github.com/nicolo-ribaudo/conf-holyjs-moscow-2019" target="_blank" rel="noopener">origin author’s github</a></p>
+
+    </section>
+    <section class="extra">
+      
+        <section class="donate">
+  <div class="qrcode">
+    <img   class="lazyload" data-original="https://pic.imgdb.cn/item/622edf135baa1a80abb1276b.jpg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" >
+  </div>
+  <div class="icon">
+    <a href="javascript:;" id="alipay"><i class="iconfont iconalipay"></i></a>
+    <a href="javascript:;" id="wechat"><i class="iconfont iconwechat-fill"></i></a>
+  </div>
+</section>
+      
+      
+  <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/babel-plugin/" rel="tag">babel plugin</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/optional-chain/" rel="tag">optional chain</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tutorial/" rel="tag">tutorial</a></li></ul>
+
+      
+<nav class="nav">
+  
+  
+    <a href="/2023/10/27/Optimize%20the%20construction%20speed%20of%20nextjs%20webpack/">Optimize the construction speed of nextjs webpack<i class="iconfont iconright"></i></a>
+  
+</nav>
+
+    </section>
+    
+      <section class="comments">
+        
+          <div class="btn" id="comments-btn">查看评论</div>
+        
+        
+<div id="valine"></div>
+<script defer src="//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js"></script>
+<script>
+  window.onload = function () {
+    var loadValine = function () {
+      new Valine({
+        el: '#valine',
+        app_id: "XgHS51JuLkeipj92BK4KyIEI-gzGzoHsz",
+        app_key: "LHxBDnRt6RQCuByhRfp1pkVN",
+        placeholder: "ヾﾉ≧∀≦)o来啊，快活啊!",
+        avatar: "mp",
+        pageSize: "10",
+        lang: "zh-CN",
+      });
+    }
+    if ( true ) {
+      $("#comments-btn").on("click", function () {
+        $(this).hide();
+        loadValine();
+      });
+    } else {
+      loadValine();
+    }
+  };
+</script>
+
+
+      </section>
+    
+  </section>
+</article>
+  </div>
+</main>
+  <footer class="footer">
+  <div class="footer-social">
+    
+    
+    
+    
+    
+    <a href="tencent://message/?Menu=yes&uin=694534942 " target="_blank" onMouseOver="this.style.color= '#12B7F5'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconQQ "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="https://pic.imgdb.cn/item/6231b2785baa1a80abf9af9c.jpg " target="_blank" onMouseOver="this.style.color= '#09BB07'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconwechat-fill "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="https://www.instagram.com/gaintpenggle/ " target="_blank" onMouseOver="this.style.color= '#DA2E76'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconinstagram "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="https://github.com/zoyopo " target="_blank" onMouseOver="this.style.color= '#24292E'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  icongithub-fill "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="mailto:694534942@qq.com " target="_blank" onMouseOver="this.style.color='#ff9800'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconmail"></i>
+    </a>
+    
+  </div>
+  <div class="footer-copyright"><p>Copyright© 2021-2022 | <a target="_blank" href="https://github.com/zoyopo">小笼包</a> .AllRightsReserved</p></div>
+</footer>
+  
+      <div class="fab fab-plus">
+    <i class="iconfont iconplus"></i>
+  </div>
+  <div class="fab fab-up">
+    <i class="iconfont iconcaret-up"></i>
+  </div>
+  <div class="fab fab-menu">
+    <i class="iconfont iconmenu"></i>
+  </div>
+  
+</body>
+
+
+<script src="/lib/jquery/jquery.js"></script>
+
+
+
+
+
+
+<script src="/lib/fancybox/fancybox.js"></script>
+
+
+
+
+
+
+
+
+<script src="/lib/lazyload/lazyload.js"></script>
+
+
+
+
+
+
+<script src="/lib/justifiedGallery/justifiedGallery.js"></script>
+
+
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+<script>
+  (function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+      bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</html>

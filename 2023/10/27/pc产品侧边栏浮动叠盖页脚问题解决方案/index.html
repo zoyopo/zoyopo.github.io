@@ -1,0 +1,361 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>pc产品侧边栏浮动叠盖页脚问题解决方案 - 小笼包的须弥芥子</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="google" content="notranslate" />
+  <meta name="referrer" content="no-referrer" />
+  
+  <meta name="keywords" content="react,vue,react-native,webpack,javascript,css,nodejs,happy daily,"> 
+  
+  <meta name="description" content="a blog share frontend coding experience and happy day,方案草图
+要解决的核心问题因为右侧边栏的浮动效果，即f..."> 
+  
+  <meta name="author" content="zhangyunpeng"> 
+
+  
+    <link rel="icon" href="/images/icons/favicon-16x16.png" type="image/png" sizes="16x16">
+  
+  
+    <link rel="icon" href="/images/icons/favicon-32x32.png" type="image/png" sizes="32x32">
+  
+  
+    <link rel="apple-touch-icon" href="/images/icons/apple-touch-icon.png" sizes="180x180">
+  
+  
+    <meta rel="mask-icon" href="/images/icons/stun-logo.svg" color="#333333">
+  
+  
+    <meta rel="msapplication-TileImage" content="/images/icons/favicon-128x128.png">
+    <meta rel="msapplication-TileColor" content="#000000">
+  
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+  
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1445822_58xq2j9v1id.css">
+
+  
+
+  
+  
+  
+<link rel="stylesheet" href="/lib/fancybox/fancybox.css">
+
+  
+
+  
+  
+  
+<link rel="stylesheet" href="/lib/highlight/drucula.min.css">
+
+  
+
+  
+  
+  
+<link rel="stylesheet" href="/lib/justifiedGallery/justifiedGallery.css">
+
+  
+
+  <script>
+    var CONFIG = window.CONFIG || {}
+    CONFIG = {
+      fancybox: true,
+      pjax: false,
+      lazyload: {
+        enable: true,
+        loadingImage: '/images/theme/loading.gif',
+      },
+      donate_alipay: 'https://pic.imgdb.cn/item/622edf135baa1a80abb1276b.jpg',
+      donate_wechat: 'https://pic.imgdb.cn/item/622edf115baa1a80abb1253f.jpg',
+      motto: {
+        api: 'https://v1.hitokoto.cn/?encode=text&amp;c=d',
+        default: '不要温和地走进那良夜'
+      },
+      galleries: {
+        enable: 'true'
+      },
+      fab: {
+        enable: 'true',
+        alwaysShow: 'false'
+      }
+    }
+  </script>
+
+  
+
+  
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body class="lock-screen">
+  <div class="loading"></div>
+  <nav class="menu">
+  <div class="menu-close">
+    <i class="iconfont iconplus"></i>
+  </div>
+  <ul class="menu-content">
+    
+    
+    
+    
+    <li class="menu-item"><a href="/ "> 首页</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="https://juejin.cn/user/8451824025757 " target="_blank" rel="noopener"> 掘金</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/archives "> 归档</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/tags "> 标签</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/categories "> 分类</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/about "> 关于</a></li>
+    
+  </ul>
+  <div class="menu-copyright"><p>Copyright© 2021-2022 | <a target="_blank" href="https://github.com/zoyopo">小笼包</a> .AllRightsReserved</p></div>
+</nav>
+  <main id="main">
+  <div class="container" id="container">
+    <article class="article">
+  <section class="head">
+  <img   class="lazyload" data-original="https://pic.imgdb.cn/item/622b16125baa1a80abe887e9.jpg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  draggable="false">
+  <div class="head-mask">
+    <h1 class="head-title">pc产品侧边栏浮动叠盖页脚问题解决方案</h1>
+    <div class="head-info">
+      <span class="post-info-item"><i class="iconfont iconcalendar"></i>2023-10-27</span
+        class="post-info-item">
+      
+      <span class="post-info-item"><i class="iconfont iconfont-size"></i>7435</span>
+    </div>
+  </div>
+</section>
+
+  <section class="main">
+    <section class="content">
+      <h1 id="方案草图"><a href="#方案草图" class="headerlink" title="方案草图"></a>方案草图</h1><p><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2021/jpeg/1512483/1635146152036-bdc807d8-2f32-4549-82a2-d065ae71350c.jpeg#clientId=u4d16be1b-79a4-4&from=drop&id=u7b53bdec&originHeight=3000&originWidth=4000&originalType=binary&ratio=1&rotation=0&showTitle=false&size=2259807&status=done&style=none&taskId=ua7f0cb24-a8c0-49f3-ada6-77f02456ba4&title=" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="FocusTalkImg_9e08833b-7516-4631-97fe-9eb31789618c.jpeg"></p>
+<h1 id="要解决的核心问题"><a href="#要解决的核心问题" class="headerlink" title="要解决的核心问题"></a>要解决的核心问题</h1><p>因为右侧边栏的浮动效果，即fixed定位效果 ，在侧边内容过多的情况下，滚动至底部时，会出现侧边栏高度+底部页底高度&gt;视窗高度，由于定位从视窗顶部开始，就会出现侧边栏盖在页底元素上的效果。</p>
+<h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><p>如果内容超长（即会发生遮盖），滚动向下，在即将发生遮盖前，将侧边栏采用absolute定位进行相对于整个文档进行定位，否则就采用fixed定位。</p>
+<h1 id="问题点"><a href="#问题点" class="headerlink" title="问题点"></a>问题点</h1><ol>
+<li>如何计算absolute定位的top值</li>
+<li>如何判断会发生遮盖</li>
+<li>如何判断侧边栏已经到达页脚</li>
+<li>如何解决异步数据导致页面的高度算不准问题</li>
+</ol>
+<h1 id="问题方案"><a href="#问题方案" class="headerlink" title="问题方案"></a>问题方案</h1><p>1.如草图所示，先要算出侧边栏同级元素最大高度maxContentHeight，使用maxContentHeight+导航区域高度siderBarOffsetTop减去侧边栏本体高度siderBarOffsetHeight，就是absolute定位的top值<br>2.侧边栏高度siderBarOffsetHeight+底部页底高度footerHeight&gt;视窗高度window.innerHeight 即会发生遮盖<br>3.判断垂直方向滚动的距离scrollY和第一个问题的出的top值进行比较 大于等于即已到达底部<br>4.在滚动的回调事件中，计算高度值并使用变量存储，直到前一个值和后一个相同</p>
+<h1 id="技术方案"><a href="#技术方案" class="headerlink" title="技术方案"></a>技术方案</h1><p>1.使用dom API对一些元素高度进行计算，为了减少对dom的重复查询 使用react ref 进行保存<br>2.监听滚动事件，回调中计算一些需要实时计算的值，对比判断是否达到临界<br>3.给组件新增一个接口，方便外部属性传入，对侧边栏同级元素进行指定，防止布局复杂导致“侧边栏同级元素最大高度”计算方案无法满足</p>
+<h1 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br></pre></td><td class="code"><pre><code class="hljs tsx">import React, &#123; ReactNode, useEffect, useRef, useState &#125; from &#39;react&#39;<br>import classNames from &#39;classnames&#39;<br><br>import &#123; If &#125; from &#39;babel-plugin-jsx-control-statements&#39;<br>import styles from &#39;.&#x2F;index.less&#39;<br>import &#123; useScroll &#125; from &#39;ahooks&#39;<br><br>interface ISidebar &#123;<br>  &#x2F;&#x2F; 宽度，默认270<br>  width?: number<br>  &#x2F;&#x2F; 是否展示顶部栏，默认true<br>  showLine?: boolean<br>  &#x2F;&#x2F; 是否需要fixed定位，默认true<br>  needFixed?: boolean<br>  &#x2F;&#x2F; 页面位置，默认右侧<br>  position?: &#39;left&#39; | &#39;right&#39;<br>  title?: ReactNode<br>  footer?: ReactNode<br>  children?: ReactNode<br>  wrapClassName?: string<br>  className?: string<br>  &#x2F;&#x2F; 相邻内容元素<br>  nextElement?: HTMLElement<br>&#125;<br><br>const Index &#x3D; (props: ISidebar) &#x3D;&gt; &#123;<br>  const &#123;<br>    width,<br>    showLine,<br>    needFixed,<br>    position,<br>    title,<br>    footer,<br>    children,<br>    wrapClassName,<br>    className,<br>    nextElement,<br>  &#125; &#x3D; props<br>  const [fixed, setFixed] &#x3D; useState&lt;boolean&gt;(false)<br>  const sidebarWrapRef &#x3D; useRef(undefined)<br>  const sidebarRef &#x3D; useRef(undefined)<br>  const sidebarOffsetTopRef &#x3D; useRef&lt;number&gt;(undefined)<br>  const sidebarOffsetHeightRef &#x3D; useRef&lt;number&gt;(undefined)<br>  const documentScroll &#x3D; useScroll()<br>  const [isReachFooter, setIsReach] &#x3D; useState(false)<br><br>  const nextElementHeightRef &#x3D; useRef&lt;number&gt;(undefined)<br>  const topValueWhenAbsolute &#x3D; useRef&lt;number&gt;(undefined)<br>  const pageTotalHeightRef &#x3D; useRef&lt;number&gt;(undefined)<br>  &#x2F;&#x2F; 侧边栏内容长度是否能盖到底部<br>  const [contentOverFooter, setIsContentOverFooter] &#x3D; useState(false)<br>  useEffect(() &#x3D;&gt; &#123;<br>    if (sidebarOffsetTopRef.current &#x3D;&#x3D;&#x3D; undefined) &#123;<br>      setSideBarContentInfo()<br>    &#125;<br>  &#125;, [])<br><br>  useEffect(() &#x3D;&gt; &#123;<br>    if (!needFixed) &#123;<br>      return<br>    &#125;<br>    if (documentScroll?.top &gt; sidebarOffsetTopRef.current) &#123;<br>      setFixed(true)<br>    &#125; else &#123;<br>      setFixed(false)<br>    &#125;<br>    &#x2F;&#x2F; 因为存在异步数据渲染 如果滚动中发现高度变化及时修正<br>    if (getMaxHeightOfNextElements() !&#x3D;&#x3D; nextElementHeightRef.current) &#123;<br>      setWrapHeightByParent()<br>      getTotalHeightOfPage()<br>      &#x2F;&#x2F; setSideBarContentInfo()<br>      setIsContentOverFooter(isContentOverFooter())<br>    &#125;<br>    setIsReach(getIsReachFooter())<br>  &#125;, [documentScroll.top])<br><br>  const setSideBarContentInfo &#x3D; () &#x3D;&gt; &#123;<br>    sidebarOffsetTopRef.current &#x3D; sidebarRef.current.offsetTop<br>    sidebarOffsetHeightRef.current &#x3D; sidebarRef.current.offsetHeight<br>  &#125;<br><br>  &#x2F;&#x2F; 记录相邻内容元素高度 方便计算到footer距离<br>  const setWrapHeightByParent &#x3D; () &#x3D;&gt; &#123;<br>    &#x2F;&#x2F; 如果传入 优先用传入<br>    if (nextElement) &#123;<br>      nextElementHeightRef.current &#x3D; nextElement?.offsetHeight<br>      return<br>    &#125;<br>    const maxHeight &#x3D; getMaxHeightOfNextElements()<br>    nextElementHeightRef.current &#x3D; maxHeight<br>  &#125;<br>  &#x2F;&#x2F; 获取相邻元素中最大高度 默认<br>  const getMaxHeightOfNextElements &#x3D; () &#x3D;&gt; &#123;<br>    const children &#x3D; [...sidebarWrapRef.current?.parentElement.children]<br>    const heightArr &#x3D; children.map((item) &#x3D;&gt; item?.offsetHeight)<br>    const maxHeight &#x3D; Math.max(...heightArr)<br><br>    return maxHeight<br>  &#125;<br>  &#x2F;&#x2F; critical value 获取到页脚时距离顶部距离<br>  const getTopValueWhenReachFooter &#x3D; (sidebarOffsetHeight) &#x3D;&gt; &#123;<br>    topValueWhenAbsolute.current &#x3D; getTopPlusBodyHeight() - sidebarOffsetHeight<br>    return topValueWhenAbsolute.current<br>  &#125;<br><br>  &#x2F;&#x2F; 头+内容主体高度<br>  const getTopPlusBodyHeight &#x3D; () &#x3D;&gt; &#123;<br>    return nextElementHeightRef.current + sidebarOffsetTopRef.current<br>  &#125;<br>  const getFooterHeight &#x3D; () &#x3D;&gt; &#123;<br>    return pageTotalHeightRef.current - getTopPlusBodyHeight()<br>  &#125;<br><br>  const isContentOverFooter &#x3D; () &#x3D;&gt; &#123;<br>    const isOver &#x3D; getFooterHeight() + sidebarRef.current.offsetHeight &gt; window.innerHeight<br>    return isOver<br>  &#125;<br>  const getContentStyle &#x3D; () &#x3D;&gt; &#123;<br>    const style &#x3D; &#123; width &#125;<br>    if (needFixed) &#123;<br>      style[&#39;top&#39;] &#x3D; isReachFooter ? topValueWhenAbsolute.current : 0<br>    &#125;<br>    return style<br>  &#125;<br>  const contentCls &#x3D; classNames(styles.sidebar__content, &#123;<br>    [styles.fixed]: needFixed &amp;&amp; fixed &amp;&amp; !isReachFooter,<br>    [styles.showLine]: showLine,<br>    [className]: className,<br>    [styles.absolute]: isReachFooter &amp;&amp; needFixed &amp;&amp; contentOverFooter,<br>  &#125;)<br><br>  const getIsReachFooter &#x3D; () &#x3D;&gt; &#123;<br>    const topValueWhenAbsolute &#x3D; getTopValueWhenReachFooter(sidebarRef.current.offsetHeight)<br>    const isReach &#x3D; documentScroll.top &gt;&#x3D; topValueWhenAbsolute<br>    return isReach<br>  &#125;<br><br>  const getTotalHeightOfPage &#x3D; () &#x3D;&gt; &#123;<br>    const nextWrapElement &#x3D; document.querySelector(&#39;#__next&#39;)<br>    const layout &#x3D; nextWrapElement.firstElementChild<br>    &#x2F;&#x2F; @ts-ignore<br>    pageTotalHeightRef.current &#x3D; layout?.offsetHeight<br>    return pageTotalHeightRef.current<br>  &#125;<br><br>  return (<br>    &lt;div<br>      ref&#x3D;&#123;sidebarWrapRef&#125;<br>      className&#x3D;&#123;classNames(styles.sidebar, &#123;<br>        [styles.atLeft]: position &#x3D;&#x3D;&#x3D; &#39;left&#39;,<br>        [wrapClassName]: wrapClassName,<br>      &#125;)&#125;<br>      style&#x3D;&#123;&#123; width &#125;&#125;<br>    &gt;<br>      &#123;fixed &amp;&amp; &lt;div className&#x3D;&#123;styles.sidebar__shadow&#125; &#x2F;&gt;&#125;<br>      &lt;div className&#x3D;&#123;contentCls&#125; ref&#x3D;&#123;sidebarRef&#125; style&#x3D;&#123;getContentStyle()&#125;&gt;<br>        &lt;If condition&#x3D;&#123;title&#125;&gt;<br>          &lt;div className&#x3D;&#123;styles.sidebar__title&#125;&gt;&#123;title&#125;&lt;&#x2F;div&gt;<br>        &lt;&#x2F;If&gt;<br>        &lt;If condition&#x3D;&#123;children&#125;&gt;<br>          &lt;div className&#x3D;&#123;styles.sidebar__body&#125;&gt;&#123;children&#125;&lt;&#x2F;div&gt;<br>        &lt;&#x2F;If&gt;<br>        &lt;If condition&#x3D;&#123;footer&#125;&gt;<br>          &lt;div className&#x3D;&#123;styles.sidebar__footer&#125;&gt;&#123;footer&#125;&lt;&#x2F;div&gt;<br>        &lt;&#x2F;If&gt;<br>      &lt;&#x2F;div&gt;<br>    &lt;&#x2F;div&gt;<br>  )<br>&#125;<br><br>Index.defaultProps &#x3D; &#123;<br>  showLine: true,<br>  needFixed: true,<br>  width: 270,<br>  position: &#39;right&#39;,<br>&#125;<br><br>export default Index<br></code></pre></td></tr></table></figure>
+
+
+    </section>
+    <section class="extra">
+      
+        <section class="donate">
+  <div class="qrcode">
+    <img   class="lazyload" data-original="https://pic.imgdb.cn/item/622edf135baa1a80abb1276b.jpg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" >
+  </div>
+  <div class="icon">
+    <a href="javascript:;" id="alipay"><i class="iconfont iconalipay"></i></a>
+    <a href="javascript:;" id="wechat"><i class="iconfont iconwechat-fill"></i></a>
+  </div>
+</section>
+      
+      
+      
+<nav class="nav">
+  
+    <a href="/2023/10/27/javascript%E9%AD%94%E6%9C%AF%E5%B8%88%E2%80%94%E2%80%94babel/"><i class="iconfont iconleft"></i>javascript魔术师——babel</a>
+  
+  
+    <a href="/2023/10/27/%E4%B8%80%E4%B8%AAloading%E6%B5%81%E7%A8%8B%E7%9A%84%E9%9A%8F%E6%83%B3/">一个loading流程的随想<i class="iconfont iconright"></i></a>
+  
+</nav>
+
+    </section>
+    
+      <section class="comments">
+        
+          <div class="btn" id="comments-btn">查看评论</div>
+        
+        
+<div id="valine"></div>
+<script defer src="//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js"></script>
+<script>
+  window.onload = function () {
+    var loadValine = function () {
+      new Valine({
+        el: '#valine',
+        app_id: "XgHS51JuLkeipj92BK4KyIEI-gzGzoHsz",
+        app_key: "LHxBDnRt6RQCuByhRfp1pkVN",
+        placeholder: "ヾﾉ≧∀≦)o来啊，快活啊!",
+        avatar: "mp",
+        pageSize: "10",
+        lang: "zh-CN",
+      });
+    }
+    if ( true ) {
+      $("#comments-btn").on("click", function () {
+        $(this).hide();
+        loadValine();
+      });
+    } else {
+      loadValine();
+    }
+  };
+</script>
+
+
+      </section>
+    
+  </section>
+</article>
+  </div>
+</main>
+  <footer class="footer">
+  <div class="footer-social">
+    
+    
+    
+    
+    
+    <a href="tencent://message/?Menu=yes&uin=694534942 " target="_blank" onMouseOver="this.style.color= '#12B7F5'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconQQ "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="https://pic.imgdb.cn/item/6231b2785baa1a80abf9af9c.jpg " target="_blank" onMouseOver="this.style.color= '#09BB07'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconwechat-fill "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="https://www.instagram.com/gaintpenggle/ " target="_blank" onMouseOver="this.style.color= '#DA2E76'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconinstagram "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="https://github.com/zoyopo " target="_blank" onMouseOver="this.style.color= '#24292E'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  icongithub-fill "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="mailto:694534942@qq.com " target="_blank" onMouseOver="this.style.color='#ff9800'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconmail"></i>
+    </a>
+    
+  </div>
+  <div class="footer-copyright"><p>Copyright© 2021-2022 | <a target="_blank" href="https://github.com/zoyopo">小笼包</a> .AllRightsReserved</p></div>
+</footer>
+  
+      <div class="fab fab-plus">
+    <i class="iconfont iconplus"></i>
+  </div>
+  <div class="fab fab-up">
+    <i class="iconfont iconcaret-up"></i>
+  </div>
+  <div class="fab fab-menu">
+    <i class="iconfont iconmenu"></i>
+  </div>
+  
+</body>
+
+
+<script src="/lib/jquery/jquery.js"></script>
+
+
+
+
+
+
+<script src="/lib/fancybox/fancybox.js"></script>
+
+
+
+
+
+
+
+
+<script src="/lib/lazyload/lazyload.js"></script>
+
+
+
+
+
+
+<script src="/lib/justifiedGallery/justifiedGallery.js"></script>
+
+
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+<script>
+  (function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+      bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</html>

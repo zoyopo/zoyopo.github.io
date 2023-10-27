@@ -1,0 +1,372 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>一个loading流程的随想 - 小笼包的须弥芥子</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="google" content="notranslate" />
+  <meta name="referrer" content="no-referrer" />
+  
+  <meta name="keywords" content="react,vue,react-native,webpack,javascript,css,nodejs,happy daily,"> 
+  
+  <meta name="description" content="a blog share frontend coding experience and happy day,引言我们在日常开发中，经常在异步请求的时候 加上loa..."> 
+  
+  <meta name="author" content="zhangyunpeng"> 
+
+  
+    <link rel="icon" href="/images/icons/favicon-16x16.png" type="image/png" sizes="16x16">
+  
+  
+    <link rel="icon" href="/images/icons/favicon-32x32.png" type="image/png" sizes="32x32">
+  
+  
+    <link rel="apple-touch-icon" href="/images/icons/apple-touch-icon.png" sizes="180x180">
+  
+  
+    <meta rel="mask-icon" href="/images/icons/stun-logo.svg" color="#333333">
+  
+  
+    <meta rel="msapplication-TileImage" content="/images/icons/favicon-128x128.png">
+    <meta rel="msapplication-TileColor" content="#000000">
+  
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+  
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1445822_58xq2j9v1id.css">
+
+  
+
+  
+  
+  
+<link rel="stylesheet" href="/lib/fancybox/fancybox.css">
+
+  
+
+  
+  
+  
+<link rel="stylesheet" href="/lib/highlight/drucula.min.css">
+
+  
+
+  
+  
+  
+<link rel="stylesheet" href="/lib/justifiedGallery/justifiedGallery.css">
+
+  
+
+  <script>
+    var CONFIG = window.CONFIG || {}
+    CONFIG = {
+      fancybox: true,
+      pjax: false,
+      lazyload: {
+        enable: true,
+        loadingImage: '/images/theme/loading.gif',
+      },
+      donate_alipay: 'https://pic.imgdb.cn/item/622edf135baa1a80abb1276b.jpg',
+      donate_wechat: 'https://pic.imgdb.cn/item/622edf115baa1a80abb1253f.jpg',
+      motto: {
+        api: 'https://v1.hitokoto.cn/?encode=text&amp;c=d',
+        default: '不要温和地走进那良夜'
+      },
+      galleries: {
+        enable: 'true'
+      },
+      fab: {
+        enable: 'true',
+        alwaysShow: 'false'
+      }
+    }
+  </script>
+
+  
+
+  
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body class="lock-screen">
+  <div class="loading"></div>
+  <nav class="menu">
+  <div class="menu-close">
+    <i class="iconfont iconplus"></i>
+  </div>
+  <ul class="menu-content">
+    
+    
+    
+    
+    <li class="menu-item"><a href="/ "> 首页</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="https://juejin.cn/user/8451824025757 " target="_blank" rel="noopener"> 掘金</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/archives "> 归档</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/tags "> 标签</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/categories "> 分类</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/about "> 关于</a></li>
+    
+  </ul>
+  <div class="menu-copyright"><p>Copyright© 2021-2022 | <a target="_blank" href="https://github.com/zoyopo">小笼包</a> .AllRightsReserved</p></div>
+</nav>
+  <main id="main">
+  <div class="container" id="container">
+    <article class="article">
+  <section class="head">
+  <img   class="lazyload" data-original="https://pic.imgdb.cn/item/622b16055baa1a80abe87e57.jpg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  draggable="false">
+  <div class="head-mask">
+    <h1 class="head-title">一个loading流程的随想</h1>
+    <div class="head-info">
+      <span class="post-info-item"><i class="iconfont iconcalendar"></i>2023-10-27</span
+        class="post-info-item">
+      
+      <span class="post-info-item"><i class="iconfont iconfont-size"></i>944</span>
+    </div>
+  </div>
+</section>
+
+  <section class="main">
+    <section class="content">
+      <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>我们在日常开发中，经常在异步请求的时候 加上loading 来提升用户体验，反映在代码里，就是在各种逻辑中穿插操作loding的操作，那么可不可以倒过来呢</p>
+<h2 id="PART-ONE"><a href="#PART-ONE" class="headerlink" title="PART ONE"></a>PART ONE</h2><p>我们来尝试一下</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">var</span> showLoading = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span>&#123;<br>    <span class="hljs-keyword">const</span> y = setInterval (<span class="hljs-function"><span class="hljs-params">()</span>=&gt;</span>&#123; <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'loading~~'</span>)&#125;,<span class="hljs-number">500</span>)    <br>    <span class="hljs-keyword">return</span>  clearInterval(y)    <br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+<p>首先想到写一个函数来模拟loading，但是显然这个函数还缺点东西</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">var</span> showLoading = aysnc (cb) =&gt;&#123;<br>    <span class="hljs-keyword">const</span> y = setInterval (<span class="hljs-function"><span class="hljs-params">()</span>=&gt;</span>&#123; <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'loading~~'</span>)&#125;,<span class="hljs-number">500</span>)    <br>    cb &amp;&amp; <span class="hljs-keyword">await</span> cb()<br>    <span class="hljs-keyword">return</span>  clearInterval(y)    <br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这样我们可以将一些异步流程塞到这个函数里喽 o(∩_∩)o</p>
+<h2 id="PART-TWO"><a href="#PART-TWO" class="headerlink" title="PART TWO"></a>PART TWO</h2><p>接下来再写一个模拟异步的函数<code>sleep</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">var</span> sleep =<span class="hljs-function">(<span class="hljs-params">time</span>) =&gt;</span>&#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve,reject</span>)=&gt;</span>&#123;<br>       setTimeout(<span class="hljs-function"><span class="hljs-params">()</span>=&gt;</span>&#123;<br>            resolve()<br>     &#125;,time)<br> &#125;)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>ok 执行一下<br><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2021/png/1512483/1617096340541-1072c361-0328-436b-9891-ea16356b48b3.png#align=left&display=inline&height=149&originHeight=149&originWidth=848&size=11379&status=done&style=none&width=848" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="loadingA.png"><br>没问题 o(∩_∩)o<br>但还是缺少了点什么，我们应该在结束后给个<code>loading complete</code>提示吧</p>
+<h2 id="PART-THREE"><a href="#PART-THREE" class="headerlink" title="PART THREE"></a>PART THREE</h2><p>那么写一个<a href="https://baike.baidu.com/item/AOP/1332219?fr=aladdin" target="_blank" rel="noopener">AOP</a>函数<br>就像下面这个</p>
+<p>测一下，么问题 </p>
+<p><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2021/png/1512483/1617096419370-a5ab369e-61fa-4463-a095-8899f7805c27.png#align=left&display=inline&height=194&originHeight=194&originWidth=411&size=11212&status=done&style=none&width=411" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="loadingD.png"><br>但是用起来 (┬＿┬)<br><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2021/png/1512483/1617096445631-0c829ae0-b7a2-4735-a1eb-fc4f8be60871.png#align=left&display=inline&height=83&originHeight=83&originWidth=628&size=8359&status=done&style=none&width=628" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="loadingB.png"><br><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2021/png/1512483/1617096454366-af98e9f2-08cf-4938-804a-f85bd76b3cf7.png#align=left&display=inline&height=192&originHeight=192&originWidth=665&size=10416&status=done&style=none&width=665" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="loadingC,png.png"></p>
+<p>就翻车了 (&gt;_&lt;)</p>
+<p>原因仔细想了一下 o_O</p>
+<ul>
+<li>第一个是因为 <code>after包装之后的高阶函数</code>并没有返回<code>Promise</code></li>
+<li>第二个是因为<code>事件循环</code>，详见<a href="https://zhuanlan.zhihu.com/p/33058983" target="_blank" rel="noopener">事件循环</a></li>
+</ul>
+<p>那么再改造一下喽</p>
+<p>主要对Promise兼容了一下<br><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2021/png/1512483/1617096479198-ea044cd7-1f98-47b3-8454-ffb5c0955cb7.png#align=left&display=inline&height=187&originHeight=187&originWidth=647&size=11313&status=done&style=none&width=647" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="loadingE.png"><br>成功！o(∩_∩)o</p>
+<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>个人脑洞，欢迎指正</p>
+
+    </section>
+    <section class="extra">
+      
+        <section class="donate">
+  <div class="qrcode">
+    <img   class="lazyload" data-original="https://pic.imgdb.cn/item/622edf135baa1a80abb1276b.jpg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" >
+  </div>
+  <div class="icon">
+    <a href="javascript:;" id="alipay"><i class="iconfont iconalipay"></i></a>
+    <a href="javascript:;" id="wechat"><i class="iconfont iconwechat-fill"></i></a>
+  </div>
+</section>
+      
+      
+      
+<nav class="nav">
+  
+    <a href="/2023/10/27/pc%E4%BA%A7%E5%93%81%E4%BE%A7%E8%BE%B9%E6%A0%8F%E6%B5%AE%E5%8A%A8%E5%8F%A0%E7%9B%96%E9%A1%B5%E8%84%9A%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/"><i class="iconfont iconleft"></i>pc产品侧边栏浮动叠盖页脚问题解决方案</a>
+  
+  
+    <a href="/2023/10/27/%E4%B8%80%E4%B8%AA%E6%9C%80%E5%81%B7%E6%87%92%E7%9A%84%E6%96%B9%E6%A1%88%E5%9C%A8%E5%87%BD%E6%95%B0%E7%BB%84%E4%BB%B6%E4%B8%AD%E8%87%AA%E5%8A%A8%E6%B3%A8%E5%85%A5%20React%20Hooks/">一个最偷懒的方案在函数组件中自动注入 React Hooks<i class="iconfont iconright"></i></a>
+  
+</nav>
+
+    </section>
+    
+      <section class="comments">
+        
+          <div class="btn" id="comments-btn">查看评论</div>
+        
+        
+<div id="valine"></div>
+<script defer src="//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js"></script>
+<script>
+  window.onload = function () {
+    var loadValine = function () {
+      new Valine({
+        el: '#valine',
+        app_id: "XgHS51JuLkeipj92BK4KyIEI-gzGzoHsz",
+        app_key: "LHxBDnRt6RQCuByhRfp1pkVN",
+        placeholder: "ヾﾉ≧∀≦)o来啊，快活啊!",
+        avatar: "mp",
+        pageSize: "10",
+        lang: "zh-CN",
+      });
+    }
+    if ( true ) {
+      $("#comments-btn").on("click", function () {
+        $(this).hide();
+        loadValine();
+      });
+    } else {
+      loadValine();
+    }
+  };
+</script>
+
+
+      </section>
+    
+  </section>
+</article>
+  </div>
+</main>
+  <footer class="footer">
+  <div class="footer-social">
+    
+    
+    
+    
+    
+    <a href="tencent://message/?Menu=yes&uin=694534942 " target="_blank" onMouseOver="this.style.color= '#12B7F5'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconQQ "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="https://pic.imgdb.cn/item/6231b2785baa1a80abf9af9c.jpg " target="_blank" onMouseOver="this.style.color= '#09BB07'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconwechat-fill "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="https://www.instagram.com/gaintpenggle/ " target="_blank" onMouseOver="this.style.color= '#DA2E76'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconinstagram "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="https://github.com/zoyopo " target="_blank" onMouseOver="this.style.color= '#24292E'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  icongithub-fill "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="mailto:694534942@qq.com " target="_blank" onMouseOver="this.style.color='#ff9800'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconmail"></i>
+    </a>
+    
+  </div>
+  <div class="footer-copyright"><p>Copyright© 2021-2022 | <a target="_blank" href="https://github.com/zoyopo">小笼包</a> .AllRightsReserved</p></div>
+</footer>
+  
+      <div class="fab fab-plus">
+    <i class="iconfont iconplus"></i>
+  </div>
+  <div class="fab fab-up">
+    <i class="iconfont iconcaret-up"></i>
+  </div>
+  <div class="fab fab-menu">
+    <i class="iconfont iconmenu"></i>
+  </div>
+  
+</body>
+
+
+<script src="/lib/jquery/jquery.js"></script>
+
+
+
+
+
+
+<script src="/lib/fancybox/fancybox.js"></script>
+
+
+
+
+
+
+
+
+<script src="/lib/lazyload/lazyload.js"></script>
+
+
+
+
+
+
+<script src="/lib/justifiedGallery/justifiedGallery.js"></script>
+
+
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+<script>
+  (function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+      bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</html>

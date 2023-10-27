@@ -1,0 +1,386 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>解决react-swipeable-views在浏览器中的适配的问题 - 小笼包的须弥芥子</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="google" content="notranslate" />
+  <meta name="referrer" content="no-referrer" />
+  
+  <meta name="keywords" content="react,vue,react-native,webpack,javascript,css,nodejs,happy daily,"> 
+  
+  <meta name="description" content="a blog share frontend coding experience and happy day,什么是react-swipeable-views [r..."> 
+  
+  <meta name="author" content="zhangyunpeng"> 
+
+  
+    <link rel="icon" href="/images/icons/favicon-16x16.png" type="image/png" sizes="16x16">
+  
+  
+    <link rel="icon" href="/images/icons/favicon-32x32.png" type="image/png" sizes="32x32">
+  
+  
+    <link rel="apple-touch-icon" href="/images/icons/apple-touch-icon.png" sizes="180x180">
+  
+  
+    <meta rel="mask-icon" href="/images/icons/stun-logo.svg" color="#333333">
+  
+  
+    <meta rel="msapplication-TileImage" content="/images/icons/favicon-128x128.png">
+    <meta rel="msapplication-TileColor" content="#000000">
+  
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+  
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1445822_58xq2j9v1id.css">
+
+  
+
+  
+  
+  
+<link rel="stylesheet" href="/lib/fancybox/fancybox.css">
+
+  
+
+  
+  
+  
+<link rel="stylesheet" href="/lib/highlight/drucula.min.css">
+
+  
+
+  
+  
+  
+<link rel="stylesheet" href="/lib/justifiedGallery/justifiedGallery.css">
+
+  
+
+  <script>
+    var CONFIG = window.CONFIG || {}
+    CONFIG = {
+      fancybox: true,
+      pjax: false,
+      lazyload: {
+        enable: true,
+        loadingImage: '/images/theme/loading.gif',
+      },
+      donate_alipay: 'https://pic.imgdb.cn/item/622edf135baa1a80abb1276b.jpg',
+      donate_wechat: 'https://pic.imgdb.cn/item/622edf115baa1a80abb1253f.jpg',
+      motto: {
+        api: 'https://v1.hitokoto.cn/?encode=text&amp;c=d',
+        default: '不要温和地走进那良夜'
+      },
+      galleries: {
+        enable: 'true'
+      },
+      fab: {
+        enable: 'true',
+        alwaysShow: 'false'
+      }
+    }
+  </script>
+
+  
+
+  
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body class="lock-screen">
+  <div class="loading"></div>
+  <nav class="menu">
+  <div class="menu-close">
+    <i class="iconfont iconplus"></i>
+  </div>
+  <ul class="menu-content">
+    
+    
+    
+    
+    <li class="menu-item"><a href="/ "> 首页</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="https://juejin.cn/user/8451824025757 " target="_blank" rel="noopener"> 掘金</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/archives "> 归档</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/tags "> 标签</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/categories "> 分类</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/about "> 关于</a></li>
+    
+  </ul>
+  <div class="menu-copyright"><p>Copyright© 2021-2022 | <a target="_blank" href="https://github.com/zoyopo">小笼包</a> .AllRightsReserved</p></div>
+</nav>
+  <main id="main">
+  <div class="container" id="container">
+    <article class="article">
+  <section class="head">
+  <img   class="lazyload" data-original="https://pic.imgdb.cn/item/6231b53c5baa1a80abfbc136.jpg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  draggable="false">
+  <div class="head-mask">
+    <h1 class="head-title">解决react-swipeable-views在浏览器中的适配的问题</h1>
+    <div class="head-info">
+      <span class="post-info-item"><i class="iconfont iconcalendar"></i>2023-10-27</span
+        class="post-info-item">
+      
+      <span class="post-info-item"><i class="iconfont iconfont-size"></i>6095</span>
+    </div>
+  </div>
+</section>
+
+  <section class="main">
+    <section class="content">
+      <h1 id="什么是react-swipeable-views"><a href="#什么是react-swipeable-views" class="headerlink" title="什么是react-swipeable-views"></a>什么是<a href="https://github.com/oliviertassinari/react-swipeable-views" target="_blank" rel="noopener">react-swipeable-views</a></h1><p> <code>[react-swipeable-views](https://github.com/oliviertassinari/react-swipeable-views)</code>是一个触屏端手势滑动进行整屏切换的react组件。</p>
+<h1 id="使用痛点"><a href="#使用痛点" class="headerlink" title="使用痛点"></a>使用痛点</h1><h2 id="api无法满足业务需求"><a href="#api无法满足业务需求" class="headerlink" title="api无法满足业务需求"></a>api无法满足业务需求</h2><p>  有一个场景，当用户在页面中完成某些操作后，才可以上划<br>但是此组件提供的<code>disabled</code>属性，会将上划，下划都禁用</p>
+<h2 id="页面底部的区域元素会被操作栏遮挡"><a href="#页面底部的区域元素会被操作栏遮挡" class="headerlink" title="页面底部的区域元素会被操作栏遮挡"></a>页面底部的区域元素会被操作栏遮挡</h2><p><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2022/jpeg/1512483/1645684379019-4227da6b-5ac9-41f1-a5ef-1fddc212e38f.jpeg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt=""></p>
+<p>因为设计和布局都是按照整个浏览器高度，但是在地址栏和操作栏的影响下 一些定位在底部元素就无法看到了</p>
+<h2 id="容器高度无法自动适配浏览器视窗高度"><a href="#容器高度无法自动适配浏览器视窗高度" class="headerlink" title="容器高度无法自动适配浏览器视窗高度"></a>容器高度无法自动适配浏览器视窗高度</h2><p><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2022/jpeg/1512483/1645683107392-1262589e-b28c-4ee3-b604-0f9305d5abd3.jpeg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt=""></p>
+<p>   某些浏览器行为（如上图），比如上划到底部后，继续上划，浏览器地址栏会消失，此时视窗大小会发生变化<br> 如果不进行高度重新适配，<code>transform:translateY的位置</code>还是依据之前的视窗高度，造成显示错位</p>
+<h2 id="原生局部滚动会和组件干架"><a href="#原生局部滚动会和组件干架" class="headerlink" title="原生局部滚动会和组件干架"></a>原生局部滚动会和组件干架</h2><p><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2022/gif/1512483/1645685516395-f12a4eff-50ac-4af6-bf61-b9e95046b7a8.gif#clientId=u273298dd-9517-4&from=drop&id=u501a5af0&originHeight=690&originWidth=388&originalType=binary&ratio=1&rotation=0&showTitle=false&size=9737103&status=done&style=none&taskId=u25f1a83d-ae91-4eff-a4b9-e49952899a7&title=" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="1ec411d0488d50c487bf33676fd73e25 (2).gif"></p>
+<h2 id="swipe时会导致内容区域元素层级变化"><a href="#swipe时会导致内容区域元素层级变化" class="headerlink" title="swipe时会导致内容区域元素层级变化"></a>swipe时会导致内容区域元素层级变化</h2><p><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2022/jpeg/1512483/1646098125926-2b4936db-8dd4-48fe-8b62-dc09e3523647.jpeg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt=""></p>
+<h2 id=""><a href="#" class="headerlink" title=""></a></h2><h1 id="如何解决"><a href="#如何解决" class="headerlink" title="如何解决"></a>如何解决</h1><h2 id="api无法满足业务需求-1"><a href="#api无法满足业务需求-1" class="headerlink" title="api无法满足业务需求"></a>api无法满足业务需求</h2><p>基本思路：克隆一份源码到本地，对源码进行扩展</p>
+<h3 id="扩展属性"><a href="#扩展属性" class="headerlink" title="扩展属性"></a>扩展属性</h3><p><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2022/png/1512483/1645685854385-0a950859-5a09-4792-922b-5c757e757cd3.png#clientId=u273298dd-9517-4&from=paste&height=323&id=u817057c5&originHeight=323&originWidth=941&originalType=binary&ratio=1&rotation=0&showTitle=false&size=39250&status=done&style=none&taskId=u58e88957-f20f-40be-82ee-ae915f87f7c&title=&width=941" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="image.png"></p>
+<h3 id="在handleSwipeMove中处理"><a href="#在handleSwipeMove中处理" class="headerlink" title="在handleSwipeMove中处理"></a>在handleSwipeMove中处理</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs javascript"> handleSwipeMove = <span class="hljs-function"><span class="hljs-params">event</span> =&gt;</span> &#123;<br> ...............................<br> ...............................<br> ...............................<br> ...............................<br>   <span class="hljs-keyword">const</span> &#123; axis, <br>           children, <br>           ignoreNativeScroll,<br>           onSwitching, <br>           resistance,<br>           disableTouchUp,<br>           disableTouchDown<br>         &#125; = <span class="hljs-keyword">this</span>.props;<br>   <span class="hljs-keyword">const</span> touch = applyRotationMatrix(event.touches[<span class="hljs-number">0</span>], axis);<br>   <span class="hljs-keyword">const</span> isTouchUp = touch.pageX - <span class="hljs-keyword">this</span>.startX &lt; <span class="hljs-number">0</span><br>   <span class="hljs-keyword">const</span> isTouchDown = touch.pageX - <span class="hljs-keyword">this</span>.startX &gt; <span class="hljs-number">0</span><br>   <span class="hljs-keyword">if</span> (disableTouchUp &amp;&amp; isTouchUp) &#123;<br>     <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'isTouchUp'</span>,isTouchUp)<br>     <span class="hljs-keyword">return</span>;<br>   &#125;<br>   <span class="hljs-keyword">if</span> (disableTouchDown &amp;&amp; isTouchDown) &#123;<br>     <span class="hljs-keyword">return</span>;<br>   &#125;<br> ...............................<br> ...............................<br> ...............................<br> ...............................<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="-1"><a href="#-1" class="headerlink" title=""></a></h3><h2 id="页面底部的区域元素会被操作栏遮挡-1"><a href="#页面底部的区域元素会被操作栏遮挡-1" class="headerlink" title="页面底部的区域元素会被操作栏遮挡"></a>页面底部的区域元素会被操作栏遮挡</h2><h3 id="获取正确height"><a href="#获取正确height" class="headerlink" title="获取正确height"></a>获取正确height</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> [rightHeight, setRightHeight] = useState(<span class="hljs-number">0</span>)   <br>useEffect(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> &#123;<br>     setRightHeight(<span class="hljs-built_in">window</span>.innerHeight)                   <br>   &#125;,[])<br></code></pre></td></tr></table></figure>
+<h3 id="给swipeView中的组件设置高度"><a href="#给swipeView中的组件设置高度" class="headerlink" title="给swipeView中的组件设置高度"></a>给swipeView中的组件设置高度</h3><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs jsx"><span class="hljs-keyword">const</span> getRightHeight = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span>&#123;<br>	<span class="hljs-keyword">return</span> &#123;<span class="hljs-attr">height</span>:rightHeight&#125;<br>&#125;<br>&lt;SwipeableViews<br>  resistance<br>  axis=<span class="hljs-string">"y"</span><br>  animateHeight=&#123;<span class="hljs-literal">true</span>&#125;<br>  &gt;<br>  &lt;APage style=&#123;getRightHeight()&#125;/&gt;<br>  &lt;BPage style=&#123;getRightHeight()&#125;/&gt;<br>  &lt;CPage style=&#123;getRightHeight()&#125;/&gt; <br>&lt;<span class="hljs-regexp">/SwipeableViews&gt;</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs jsx"><span class="hljs-keyword">const</span> A|B|CPage =<span class="hljs-function">(<span class="hljs-params">&#123;style&#125;</span>) =&gt;</span> &#123;<br><br>  <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&#123;style&#125;</span>&gt;</span></span><br><span class="xml">    ...........</span><br><span class="xml">    ...........</span><br><span class="xml">    ...........</span><br><span class="xml">    ...........</span><br><span class="xml">  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span><br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="容器高度无法自动适配浏览器视窗高度-1"><a href="#容器高度无法自动适配浏览器视窗高度-1" class="headerlink" title="容器高度无法自动适配浏览器视窗高度"></a>容器高度无法自动适配浏览器视窗高度</h2><h3 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> [animateHeight, setAnimateHeight] = useState(<span class="hljs-literal">true</span>)<br>useEffect(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> &#123;<br>    <span class="hljs-built_in">window</span>.onresize = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;<br>      <span class="hljs-comment">// 重新调整swipeview内元素高度并通知组件重新适配高度</span><br>      setRightHeight(<span class="hljs-built_in">window</span>.innerHeight)<br>      setAnimateHeight(<span class="hljs-literal">false</span>)<br>      setTimeout(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> &#123;<br>        setAnimateHeight(<span class="hljs-literal">true</span>)<br>      &#125;, <span class="hljs-number">60</span>)<br>    &#125;<br>&#125;,[])<br></code></pre></td></tr></table></figure>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs jsx"><span class="hljs-keyword">const</span> getRightHeight = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span>&#123;<br>	<span class="hljs-keyword">return</span> &#123;<span class="hljs-attr">height</span>:rightHeight&#125;<br>&#125;<br>&lt;SwipeableViews<br>  resistance<br>  axis=<span class="hljs-string">"y"</span><br>  animateHeight=&#123;animateHeight&#125;<br>  &gt;<br>  &lt;APage style=&#123;getRightHeight()&#125;/&gt;<br>  &lt;BPage style=&#123;getRightHeight()&#125;/&gt;<br>  &lt;CPage style=&#123;getRightHeight()&#125;/&gt; <br>&lt;<span class="hljs-regexp">/SwipeableViews&gt;</span><br></code></pre></td></tr></table></figure>
+<p>这是通过对<code>animateHeight</code>的更改触屏对<code>containerStyle</code>的高度的修复<br>见源码<br><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2022/png/1512483/1645687005926-c47000b9-3a87-41b4-9afb-2e27dcd50aed.png#clientId=u273298dd-9517-4&from=paste&height=129&id=ua4798fd5&originHeight=116&originWidth=1124&originalType=binary&ratio=1&rotation=0&showTitle=false&size=19649&status=done&style=none&taskId=ub10c6cd5-8d18-4c9d-8369-748b2484b7a&title=&width=1248.8889219731468" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="image.png"><br>这种方法会导致高度瞬间消失，使得页面会瞬间白屏下（如下图）<br><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2022/gif/1512483/1645692852874-05ae28c0-a24b-4a6b-b034-91c675a75de0.gif#clientId=ud0947295-46ee-4&from=drop&id=uc69cd585&originHeight=690&originWidth=388&originalType=binary&ratio=1&rotation=0&showTitle=false&size=4656200&status=done&style=none&taskId=u457d5ce3-51cc-4013-ac9c-df68d4c207a&title=" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="d8e8940fb2d62a28d82d553fb257d969 (1).gif"><br>所以，看到这，笔者开始思考，会不会直接修改<code>containerStyle</code>来的更简单呢</p>
+<h3 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h3><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs jsx"><span class="hljs-keyword">const</span> getRightHeight = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span>&#123;<br>	<span class="hljs-keyword">return</span> &#123;<span class="hljs-attr">height</span>:rightHeight&#125;<br>&#125;<br><br>&lt;SwipeableViews<br>  resistance<br>  axis=<span class="hljs-string">"y"</span><br>  containerStyle=&#123;getRightHeight()&#125;<br>  &gt;<br>  &lt;APage style=&#123;getRightHeight()&#125;/&gt;<br>  &lt;BPage style=&#123;getRightHeight()&#125;/&gt;<br>  &lt;CPage style=&#123;getRightHeight()&#125;/&gt; <br>&lt;<span class="hljs-regexp">/SwipeableViews&gt;</span><br></code></pre></td></tr></table></figure>
+<p>事实证明确，确实不会闪屏，但还会存在视窗resize时，下一页内容出现的问题<br>究其根本原因，因为该组件是使用的<code>transform:translateY</code>对一屏位置进行确定，所以屏与屏之间是连续的<br>当<code>resize</code>事件发生时，我们绑定的回调函函数执行，state改变到页面重新绘制是个异步行为，所以页面会先保持未重新适配前的状态，再变为适配后的状态。</p>
+<h2 id="原生局部滚动会和组件干架-1"><a href="#原生局部滚动会和组件干架-1" class="headerlink" title="原生局部滚动会和组件干架"></a>原生局部滚动会和组件干架</h2><p>思路：如果放在容器内部会互相感扰，那就放到容器外部</p>
+<h3 id="将最后一页从SwipeableViews容器中拷贝一份到外面"><a href="#将最后一页从SwipeableViews容器中拷贝一份到外面" class="headerlink" title="将最后一页从SwipeableViews容器中拷贝一份到外面"></a>将最后一页从<code>SwipeableViews</code>容器中拷贝一份到外面</h3><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs jsx"><br>&lt;&gt;<br>&lt;SwipeableViews<br>  resistance<br>  axis=<span class="hljs-string">"y"</span><br>  containerStyle=&#123;getRightHeight()&#125; <br>  &gt;<br>  &lt;APage style=&#123;getRightHeight()&#125;/&gt;<br>  &lt;BPage style=&#123;getRightHeight()&#125;/&gt;<br>  &lt;CPage style=&#123;getRightHeight()&#125;/&gt; <br>&lt;<span class="hljs-regexp">/SwipeableViews&gt;</span><br><span class="hljs-regexp">&lt;CPage style=&#123;getRightHeight()&#125;/</span>&gt; <br>&lt;<span class="hljs-regexp">/&gt;</span><br></code></pre></td></tr></table></figure>
+<h3 id="到第三页隐藏swipeView-显示外部第三页"><a href="#到第三页隐藏swipeView-显示外部第三页" class="headerlink" title="到第三页隐藏swipeView 显示外部第三页"></a>到第三页隐藏swipeView 显示外部第三页</h3><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs jsx"><span class="hljs-keyword">const</span> [currentIndex, setCurrentIndex] = useState(<span class="hljs-number">0</span>)  <br><br><span class="hljs-keyword">const</span> onSwitching = <span class="hljs-function">(<span class="hljs-params">index</span>) =&gt;</span> &#123;<br>  setCurrentIndex(index)<br>&#125;<br><br>&lt;&gt;<br>&lt;SwipeableViews<br>   style=&#123;&#123;<span class="hljs-attr">display</span>: currentIndex &lt; <span class="hljs-number">2</span> ? <span class="hljs-string">'block'</span> : <span class="hljs-string">'none'</span>&#125;&#125;<br>  resistance<br>  axis=<span class="hljs-string">"y"</span><br>  containerStyle=&#123;getRightHeight()&#125;<br>  onSwitching=&#123;onSwitching&#125;<br>  &gt;<br>  &lt;APage style=&#123;getRightHeight()&#125;/&gt;<br>  &lt;BPage style=&#123;getRightHeight()&#125;/&gt;<br>  &lt;CPage style=&#123;getRightHeight()&#125;/&gt; <br>&lt;<span class="hljs-regexp">/SwipeableViews&gt;</span><br><span class="hljs-regexp">&lt;CPage style=&#123;&#123;...getRightHeight(),display: currentIndex &gt;= 2 ? 'block' : 'none'&#125;&#125;/</span>&gt; <br>&lt;<span class="hljs-regexp">/&gt;</span><br></code></pre></td></tr></table></figure>
+
+<ol>
+<li>为什么不能使用<code>currentIndex &lt; 2?&lt;SwipeableViews/&gt;:&lt;CPage&gt;</code>这种形式？</li>
+</ol>
+<p>答：这种方式会导致组件的重新渲染，滑动位置的状态会<strong>丢失</strong></p>
+<ol start="2">
+<li>为什么还要保留<code>SwipeableViews</code>内部的<code>CPage</code>？</li>
+</ol>
+<p>答：保证流畅的过渡，内部<code>CPage</code>的存在会使得切换到第三页的临界状态依然会存在过渡动画</p>
+<h3 id="给第三页加上一个touch事件，保证可从第三页回到第二页"><a href="#给第三页加上一个touch事件，保证可从第三页回到第二页" class="headerlink" title="给第三页加上一个touch事件，保证可从第三页回到第二页"></a>给第三页加上一个touch事件，保证可从第三页回到第二页</h3><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs jsx"><span class="hljs-comment">// Parent 回到第二页</span><br> <span class="hljs-keyword">const</span> onTouchDownToLastPage = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> &#123;<br>    setCurrentIndex(<span class="hljs-number">1</span>)<br>  &#125;<br><br><span class="hljs-comment">// Child</span><br><span class="hljs-keyword">const</span> CPage =<span class="hljs-function">(<span class="hljs-params">&#123;style,onTouchDownToLastPage&#125;</span>) =&gt;</span> &#123;<br>    <span class="hljs-keyword">const</span> onTouchStart = <span class="hljs-function">(<span class="hljs-params">e</span>) =&gt;</span> &#123;<br>    <span class="hljs-keyword">if</span>(touchStartY.current === <span class="hljs-literal">null</span>) &#123;<br>      setHasTouched(<span class="hljs-literal">true</span>)<br>    &#125;<br>    touchStartY.current = e.changedTouches[<span class="hljs-number">0</span>].pageY<br>  &#125;<br>    <span class="hljs-keyword">const</span> onTouchMove = <span class="hljs-function">(<span class="hljs-params">e</span>) =&gt;</span> &#123;<br><br>    <span class="hljs-keyword">let</span> delta = e.changedTouches[<span class="hljs-number">0</span>].pageY - touchStartY.current<br>    <span class="hljs-keyword">const</span> dom = comicImgRef.current<br>    <span class="hljs-keyword">const</span> scrollTop = comicWrap.current.scrollTop<br>    <span class="hljs-comment">// (delta &gt; 0 保证下滑 Math.abs(scrollTop) &lt; 50 保证滚动调离顶部阈值范围</span><br>    <span class="hljs-keyword">if</span> (delta &gt; <span class="hljs-number">0</span> &amp;&amp; <span class="hljs-built_in">Math</span>.abs(scrollTop) &lt; <span class="hljs-number">50</span>) &#123;<br>      onTouchDownToLastPage &amp;&amp; onTouchDownToLastPage()<br>    &#125;<br>  &#125;<br><br>  <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&#123;style&#125;</span> <span class="hljs-attr">onTouchStart</span>=<span class="hljs-string">&#123;onTouchStart&#125;</span> <span class="hljs-attr">onTouchMove</span>=<span class="hljs-string">&#123;onTouchMove&#125;</span>&gt;</span></span><br><span class="xml">    ...........</span><br><span class="xml">    ...........</span><br><span class="xml">    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&#123;styles.comic&#125;</span> <span class="hljs-attr">ref</span>=<span class="hljs-string">&#123;comicImgRef&#125;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span><br><span class="xml">    ...........</span><br><span class="xml">    ...........</span><br><span class="xml">  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="swipe时会导致内容区域元素层级变化-1"><a href="#swipe时会导致内容区域元素层级变化-1" class="headerlink" title="swipe时会导致内容区域元素层级变化"></a>swipe时会导致内容区域元素层级变化</h2><h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><p><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2022/jpeg/1512483/1646098126897-4ed8c643-b468-44f7-a78b-a5de8d4d13a3.jpeg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt=""></p>
+<h1 id="其他开发问题"><a href="#其他开发问题" class="headerlink" title="其他开发问题"></a>其他开发问题</h1><p><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2022/png/1512483/1645690259850-b1c0ca17-db72-4c33-9acf-35aa9e84cdc3.png#clientId=u273298dd-9517-4&from=paste&height=472&id=u58f6d7b3&originHeight=378&originWidth=253&originalType=binary&ratio=1&rotation=0&showTitle=false&size=70137&status=done&style=none&taskId=uc063bb64-3d1e-4fc7-aaac-e0920054106&title=&width=316.24999528750783" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="image.png"></p>
+<h2 id="底部引导提示在滑动时需消失，但是当手指滑动到该图标上，会阻止上划"><a href="#底部引导提示在滑动时需消失，但是当手指滑动到该图标上，会阻止上划" class="headerlink" title="底部引导提示在滑动时需消失，但是当手指滑动到该图标上，会阻止上划"></a>底部引导提示在滑动时需消失，但是当手指滑动到该图标上，会阻止上划</h2><h3 id="原因分析"><a href="#原因分析" class="headerlink" title="原因分析"></a>原因分析</h3><p>可能是因为滑动时，将该提示<code>display:none</code>处理，导致图层之间的touch事件不连续</p>
+<h3 id="解决方法-1"><a href="#解决方法-1" class="headerlink" title="解决方法"></a>解决方法</h3><p><code>display:none</code>改为<code>opacity:0</code></p>
+<h4 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h4><p>考虑一下会不会遮挡后面图层的元素</p>
+<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>前端开发就是逆天而行，共勉。</p>
+
+    </section>
+    <section class="extra">
+      
+        <section class="donate">
+  <div class="qrcode">
+    <img   class="lazyload" data-original="https://pic.imgdb.cn/item/622edf135baa1a80abb1276b.jpg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" >
+  </div>
+  <div class="icon">
+    <a href="javascript:;" id="alipay"><i class="iconfont iconalipay"></i></a>
+    <a href="javascript:;" id="wechat"><i class="iconfont iconwechat-fill"></i></a>
+  </div>
+</section>
+      
+      
+      
+<nav class="nav">
+  
+    <a href="/2023/10/27/%E8%87%AA%E5%AE%9A%E4%B9%89hooks%E8%B8%A9%E5%9D%91%E8%AE%B0%E2%80%94%E2%80%94treeSelect%E7%BB%84%E4%BB%B6%E9%80%BB%E8%BE%91%E5%B0%81%E8%A3%85/"><i class="iconfont iconleft"></i>自定义hooks踩坑记——treeSelect组件逻辑封装</a>
+  
+  
+    <a href="/2023/10/27/%E8%A7%A6%E5%B1%8F%E6%94%B9%E7%89%88%E4%B8%AD%E5%90%8E%E5%8F%B0%E4%B8%9A%E5%8A%A1%E7%BB%84%E4%BB%B6%E5%B0%81%E8%A3%85%E4%B8%8E%E6%94%B9%E9%80%A0/">触屏改版中后台业务组件封装与改造<i class="iconfont iconright"></i></a>
+  
+</nav>
+
+    </section>
+    
+      <section class="comments">
+        
+          <div class="btn" id="comments-btn">查看评论</div>
+        
+        
+<div id="valine"></div>
+<script defer src="//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js"></script>
+<script>
+  window.onload = function () {
+    var loadValine = function () {
+      new Valine({
+        el: '#valine',
+        app_id: "XgHS51JuLkeipj92BK4KyIEI-gzGzoHsz",
+        app_key: "LHxBDnRt6RQCuByhRfp1pkVN",
+        placeholder: "ヾﾉ≧∀≦)o来啊，快活啊!",
+        avatar: "mp",
+        pageSize: "10",
+        lang: "zh-CN",
+      });
+    }
+    if ( true ) {
+      $("#comments-btn").on("click", function () {
+        $(this).hide();
+        loadValine();
+      });
+    } else {
+      loadValine();
+    }
+  };
+</script>
+
+
+      </section>
+    
+  </section>
+</article>
+  </div>
+</main>
+  <footer class="footer">
+  <div class="footer-social">
+    
+    
+    
+    
+    
+    <a href="tencent://message/?Menu=yes&uin=694534942 " target="_blank" onMouseOver="this.style.color= '#12B7F5'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconQQ "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="https://pic.imgdb.cn/item/6231b2785baa1a80abf9af9c.jpg " target="_blank" onMouseOver="this.style.color= '#09BB07'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconwechat-fill "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="https://www.instagram.com/gaintpenggle/ " target="_blank" onMouseOver="this.style.color= '#DA2E76'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconinstagram "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="https://github.com/zoyopo " target="_blank" onMouseOver="this.style.color= '#24292E'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  icongithub-fill "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="mailto:694534942@qq.com " target="_blank" onMouseOver="this.style.color='#ff9800'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconmail"></i>
+    </a>
+    
+  </div>
+  <div class="footer-copyright"><p>Copyright© 2021-2022 | <a target="_blank" href="https://github.com/zoyopo">小笼包</a> .AllRightsReserved</p></div>
+</footer>
+  
+      <div class="fab fab-plus">
+    <i class="iconfont iconplus"></i>
+  </div>
+  <div class="fab fab-up">
+    <i class="iconfont iconcaret-up"></i>
+  </div>
+  <div class="fab fab-menu">
+    <i class="iconfont iconmenu"></i>
+  </div>
+  
+</body>
+
+
+<script src="/lib/jquery/jquery.js"></script>
+
+
+
+
+
+
+<script src="/lib/fancybox/fancybox.js"></script>
+
+
+
+
+
+
+
+
+<script src="/lib/lazyload/lazyload.js"></script>
+
+
+
+
+
+
+<script src="/lib/justifiedGallery/justifiedGallery.js"></script>
+
+
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+<script>
+  (function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+      bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</html>

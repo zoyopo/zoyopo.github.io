@@ -1,0 +1,365 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>从一个例子初探vue3架构 - 小笼包的须弥芥子</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="google" content="notranslate" />
+  <meta name="referrer" content="no-referrer" />
+  
+  <meta name="keywords" content="react,vue,react-native,webpack,javascript,css,nodejs,happy daily,"> 
+  
+  <meta name="description" content="a blog share frontend coding experience and happy day,从一个例子开始(更新流程)12345678910111..."> 
+  
+  <meta name="author" content="zhangyunpeng"> 
+
+  
+    <link rel="icon" href="/images/icons/favicon-16x16.png" type="image/png" sizes="16x16">
+  
+  
+    <link rel="icon" href="/images/icons/favicon-32x32.png" type="image/png" sizes="32x32">
+  
+  
+    <link rel="apple-touch-icon" href="/images/icons/apple-touch-icon.png" sizes="180x180">
+  
+  
+    <meta rel="mask-icon" href="/images/icons/stun-logo.svg" color="#333333">
+  
+  
+    <meta rel="msapplication-TileImage" content="/images/icons/favicon-128x128.png">
+    <meta rel="msapplication-TileColor" content="#000000">
+  
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+  
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1445822_58xq2j9v1id.css">
+
+  
+
+  
+  
+  
+<link rel="stylesheet" href="/lib/fancybox/fancybox.css">
+
+  
+
+  
+  
+  
+<link rel="stylesheet" href="/lib/highlight/drucula.min.css">
+
+  
+
+  
+  
+  
+<link rel="stylesheet" href="/lib/justifiedGallery/justifiedGallery.css">
+
+  
+
+  <script>
+    var CONFIG = window.CONFIG || {}
+    CONFIG = {
+      fancybox: true,
+      pjax: false,
+      lazyload: {
+        enable: true,
+        loadingImage: '/images/theme/loading.gif',
+      },
+      donate_alipay: 'https://pic.imgdb.cn/item/622edf135baa1a80abb1276b.jpg',
+      donate_wechat: 'https://pic.imgdb.cn/item/622edf115baa1a80abb1253f.jpg',
+      motto: {
+        api: 'https://v1.hitokoto.cn/?encode=text&amp;c=d',
+        default: '不要温和地走进那良夜'
+      },
+      galleries: {
+        enable: 'true'
+      },
+      fab: {
+        enable: 'true',
+        alwaysShow: 'false'
+      }
+    }
+  </script>
+
+  
+
+  
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body class="lock-screen">
+  <div class="loading"></div>
+  <nav class="menu">
+  <div class="menu-close">
+    <i class="iconfont iconplus"></i>
+  </div>
+  <ul class="menu-content">
+    
+    
+    
+    
+    <li class="menu-item"><a href="/ "> 首页</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="https://juejin.cn/user/8451824025757 " target="_blank" rel="noopener"> 掘金</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/archives "> 归档</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/tags "> 标签</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/categories "> 分类</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/about "> 关于</a></li>
+    
+  </ul>
+  <div class="menu-copyright"><p>Copyright© 2021-2022 | <a target="_blank" href="https://github.com/zoyopo">小笼包</a> .AllRightsReserved</p></div>
+</nav>
+  <main id="main">
+  <div class="container" id="container">
+    <article class="article">
+  <section class="head">
+  <img   class="lazyload" data-original="https://pic.imgdb.cn/item/622b163c5baa1a80abe8a347.jpg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  draggable="false">
+  <div class="head-mask">
+    <h1 class="head-title">从一个例子初探vue3架构</h1>
+    <div class="head-info">
+      <span class="post-info-item"><i class="iconfont iconcalendar"></i>2023-10-27</span
+        class="post-info-item">
+      
+      <span class="post-info-item"><i class="iconfont iconfont-size"></i>22961</span>
+    </div>
+  </div>
+</section>
+
+  <section class="main">
+    <section class="content">
+      <h1 id="从一个例子开始-更新流程"><a href="#从一个例子开始-更新流程" class="headerlink" title="从一个例子开始(更新流程)"></a>从一个例子开始(更新流程)</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs vue">&#x2F;&#x2F; option 模式<br>&lt;template&gt;<br>&lt;div class&#x3D;&quot;about&quot;&gt;<br>  &lt;h1&gt;This is an about page&lt;&#x2F;h1&gt;<br>  &lt;div @click&#x3D;&quot;increase&quot;&gt;&#123;&#123;count&#125;&#125;&lt;&#x2F;div&gt;<br>  &lt;&#x2F;div&gt;<br>&lt;&#x2F;template&gt;<br>&lt;script&gt;<br>  export default &#123;<br>    data() &#123;<br>      return &#123;       <br>        count:0<br>      &#125;<br>    &#125;,<br>    methods:&#123;<br>      increase()&#123;<br>        this.count++<br>      &#125;<br>    &#125;<br>  &#125;<br>&lt;&#x2F;script&gt;<br>&lt;style&gt;<br>  <br>  @media (min-width: 1024px) &#123;<br>    .about &#123;<br>      &#x2F;*min-height: 100vh;*&#x2F;<br>      &#x2F;*display: flex;*&#x2F;<br>      &#x2F;*align-items: center;*&#x2F;<br>    &#125;<br>  &#125;<br>&lt;&#x2F;style&gt;<br></code></pre></td></tr></table></figure>
+<h2 id="this-count-get-this-count"><a href="#this-count-get-this-count" class="headerlink" title="this.count (get this.count)++"></a>this.count (get this.count)++</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// /@vue/runtime-core/dist/runtime-core.esm-bundler.js</span><br><span class="hljs-keyword">const</span> PublicInstanceProxyHandlers = &#123;<br>    <span class="hljs-keyword">get</span>(&#123; _: instance &#125;, key) &#123;<br>      <span class="hljs-keyword">if</span> (key[<span class="hljs-number">0</span>] !== <span class="hljs-string">'$'</span>) &#123;<br>              <span class="hljs-keyword">const</span> n = accessCache[key];<br>              <span class="hljs-keyword">if</span> (n !== <span class="hljs-literal">undefined</span>) &#123;<br>                  <span class="hljs-keyword">switch</span> (n) &#123;<br>                      <span class="hljs-keyword">case</span> <span class="hljs-number">1</span> <span class="hljs-comment">/* SETUP */</span>:<br>                          <span class="hljs-keyword">return</span> setupState[key];<br>                      <span class="hljs-keyword">case</span> <span class="hljs-number">2</span> <span class="hljs-comment">/* DATA */</span>:<br>                          <span class="hljs-keyword">return</span> data[key];<br>                      <span class="hljs-keyword">case</span> <span class="hljs-number">4</span> <span class="hljs-comment">/* CONTEXT */</span>:<br>                          <span class="hljs-keyword">return</span> ctx[key];<br>                      <span class="hljs-keyword">case</span> <span class="hljs-number">3</span> <span class="hljs-comment">/* PROPS */</span>:<br>                          <span class="hljs-keyword">return</span> props[key];<br>                      <span class="hljs-comment">// default: just fallthrough</span><br>                  &#125;<br>              &#125;<br>              <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (setupState !== EMPTY_OBJ &amp;&amp; hasOwn(setupState, key)) &#123;<br>                  accessCache[key] = <span class="hljs-number">1</span> <span class="hljs-comment">/* SETUP */</span>;<br>                  <span class="hljs-keyword">return</span> setupState[key];<br>              &#125;<br>              <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (data !== EMPTY_OBJ &amp;&amp; hasOwn(data, key)) &#123;<br>                  accessCache[key] = <span class="hljs-number">2</span> <span class="hljs-comment">/* DATA */</span>;<br>                  <span class="hljs-keyword">return</span> data[key];<br>              &#125;<br>              <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<br>              <span class="hljs-comment">// only cache other properties when instance has declared (thus stable)</span><br>              <span class="hljs-comment">// props</span><br>              (normalizedProps = instance.propsOptions[<span class="hljs-number">0</span>]) &amp;&amp;<br>                  hasOwn(normalizedProps, key)) &#123;<br>                  accessCache[key] = <span class="hljs-number">3</span> <span class="hljs-comment">/* PROPS */</span>;<br>                  <span class="hljs-keyword">return</span> props[key];<br>              &#125;<br>              <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (ctx !== EMPTY_OBJ &amp;&amp; hasOwn(ctx, key)) &#123;<br>                  accessCache[key] = <span class="hljs-number">4</span> <span class="hljs-comment">/* CONTEXT */</span>;<br>                  <span class="hljs-keyword">return</span> ctx[key];<br>              &#125;<br>              <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (!__VUE_OPTIONS_API__ || shouldCacheAccess) &#123;<br>                  accessCache[key] = <span class="hljs-number">0</span> <span class="hljs-comment">/* OTHER */</span>;<br>              &#125;<br>          &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="this-count-set-this-count"><a href="#this-count-set-this-count" class="headerlink" title="this.count++(set this.count)"></a>this.count++(set this.count)</h2><p><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2022/png/1512483/1648352923225-1736ccd8-14c3-4a7f-93b0-3689b4a7940f.png#clientId=u2e7d69c1-1d93-4&from=paste&height=160&id=u90127191&originHeight=160&originWidth=617&originalType=binary&ratio=1&rotation=0&showTitle=false&size=12713&status=done&style=none&taskId=u9a4151d2-bc30-4989-861e-246baafa81f&title=&width=617" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="image.png"></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// /@vue/runtime-core/dist/runtime-core.esm-bundler.js</span><br><span class="hljs-keyword">const</span> PublicInstanceProxyHandlers = &#123;<br>  <span class="hljs-comment">//...</span><br>  <span class="hljs-comment">// instance为vue实例</span><br>  <span class="hljs-keyword">set</span>(&#123; _: instance &#125;, key, value) &#123;<br>    <span class="hljs-keyword">const</span> &#123; data, setupState, ctx &#125; = instance;<br>    <span class="hljs-keyword">if</span> (setupState !== EMPTY_OBJ &amp;&amp; hasOwn(setupState, key)) &#123;<br>      setupState[key] = value;<br>      <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>    &#125;<br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (data !== EMPTY_OBJ &amp;&amp; hasOwn(data, key)) &#123;<br>      data[key] = value;<br>      <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>    &#125;<br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (hasOwn(instance.props, key)) &#123;<br>      (process.env.NODE_ENV !== <span class="hljs-string">'production'</span>) &amp;&amp;<br>        warn(<span class="hljs-string">`Attempting to mutate prop "<span class="hljs-subst">$&#123;key&#125;</span>". Props are readonly.`</span>, instance);<br>      <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br>    <span class="hljs-keyword">if</span> (key[<span class="hljs-number">0</span>] === <span class="hljs-string">'$'</span> &amp;&amp; key.slice(<span class="hljs-number">1</span>) <span class="hljs-keyword">in</span> instance) &#123;<br>      (process.env.NODE_ENV !== <span class="hljs-string">'production'</span>) &amp;&amp;<br>        warn(<span class="hljs-string">`Attempting to mutate public property "<span class="hljs-subst">$&#123;key&#125;</span>". `</span> +<br>             <span class="hljs-string">`Properties starting with $ are reserved and readonly.`</span>, instance);<br>      <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br>    <span class="hljs-keyword">else</span> &#123;<br>      <span class="hljs-keyword">if</span> ((process.env.NODE_ENV !== <span class="hljs-string">'production'</span>) &amp;&amp; key <span class="hljs-keyword">in</span> instance.appContext.config.globalProperties) &#123;<br>        <span class="hljs-built_in">Object</span>.defineProperty(ctx, key, &#123;<br>          enumerable: <span class="hljs-literal">true</span>,<br>          configurable: <span class="hljs-literal">true</span>,<br>          value<br>        &#125;);<br>      &#125;<br>      <span class="hljs-keyword">else</span> &#123;<br>        ctx[key] = value;<br>      &#125;<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>  &#125;,<br>  <span class="hljs-comment">//....</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="instance"><a href="#instance" class="headerlink" title="instance"></a>instance</h2><p><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2022/png/1512483/1648353316430-d4d59b1f-2e7d-43cc-a4d5-80c0a3ecf85b.png#clientId=u2e7d69c1-1d93-4&from=paste&height=258&id=u2d03fda9&originHeight=258&originWidth=309&originalType=binary&ratio=1&rotation=0&showTitle=false&size=14312&status=done&style=none&taskId=u192f3bcd-1a87-46c1-ba37-2f5cfebf7be&title=&width=309" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="image.png"></p>
+<p><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2022/png/1512483/1648353400517-886591c4-b07f-4f7b-83ca-f3bc01cc120d.png#clientId=u2e7d69c1-1d93-4&from=paste&height=236&id=uea370a97&originHeight=279&originWidth=388&originalType=binary&ratio=1&rotation=0&showTitle=false&size=23847&status=done&style=none&taskId=u770a44dd-8c1a-4576-8919-0d6c6e36d1a&title=&width=328" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="image.png"></p>
+<h2 id="data-proxy-setter"><a href="#data-proxy-setter" class="headerlink" title="data proxy setter"></a>data proxy setter</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// @vue/reactivity/dist/reactivity.esm-bundler.js</span><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createSetter</span>(<span class="hljs-params">shallow = false</span>) </span>&#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">set</span>(<span class="hljs-params">target, key, value, receiver</span>) </span>&#123;<br>        <span class="hljs-keyword">let</span> oldValue = target[key];<br>        <span class="hljs-keyword">if</span> (isReadonly(oldValue) &amp;&amp; isRef(oldValue) &amp;&amp; !isRef(value)) &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>        &#125;<br>        <span class="hljs-keyword">if</span> (!shallow &amp;&amp; !isReadonly(value)) &#123;<br>            <span class="hljs-keyword">if</span> (!isShallow(value)) &#123;<br>                value = toRaw(value);<br>                oldValue = toRaw(oldValue);<br>            &#125;<br>            <span class="hljs-keyword">if</span> (!isArray(target) &amp;&amp; isRef(oldValue) &amp;&amp; !isRef(value)) &#123;<br>                oldValue.value = value;<br>                <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">const</span> hadKey = isArray(target) &amp;&amp; isIntegerKey(key)<br>            ? <span class="hljs-built_in">Number</span>(key) &lt; target.length<br>            : hasOwn(target, key);<br>        <span class="hljs-keyword">const</span> result = <span class="hljs-built_in">Reflect</span>.set(target, key, value, receiver);<br>        <span class="hljs-comment">// don't trigger if target is something up in the prototype chain of original</span><br>        <span class="hljs-keyword">if</span> (target === toRaw(receiver)) &#123;<br>            <span class="hljs-keyword">if</span> (!hadKey) &#123;<br>                trigger(target, <span class="hljs-string">"add"</span> <span class="hljs-comment">/* ADD */</span>, key, value);<br>            &#125;<br>            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (hasChanged(value, oldValue)) &#123;<br>                trigger(target, <span class="hljs-string">"set"</span> <span class="hljs-comment">/* SET */</span>, key, value, oldValue);<br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">return</span> result;<br>    &#125;;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="trigger"><a href="#trigger" class="headerlink" title="trigger"></a>trigger</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// @vue/reactivity/dist/reactivity.esm-bundler.js</span><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">trigger</span>(<span class="hljs-params">target, type, key, newValue, oldValue, oldTarget</span>) </span>&#123;<br>    <span class="hljs-keyword">const</span> depsMap = targetMap.get(target);<br>    <span class="hljs-keyword">if</span> (!depsMap) &#123;<br>        <span class="hljs-comment">// never been tracked</span><br>        <span class="hljs-keyword">return</span>;<br>    &#125;<br>    <span class="hljs-keyword">let</span> deps = [];<br>    <span class="hljs-keyword">if</span> (type === <span class="hljs-string">"clear"</span> <span class="hljs-comment">/* CLEAR */</span>) &#123;<br>        <span class="hljs-comment">// collection being cleared</span><br>        <span class="hljs-comment">// trigger all effects for target</span><br>        deps = [...depsMap.values()];<br>    &#125;<br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (key === <span class="hljs-string">'length'</span> &amp;&amp; isArray(target)) &#123;<br>        depsMap.forEach(<span class="hljs-function">(<span class="hljs-params">dep, key</span>) =&gt;</span> &#123;<br>            <span class="hljs-keyword">if</span> (key === <span class="hljs-string">'length'</span> || key &gt;= newValue) &#123;<br>                deps.push(dep);<br>            &#125;<br>        &#125;);<br>    &#125;<br>    <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-comment">// schedule runs for SET | ADD | DELETE</span><br>        <span class="hljs-keyword">if</span> (key !== <span class="hljs-keyword">void</span> <span class="hljs-number">0</span>) &#123;<br>            deps.push(depsMap.get(key));<br>        &#125;<br>        <span class="hljs-comment">// also run for iteration key on ADD | DELETE | Map.SET</span><br>        <span class="hljs-keyword">switch</span> (type) &#123;<br>            <span class="hljs-keyword">case</span> <span class="hljs-string">"add"</span> <span class="hljs-comment">/* ADD */</span>:<br>                <span class="hljs-keyword">if</span> (!isArray(target)) &#123;<br>                    deps.push(depsMap.get(ITERATE_KEY));<br>                    <span class="hljs-keyword">if</span> (isMap(target)) &#123;<br>                        deps.push(depsMap.get(MAP_KEY_ITERATE_KEY));<br>                    &#125;<br>                &#125;<br>                <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (isIntegerKey(key)) &#123;<br>                    <span class="hljs-comment">// new index added to array -&gt; length changes</span><br>                    deps.push(depsMap.get(<span class="hljs-string">'length'</span>));<br>                &#125;<br>                <span class="hljs-keyword">break</span>;<br>            <span class="hljs-keyword">case</span> <span class="hljs-string">"delete"</span> <span class="hljs-comment">/* DELETE */</span>:<br>                <span class="hljs-keyword">if</span> (!isArray(target)) &#123;<br>                    deps.push(depsMap.get(ITERATE_KEY));<br>                    <span class="hljs-keyword">if</span> (isMap(target)) &#123;<br>                        deps.push(depsMap.get(MAP_KEY_ITERATE_KEY));<br>                    &#125;<br>                &#125;<br>                <span class="hljs-keyword">break</span>;<br>            <span class="hljs-keyword">case</span> <span class="hljs-string">"set"</span> <span class="hljs-comment">/* SET */</span>:<br>                <span class="hljs-keyword">if</span> (isMap(target)) &#123;<br>                    deps.push(depsMap.get(ITERATE_KEY));<br>                &#125;<br>                <span class="hljs-keyword">break</span>;<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">const</span> eventInfo = (process.env.NODE_ENV !== <span class="hljs-string">'production'</span>)<br>        ? &#123; target, type, key, newValue, oldValue, oldTarget &#125;<br>        : <span class="hljs-literal">undefined</span>;<br>    <span class="hljs-keyword">if</span> (deps.length === <span class="hljs-number">1</span>) &#123;<br>        <span class="hljs-keyword">if</span> (deps[<span class="hljs-number">0</span>]) &#123;<br>            <span class="hljs-keyword">if</span> ((process.env.NODE_ENV !== <span class="hljs-string">'production'</span>)) &#123;<br>                triggerEffects(deps[<span class="hljs-number">0</span>], eventInfo);<br>            &#125;<br>            <span class="hljs-keyword">else</span> &#123;<br>                triggerEffects(deps[<span class="hljs-number">0</span>]);<br>            &#125;<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-keyword">const</span> effects = [];<br>        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> dep <span class="hljs-keyword">of</span> deps) &#123;<br>            <span class="hljs-keyword">if</span> (dep) &#123;<br>                effects.push(...dep);<br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">if</span> ((process.env.NODE_ENV !== <span class="hljs-string">'production'</span>)) &#123;<br>            triggerEffects(createDep(effects), eventInfo);<br>        &#125;<br>        <span class="hljs-keyword">else</span> &#123;<br>            triggerEffects(createDep(effects));<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="triggerEffects"><a href="#triggerEffects" class="headerlink" title="triggerEffects"></a>triggerEffects</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// @vue/reactivity/dist/reactivity.esm-bundler.js</span><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">triggerEffects</span>(<span class="hljs-params">dep, debuggerEventExtraInfo</span>) </span>&#123;<br>    <span class="hljs-comment">// spread into array for stabilization</span><br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> effect <span class="hljs-keyword">of</span> isArray(dep) ? dep : [...dep]) &#123;<br>        <span class="hljs-keyword">if</span> (effect !== activeEffect || effect.allowRecurse) &#123;<br>            <span class="hljs-keyword">if</span> ((process.env.NODE_ENV !== <span class="hljs-string">'production'</span>) &amp;&amp; effect.onTrigger) &#123;<br>                effect.onTrigger(extend(&#123; effect &#125;, debuggerEventExtraInfo));<br>            &#125;<br>            <span class="hljs-keyword">if</span> (effect.scheduler) &#123;<br>                effect.scheduler();<br>            &#125;<br>            <span class="hljs-keyword">else</span> &#123;<br>                effect.run();<br>            &#125;<br>        &#125;<br>    &#125;<br></code></pre></td></tr></table></figure>
+<p><img   class="lazyload" data-original="https://cdn.nlark.com/yuque/0/2022/png/1512483/1648354235268-ab4b0337-0630-475e-b668-ab6bc63b3a65.png#clientId=u2e7d69c1-1d93-4&from=paste&height=270&id=u5824ce20&originHeight=270&originWidth=420&originalType=binary&ratio=1&rotation=0&showTitle=false&size=25362&status=done&style=none&taskId=u25eb5cc4-87d2-4b35-9bed-e2fcf512638&title=&width=420" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="image.png"></p>
+<h2 id="queueJob"><a href="#queueJob" class="headerlink" title="queueJob"></a>queueJob</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// /@vue/runtime-core/dist/runtime-core.esm-bundler.js</span><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">queueJob</span>(<span class="hljs-params">job</span>) </span>&#123;<br>    <span class="hljs-comment">// the dedupe search uses the startIndex argument of Array.includes()</span><br>    <span class="hljs-comment">// by default the search index includes the current job that is being run</span><br>    <span class="hljs-comment">// so it cannot recursively trigger itself again.</span><br>    <span class="hljs-comment">// if the job is a watch() callback, the search will start with a +1 index to</span><br>    <span class="hljs-comment">// allow it recursively trigger itself - it is the user's responsibility to</span><br>    <span class="hljs-comment">// ensure it doesn't end up in an infinite loop.</span><br>    <span class="hljs-keyword">if</span> ((!queue.length ||<br>        !queue.includes(job, isFlushing &amp;&amp; job.allowRecurse ? flushIndex + <span class="hljs-number">1</span> : flushIndex)) &amp;&amp;<br>        job !== currentPreFlushParentJob) &#123;<br>        <span class="hljs-keyword">if</span> (job.id == <span class="hljs-literal">null</span>) &#123;<br>            queue.push(job);<br>        &#125;<br>        <span class="hljs-keyword">else</span> &#123;<br>            queue.splice(findInsertionIndex(job.id), <span class="hljs-number">0</span>, job);<br>        &#125;<br>        queueFlush();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="queueFlush"><a href="#queueFlush" class="headerlink" title="queueFlush"></a>queueFlush</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// /@vue/runtime-core/dist/runtime-core.esm-bundler.js</span><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">queueFlush</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-keyword">if</span> (!isFlushing &amp;&amp; !isFlushPending) &#123;<br>        isFlushPending = <span class="hljs-literal">true</span>;<br>        currentFlushPromise = resolvedPromise.then(flushJobs);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="flushJobs"><a href="#flushJobs" class="headerlink" title="flushJobs"></a>flushJobs</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// /@vue/runtime-core/dist/runtime-core.esm-bundler.js</span><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">flushJobs</span>(<span class="hljs-params">seen</span>) </span>&#123;<br>    isFlushPending = <span class="hljs-literal">false</span>;<br>    isFlushing = <span class="hljs-literal">true</span>;<br>    <span class="hljs-keyword">if</span> ((process.env.NODE_ENV !== <span class="hljs-string">'production'</span>)) &#123;<br>        seen = seen || <span class="hljs-keyword">new</span> <span class="hljs-built_in">Map</span>();<br>    &#125;<br>    flushPreFlushCbs(seen);<br>    <span class="hljs-comment">// Sort queue before flush.</span><br>    <span class="hljs-comment">// This ensures that:</span><br>    <span class="hljs-comment">// 1. Components are updated from parent to child. (because parent is always</span><br>    <span class="hljs-comment">//    created before the child so its render effect will have smaller</span><br>    <span class="hljs-comment">//    priority number)</span><br>    <span class="hljs-comment">// 2. If a component is unmounted during a parent component's update,</span><br>    <span class="hljs-comment">//    its update can be skipped.</span><br>    queue.sort(<span class="hljs-function">(<span class="hljs-params">a, b</span>) =&gt;</span> getId(a) - getId(b));<br>    <span class="hljs-comment">// conditional usage of checkRecursiveUpdate must be determined out of</span><br>    <span class="hljs-comment">// try ... catch block since Rollup by default de-optimizes treeshaking</span><br>    <span class="hljs-comment">// inside try-catch. This can leave all warning code unshaked. Although</span><br>    <span class="hljs-comment">// they would get eventually shaken by a minifier like terser, some minifiers</span><br>    <span class="hljs-comment">// would fail to do that (e.g. https://github.com/evanw/esbuild/issues/1610)</span><br>    <span class="hljs-keyword">const</span> check = (process.env.NODE_ENV !== <span class="hljs-string">'production'</span>)<br>    <span class="hljs-comment">// checkRecursiveUpdates 檢查遞歸更新是否存在更新依賴于更新的情況（導致遞歸死循環）</span><br>        ? <span class="hljs-function">(<span class="hljs-params">job</span>) =&gt;</span> checkRecursiveUpdates(seen, job)<br>        : NOOP;<br>    <span class="hljs-keyword">try</span> &#123;<br>        <span class="hljs-keyword">for</span> (flushIndex = <span class="hljs-number">0</span>; flushIndex &lt; queue.length; flushIndex++) &#123;<br>            <span class="hljs-keyword">const</span> job = queue[flushIndex];<br>            <span class="hljs-keyword">if</span> (job &amp;&amp; job.active !== <span class="hljs-literal">false</span>) &#123;<br>                <span class="hljs-keyword">if</span> ((process.env.NODE_ENV !== <span class="hljs-string">'production'</span>) &amp;&amp; check(job)) &#123;<br>                    <span class="hljs-keyword">continue</span>;<br>                &#125;<br>                <span class="hljs-comment">// console.log(`running:`, job.id) execute job</span><br>                callWithErrorHandling(job, <span class="hljs-literal">null</span>, <span class="hljs-number">14</span> <span class="hljs-comment">/* SCHEDULER */</span>);<br>            &#125;<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">finally</span> &#123;<br>        flushIndex = <span class="hljs-number">0</span>;<br>        queue.length = <span class="hljs-number">0</span>;<br>        flushPostFlushCbs(seen);<br>        isFlushing = <span class="hljs-literal">false</span>;<br>        currentFlushPromise = <span class="hljs-literal">null</span>;<br>        <span class="hljs-comment">// some postFlushCb queued jobs!</span><br>        <span class="hljs-comment">// keep flushing until it drains.</span><br>        <span class="hljs-keyword">if</span> (queue.length ||<br>            pendingPreFlushCbs.length ||<br>            pendingPostFlushCbs.length) &#123;<br>            flushJobs(seen);<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="run-Job"><a href="#run-Job" class="headerlink" title="run Job"></a>run Job</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// @vue/reactivity/dist/reactivity.esm-bundler.js</span><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ReactiveEffect</span> </span>&#123;<br>    <span class="hljs-keyword">constructor</span>(fn, scheduler = null, scope) &#123;<br>        <span class="hljs-keyword">this</span>.fn = fn;<br>        <span class="hljs-keyword">this</span>.scheduler = scheduler;<br>        <span class="hljs-keyword">this</span>.active = <span class="hljs-literal">true</span>;<br>        <span class="hljs-keyword">this</span>.deps = [];<br>        <span class="hljs-keyword">this</span>.parent = <span class="hljs-literal">undefined</span>;<br>        recordEffectScope(<span class="hljs-keyword">this</span>, scope);<br>    &#125;<br>    run() &#123;<br>        <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.active) &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.fn();<br>        &#125;<br>        <span class="hljs-keyword">let</span> parent = activeEffect;<br>        <span class="hljs-keyword">let</span> lastShouldTrack = shouldTrack;<br>        <span class="hljs-keyword">while</span> (parent) &#123;<br>            <span class="hljs-keyword">if</span> (parent === <span class="hljs-keyword">this</span>) &#123;<br>                <span class="hljs-keyword">return</span>;<br>            &#125;<br>            parent = parent.parent;<br>        &#125;<br>        <span class="hljs-keyword">try</span> &#123;<br>            <span class="hljs-keyword">this</span>.parent = activeEffect;<br>            activeEffect = <span class="hljs-keyword">this</span>;<br>            shouldTrack = <span class="hljs-literal">true</span>;<br>            trackOpBit = <span class="hljs-number">1</span> &lt;&lt; ++effectTrackDepth;<br>            <span class="hljs-keyword">if</span> (effectTrackDepth &lt;= maxMarkerBits) &#123;<br>                initDepMarkers(<span class="hljs-keyword">this</span>);<br>            &#125;<br>            <span class="hljs-keyword">else</span> &#123;<br>                cleanupEffect(<span class="hljs-keyword">this</span>);<br>            &#125;<br>            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.fn();<br>        &#125;<br>        <span class="hljs-keyword">finally</span> &#123;<br>            <span class="hljs-keyword">if</span> (effectTrackDepth &lt;= maxMarkerBits) &#123;<br>                finalizeDepMarkers(<span class="hljs-keyword">this</span>);<br>            &#125;<br>            trackOpBit = <span class="hljs-number">1</span> &lt;&lt; --effectTrackDepth;<br>            activeEffect = <span class="hljs-keyword">this</span>.parent;<br>            shouldTrack = lastShouldTrack;<br>            <span class="hljs-keyword">this</span>.parent = <span class="hljs-literal">undefined</span>;<br>        &#125;<br>    &#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="setupRenderEffect中的componentUpdateFn（mouted-render-diff-update）"><a href="#setupRenderEffect中的componentUpdateFn（mouted-render-diff-update）" class="headerlink" title="setupRenderEffect中的componentUpdateFn（mouted render diff update）"></a>setupRenderEffect中的componentUpdateFn（mouted render diff update）</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// /@vue/runtime-core/dist/runtime-core.esm-bundler.js </span><br><span class="hljs-keyword">const</span> componentUpdateFn = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> &#123;<br>            <span class="hljs-keyword">if</span> (!instance.isMounted) &#123;<br>                <span class="hljs-keyword">let</span> vnodeHook;<br>                <span class="hljs-keyword">const</span> &#123; el, props &#125; = initialVNode;<br>                <span class="hljs-keyword">const</span> &#123; bm, m, parent &#125; = instance;<br>                <span class="hljs-keyword">const</span> isAsyncWrapperVNode = isAsyncWrapper(initialVNode);<br>                toggleRecurse(instance, <span class="hljs-literal">false</span>);<br>                <span class="hljs-comment">// beforeMount hook</span><br>                <span class="hljs-keyword">if</span> (bm) &#123;<br>                    invokeArrayFns(bm);<br>                &#125;<br>                <span class="hljs-comment">// onVnodeBeforeMount</span><br>                <span class="hljs-keyword">if</span> (!isAsyncWrapperVNode &amp;&amp;<br>                    (vnodeHook = props &amp;&amp; props.onVnodeBeforeMount)) &#123;<br>                    invokeVNodeHook(vnodeHook, parent, initialVNode);<br>                &#125;<br>                toggleRecurse(instance, <span class="hljs-literal">true</span>);<br>                <span class="hljs-keyword">if</span> (el &amp;&amp; hydrateNode) &#123;<br>                    <span class="hljs-comment">// vnode has adopted host node - perform hydration instead of mount.</span><br>                    <span class="hljs-keyword">const</span> hydrateSubTree = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> &#123;<br>                        <span class="hljs-keyword">if</span> ((process.env.NODE_ENV !== <span class="hljs-string">'production'</span>)) &#123;<br>                            startMeasure(instance, <span class="hljs-string">`render`</span>);<br>                        &#125;<br>                        instance.subTree = renderComponentRoot(instance);<br>                        <span class="hljs-keyword">if</span> ((process.env.NODE_ENV !== <span class="hljs-string">'production'</span>)) &#123;<br>                            endMeasure(instance, <span class="hljs-string">`render`</span>);<br>                        &#125;<br>                        <span class="hljs-keyword">if</span> ((process.env.NODE_ENV !== <span class="hljs-string">'production'</span>)) &#123;<br>                            startMeasure(instance, <span class="hljs-string">`hydrate`</span>);<br>                        &#125;<br>                        hydrateNode(el, instance.subTree, instance, parentSuspense, <span class="hljs-literal">null</span>);<br>                        <span class="hljs-keyword">if</span> ((process.env.NODE_ENV !== <span class="hljs-string">'production'</span>)) &#123;<br>                            endMeasure(instance, <span class="hljs-string">`hydrate`</span>);<br>                        &#125;<br>                    &#125;;<br>                    <span class="hljs-keyword">if</span> (isAsyncWrapperVNode) &#123;<br>                        initialVNode.type.__asyncLoader().then(<br>                        <span class="hljs-comment">// note: we are moving the render call into an async callback,</span><br>                        <span class="hljs-comment">// which means it won't track dependencies - but it's ok because</span><br>                        <span class="hljs-comment">// a server-rendered async wrapper is already in resolved state</span><br>                        <span class="hljs-comment">// and it will never need to change.</span><br>                        () =&gt; !instance.isUnmounted &amp;&amp; hydrateSubTree());<br>                    &#125;<br>                    <span class="hljs-keyword">else</span> &#123;<br>                        hydrateSubTree();<br>                    &#125;<br>                &#125;<br>                <span class="hljs-keyword">else</span> &#123;<br>                    <span class="hljs-keyword">if</span> ((process.env.NODE_ENV !== <span class="hljs-string">'production'</span>)) &#123;<br>                        startMeasure(instance, <span class="hljs-string">`render`</span>);<br>                    &#125;<br>                    <span class="hljs-keyword">const</span> subTree = (instance.subTree = renderComponentRoot(instance));<br>                    <span class="hljs-keyword">if</span> ((process.env.NODE_ENV !== <span class="hljs-string">'production'</span>)) &#123;<br>                        endMeasure(instance, <span class="hljs-string">`render`</span>);<br>                    &#125;<br>                    <span class="hljs-keyword">if</span> ((process.env.NODE_ENV !== <span class="hljs-string">'production'</span>)) &#123;<br>                        startMeasure(instance, <span class="hljs-string">`patch`</span>);<br>                    &#125;<br>                    patch(<span class="hljs-literal">null</span>, subTree, container, anchor, instance, parentSuspense, isSVG);<br>                    <span class="hljs-keyword">if</span> ((process.env.NODE_ENV !== <span class="hljs-string">'production'</span>)) &#123;<br>                        endMeasure(instance, <span class="hljs-string">`patch`</span>);<br>                    &#125;<br>                    initialVNode.el = subTree.el;<br>                &#125;<br>                <span class="hljs-comment">// mounted hook</span><br>                <span class="hljs-keyword">if</span> (m) &#123;<br>                    queuePostRenderEffect(m, parentSuspense);<br>                &#125;<br>                <span class="hljs-comment">// onVnodeMounted</span><br>                <span class="hljs-keyword">if</span> (!isAsyncWrapperVNode &amp;&amp;<br>                    (vnodeHook = props &amp;&amp; props.onVnodeMounted)) &#123;<br>                    <span class="hljs-keyword">const</span> scopedInitialVNode = initialVNode;<br>                    queuePostRenderEffect(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> invokeVNodeHook(vnodeHook, parent, scopedInitialVNode), parentSuspense);<br>                &#125;<br>                <span class="hljs-comment">// activated hook for keep-alive roots.</span><br>                <span class="hljs-comment">// #1742 activated hook must be accessed after first render</span><br>                <span class="hljs-comment">// since the hook may be injected by a child keep-alive</span><br>                <span class="hljs-keyword">if</span> (initialVNode.shapeFlag &amp; <span class="hljs-number">256</span> <span class="hljs-comment">/* COMPONENT_SHOULD_KEEP_ALIVE */</span>) &#123;<br>                    instance.a &amp;&amp; queuePostRenderEffect(instance.a, parentSuspense);<br>                &#125;<br>                instance.isMounted = <span class="hljs-literal">true</span>;<br>                <span class="hljs-keyword">if</span> ((process.env.NODE_ENV !== <span class="hljs-string">'production'</span>) || __VUE_PROD_DEVTOOLS__) &#123;<br>                    devtoolsComponentAdded(instance);<br>                &#125;<br>                <span class="hljs-comment">// #2458: deference mount-only object parameters to prevent memleaks</span><br>                initialVNode = container = anchor = <span class="hljs-literal">null</span>;<br>            &#125;<br>            <span class="hljs-keyword">else</span> &#123;<br>                <span class="hljs-comment">// updateComponent</span><br>                <span class="hljs-comment">// This is triggered by mutation of component's own state (next: null)</span><br>                <span class="hljs-comment">// OR parent calling processComponent (next: VNode)</span><br>                <span class="hljs-keyword">let</span> &#123; next, bu, u, parent, vnode &#125; = instance;<br>                <span class="hljs-keyword">let</span> originNext = next;<br>                <span class="hljs-keyword">let</span> vnodeHook;<br>                <span class="hljs-keyword">if</span> ((process.env.NODE_ENV !== <span class="hljs-string">'production'</span>)) &#123;<br>                    pushWarningContext(next || instance.vnode);<br>                &#125;<br>              <br>                <span class="hljs-comment">// Disallow component effect recursion during pre-lifecycle hooks.</span><br>                toggleRecurse(instance, <span class="hljs-literal">false</span>);<br>              <span class="hljs-comment">// 开始调用钩子函数</span><br>                <span class="hljs-keyword">if</span> (next) &#123;<br>                    next.el = vnode.el;<br>                    updateComponentPreRender(instance, next, optimized);<br>                &#125;<br>                <span class="hljs-keyword">else</span> &#123;<br>                    next = vnode;<br>                &#125;<br>                <span class="hljs-comment">// beforeUpdate hook</span><br>                <span class="hljs-keyword">if</span> (bu) &#123;<br>                    invokeArrayFns(bu);<br>                &#125;<br>                <span class="hljs-comment">// onVnodeBeforeUpdate</span><br>                <span class="hljs-keyword">if</span> ((vnodeHook = next.props &amp;&amp; next.props.onVnodeBeforeUpdate)) &#123;<br>                    invokeVNodeHook(vnodeHook, parent, next, vnode);<br>                &#125;<br>                <span class="hljs-comment">// 结束调用钩子函数</span><br>                toggleRecurse(instance, <span class="hljs-literal">true</span>);<br>                <span class="hljs-comment">// render  生成更新后的树</span><br>                <span class="hljs-keyword">if</span> ((process.env.NODE_ENV !== <span class="hljs-string">'production'</span>)) &#123;<br>                    startMeasure(instance, <span class="hljs-string">`render`</span>);<br>                &#125;<br>                <span class="hljs-keyword">const</span> nextTree = renderComponentRoot(instance);<br>                <span class="hljs-keyword">if</span> ((process.env.NODE_ENV !== <span class="hljs-string">'production'</span>)) &#123;<br>                    endMeasure(instance, <span class="hljs-string">`render`</span>);<br>                &#125;<br>                <span class="hljs-keyword">const</span> prevTree = instance.subTree;<br>                instance.subTree = nextTree;<br>                <span class="hljs-keyword">if</span> ((process.env.NODE_ENV !== <span class="hljs-string">'production'</span>)) &#123;<br>                    startMeasure(instance, <span class="hljs-string">`patch`</span>);<br>                &#125;<br>              <span class="hljs-comment">// 更新真实dom树</span><br>                patch(prevTree, nextTree, <br>                <span class="hljs-comment">// parent may have changed if it's in a teleport</span><br>                hostParentNode(prevTree.el), <br>                <span class="hljs-comment">// anchor may have changed if it's in a fragment</span><br>                getNextHostNode(prevTree), instance, parentSuspense, isSVG);<br>                <span class="hljs-keyword">if</span> ((process.env.NODE_ENV !== <span class="hljs-string">'production'</span>)) &#123;<br>                    endMeasure(instance, <span class="hljs-string">`patch`</span>);<br>                &#125;<br>                next.el = nextTree.el;<br>                <span class="hljs-keyword">if</span> (originNext === <span class="hljs-literal">null</span>) &#123;<br>                    <span class="hljs-comment">// self-triggered update. In case of HOC, update parent component</span><br>                    <span class="hljs-comment">// vnode el. HOC is indicated by parent instance's subTree pointing</span><br>                    <span class="hljs-comment">// to child component's vnode</span><br>                    updateHOCHostEl(instance, nextTree.el);<br>                &#125;<br>                <span class="hljs-comment">// updated hook</span><br>                <span class="hljs-keyword">if</span> (u) &#123;<br>                    queuePostRenderEffect(u, parentSuspense);<br>                &#125;<br>                <span class="hljs-comment">// onVnodeUpdated</span><br>                <span class="hljs-keyword">if</span> ((vnodeHook = next.props &amp;&amp; next.props.onVnodeUpdated)) &#123;<br>                    queuePostRenderEffect(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> invokeVNodeHook(vnodeHook, parent, next, vnode), parentSuspense);<br>                &#125;<br>                <span class="hljs-keyword">if</span> ((process.env.NODE_ENV !== <span class="hljs-string">'production'</span>) || __VUE_PROD_DEVTOOLS__) &#123;<br>                    devtoolsComponentUpdated(instance);<br>                &#125;<br>                <span class="hljs-keyword">if</span> ((process.env.NODE_ENV !== <span class="hljs-string">'production'</span>)) &#123;<br>                    popWarningContext();<br>                &#125;<br>            &#125;<br>        &#125;;<br></code></pre></td></tr></table></figure>
+
+<h2 id="render和patch下回再探-￣▽￣-”"><a href="#render和patch下回再探-￣▽￣-”" class="headerlink" title="render和patch下回再探(￣▽￣)”"></a>render和patch下回再探(￣▽￣)”</h2>
+    </section>
+    <section class="extra">
+      
+        <section class="donate">
+  <div class="qrcode">
+    <img   class="lazyload" data-original="https://pic.imgdb.cn/item/622edf135baa1a80abb1276b.jpg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" >
+  </div>
+  <div class="icon">
+    <a href="javascript:;" id="alipay"><i class="iconfont iconalipay"></i></a>
+    <a href="javascript:;" id="wechat"><i class="iconfont iconwechat-fill"></i></a>
+  </div>
+</section>
+      
+      
+      
+<nav class="nav">
+  
+    <a href="/2023/10/27/%E4%BB%8Edva-loading%E6%BA%90%E7%A0%81%E4%BA%86%E8%A7%A3dva%E6%8F%92%E4%BB%B6%E5%BC%8F%E5%BC%80%E5%8F%91/"><i class="iconfont iconleft"></i>从dva-loading源码了解dva插件式开发</a>
+  
+  
+    <a href="/2023/10/27/%E5%85%B3%E4%BA%8E%E4%B8%80%E4%B8%AA%E6%8B%96%E6%8B%BD%E7%A7%BB%E5%8A%A8%E7%9A%84%E7%BB%84%E4%BB%B6%E7%9A%84%E5%B0%81%E8%A3%85/">关于一个拖拽移动的组件的封装<i class="iconfont iconright"></i></a>
+  
+</nav>
+
+    </section>
+    
+      <section class="comments">
+        
+          <div class="btn" id="comments-btn">查看评论</div>
+        
+        
+<div id="valine"></div>
+<script defer src="//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js"></script>
+<script>
+  window.onload = function () {
+    var loadValine = function () {
+      new Valine({
+        el: '#valine',
+        app_id: "XgHS51JuLkeipj92BK4KyIEI-gzGzoHsz",
+        app_key: "LHxBDnRt6RQCuByhRfp1pkVN",
+        placeholder: "ヾﾉ≧∀≦)o来啊，快活啊!",
+        avatar: "mp",
+        pageSize: "10",
+        lang: "zh-CN",
+      });
+    }
+    if ( true ) {
+      $("#comments-btn").on("click", function () {
+        $(this).hide();
+        loadValine();
+      });
+    } else {
+      loadValine();
+    }
+  };
+</script>
+
+
+      </section>
+    
+  </section>
+</article>
+  </div>
+</main>
+  <footer class="footer">
+  <div class="footer-social">
+    
+    
+    
+    
+    
+    <a href="tencent://message/?Menu=yes&uin=694534942 " target="_blank" onMouseOver="this.style.color= '#12B7F5'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconQQ "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="https://pic.imgdb.cn/item/6231b2785baa1a80abf9af9c.jpg " target="_blank" onMouseOver="this.style.color= '#09BB07'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconwechat-fill "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="https://www.instagram.com/gaintpenggle/ " target="_blank" onMouseOver="this.style.color= '#DA2E76'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconinstagram "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="https://github.com/zoyopo " target="_blank" onMouseOver="this.style.color= '#24292E'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  icongithub-fill "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="mailto:694534942@qq.com " target="_blank" onMouseOver="this.style.color='#ff9800'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconmail"></i>
+    </a>
+    
+  </div>
+  <div class="footer-copyright"><p>Copyright© 2021-2022 | <a target="_blank" href="https://github.com/zoyopo">小笼包</a> .AllRightsReserved</p></div>
+</footer>
+  
+      <div class="fab fab-plus">
+    <i class="iconfont iconplus"></i>
+  </div>
+  <div class="fab fab-up">
+    <i class="iconfont iconcaret-up"></i>
+  </div>
+  <div class="fab fab-menu">
+    <i class="iconfont iconmenu"></i>
+  </div>
+  
+</body>
+
+
+<script src="/lib/jquery/jquery.js"></script>
+
+
+
+
+
+
+<script src="/lib/fancybox/fancybox.js"></script>
+
+
+
+
+
+
+
+
+<script src="/lib/lazyload/lazyload.js"></script>
+
+
+
+
+
+
+<script src="/lib/justifiedGallery/justifiedGallery.js"></script>
+
+
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+<script>
+  (function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+      bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</html>
